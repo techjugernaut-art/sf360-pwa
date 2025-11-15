@@ -1,0 +1,31 @@
+<div >
+  <h1 mat-dialog-title>{{newExpenseModalTitle | titlecase}}</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessingNewExpense"></mat-progress-bar>
+<form [formGroup]="newExpenseFormGroup" (ngSubmit)="onSubmit(newExpenseFormGroup?.value)">
+  <div class="">
+    <div class="row">
+      <mat-form-field class="col-md-12">
+        <mat-label>Shop</mat-label>
+        <mat-select formControlName="shop_id">
+          <mat-option *ngFor="let item of myShops" [value]="item?.id" >{{item?.business_name}}</mat-option>
+        </mat-select>
+        <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please provide Shop</mat-hint>
+      </mat-form-field>
+    </div>
+
+
+    <div class="row">
+      <mat-form-field class="col-md-12">
+        <input type="text" matInput placeholder="Category Name" formControlName="name" alphaNumericOnly>
+        <mat-hint class="text-danger" *ngIf="!name?.valid && name?.touched">Please enter Category Name</mat-hint>
+      </mat-form-field>
+    </div>
+
+  </div>
+  <div class="text-right">
+    <button mat-raised-button type="button" (click)="onClose()" class="mr-2" >Close</button>
+    <button mat-raised-button color="primary" [disabled]="newExpenseFormGroup?.invalid || isProcessingNewExpense"
+      type="submit">{{btnText}}</button>
+  </div>
+</form>
+</div>

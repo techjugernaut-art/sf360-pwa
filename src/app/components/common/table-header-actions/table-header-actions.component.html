@@ -1,0 +1,35 @@
+<div class="row mb-1">
+
+    <div class="col-md-3 text-center-sm">
+      <ng-content class="mr-1"></ng-content>
+        <button mat-raised-button *ngIf="tableHeaderOptions?.hasExport" color="primary" [matMenuTriggerFor]="beforeMenu"><i class="fe fe-download mr-1"></i> Export As</button>
+        <mat-menu #beforeMenu="matMenu" xPosition="before">
+          <button mat-menu-item>PDF</button>
+          <button mat-menu-item>Excel</button>
+        </mat-menu>
+    </div>
+    <div class="col-md-9">
+        <ol class="table-header-actions">
+          <li class="mt-sm-1" >
+            <ng-content select="[moreAction]"></ng-content>
+        </li>
+            <li class="mt-sm-1" *ngIf="tableHeaderOptions?.hasDateRangeFilter">
+
+                <mat-form-field  class="full-width" appearance="outline">
+                    <input matInput class="text-center format-daterange-picker-in-tab" alwaysShowCalendars="true"
+                    [ranges]="ranges" startKey="start_date" endKey="end_date" ngxDaterangepickerMd [locale]="locale"
+                    [ngModel]="selectedDate" (ngModelChange)="dateChanged($event)">
+                </mat-form-field>
+            </li>
+
+            <li *ngIf="tableHeaderOptions?.hasSearch" class="mt-sm-1">
+                <mat-form-field  class="full-width" appearance="outline">
+                    <span matSuffix><mat-icon >search</mat-icon> &nbsp;</span>
+                    <mat-label>{{tableHeaderOptions?.searchPlaceholder}}</mat-label>
+                  <input matInput  placeholder="{{tableHeaderOptions?.searchPlaceholder}}" [formControl]="searchFormControl" autocomplete="off">
+                </mat-form-field>
+            </li>
+
+          </ol>
+    </div>
+  </div>

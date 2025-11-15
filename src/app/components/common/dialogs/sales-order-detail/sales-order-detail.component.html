@@ -1,0 +1,91 @@
+<div class="modal-content mat-dialog-container-md">
+  <div class="modal-header">
+    <h2 class="modal-title" id="modal-title-notification">
+      Order #: {{data?.data?.order_code}}
+    </h2>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body" id="salesOrderModalBody">
+    <div class="text-center pb-3">
+      <img src="../assets/img/logos/dark-green.png" alt="logo-img" class="dialog-header-logo">
+    </div>
+    <div class="mb-0">
+      <div class="row">
+        <div class="col-6">
+          <h4><strong>Order #: {{data?.data?.order_code}}</strong></h4>
+          <address>
+            <strong>{{data?.data?.myshop?.business_name | titlecase}}</strong><br>
+            {{data?.data?.myshop?.location | titlecase}}<br>
+            Date Placed: {{data?.data?.date_placed | date: 'MM/dd/yyyy, HH:mm:ss'}}<br>
+            Payment Method: {{data?.data?.payment_method}}
+          </address>
+        </div>
+        <div class="col-6 text-right">
+          <h4><strong>Customer: </strong></h4>
+          <address>
+            <strong>{{data?.data?.customer?.name}} </strong><br>
+            Phone: {{data?.data?.customer?.phone_number}}<br>
+            Email: {{data?.data?.customer?.email}}
+          </address>
+        </div>
+
+      </div>
+      <!-- end row -->
+
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <table class="table m-t-30 text-nowrap  table-border-bottom">
+              <thead class="thead-dark">
+                <tr>
+                  <th>#</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th class="text-right">Amount({{data?.data?.currency}})</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of salesOrderItems">
+                  <td>{{item?.id}}</td>
+                  <td>{{item?.my_product?.product?.name}}</td>
+                  <td>{{item?.quantity}}</td>
+                  <td class="text-right">{{item?.subtotal | number: '1.2-2'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-4 col-12 offset-xl-8">
+          <p class="text-right mt-3 font-weight-600">Sub-total: {{data?.data?.currency}}
+            {{data?.data?.gross_total | number: '1.2-2'}}</p>
+          <p class="text-right font-weight-600">Discout: {{data?.data?.discount}}</p>
+          <p class="text-right font-weight-600">VAT: {{data?.data?.vat_value}}</p>
+          <hr>
+          <h4 class="text-right">Grand Total : {{data?.data?.currency}}
+            {{data?.data?.total_amount | number: '1.2-2'}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="float-left">
+            <h4><strong>Agent: </strong></h4>
+            <address>
+              <strong>{{data?.data?.author?.first_name | titlecase}},
+                {{data?.data?.author?.last_name | titlecase}}</strong><br>
+              Phone: {{data?.data?.author?.phone_number}}<br>
+              Email: {{data?.data?.author?.email}}
+            </address>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="exportAsPDF()"><i class="fa fa-file-pdf"></i> Download As PDF</button>
+  </div>
+</div>

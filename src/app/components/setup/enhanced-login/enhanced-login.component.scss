@@ -1,0 +1,267 @@
+@import '../../../../_constants.scss';
+
+// Use existing login page styles
+.login-page {
+  height: 100vh;
+  width: 100vw;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.login-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40vw;
+
+  .login-logo {
+    width: 240px;
+    margin-bottom: 2rem;
+  }
+
+  .login-title {
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .login-subtitle {
+    color: #6b7280;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+  }
+
+  .verification-hint {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.75rem;
+  }
+
+  .verification-input {
+    text-align: center;
+    font-size: 1.5rem;
+    letter-spacing: 0.5rem;
+    font-weight: 600;
+  }
+
+  .forgot-pin-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: $primary-color;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .button-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+
+    .back-button {
+      background: #f3f4f6;
+      color: #374151;
+      border: 1px solid #d1d5db;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      text-transform: none;
+      font-size: 0.9375rem;
+
+      &:hover {
+        background: #e5e7eb;
+      }
+    }
+
+    .login-button {
+      background: #2563eb;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+      text-transform: none;
+      font-size: 0.9375rem;
+
+      &:hover:not(:disabled) {
+        background: #1d4ed8;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  .auth-switch {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+
+    p {
+      margin: 0;
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    .switch-link {
+      color: $primary-color;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .resend-link {
+    font-size: 0.875rem;
+    color: $primary-color;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Right side image cover
+.image-cover {
+  width: 60vw;
+  background-image: linear-gradient(
+      to right bottom,
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+    ),
+    url("/assets/img/login-bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  padding: 50px;
+  position: relative;
+
+  .feature-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    transform: translateY(-50%);
+
+    .feature-tag {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 0.875rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.9375rem;
+      color: #1a1a1a;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+
+      mat-icon {
+        font-size: 1.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        color: $primary-color;
+      }
+
+      span {
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .bottom-text {
+    bottom: 50px;
+    right: 50px;
+    position: absolute;
+    color: #fff;
+    text-align: right;
+    max-width: 400px;
+
+    .bottom-text-title {
+      font-weight: 700;
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .bottom-text-description {
+      font-size: 1rem;
+      margin-bottom: 0;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+// Material form field styling
+::ng-deep {
+  .login-controls {
+    .mat-form-field-appearance-outline {
+      .mat-form-field-outline {
+        color: #d1d5db;
+      }
+
+      &.mat-focused .mat-form-field-outline-thick {
+        color: $primary-color;
+      }
+
+      .mat-form-field-label {
+        color: #6b7280;
+      }
+
+      &.mat-focused .mat-form-field-label {
+        color: $primary-color;
+      }
+    }
+
+    .mat-form-field-wrapper {
+      padding-bottom: 0.5rem;
+    }
+
+    .mat-form-field-infix {
+      padding: 0.75rem 0;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .login-controls {
+    width: 100vw !important;
+    padding: 2rem 1.5rem;
+  }
+
+  .image-cover {
+    display: none !important;
+  }
+
+  .button-group {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+// Hidden reCAPTCHA
+#recaptcha-container {
+  display: none;
+}

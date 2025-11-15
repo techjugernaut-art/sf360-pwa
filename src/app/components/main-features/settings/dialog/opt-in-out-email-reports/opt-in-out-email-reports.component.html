@@ -1,0 +1,49 @@
+<h1 mat-dialog-title>{{optInOutTitle | uppercase}}</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+
+<form [formGroup]="emailOptFormGroup" (ngSubmit)="onSubmit(emailOptFormGroup?.value)">
+    <div mat-dialog-content>
+        <div class="row mt-1">
+            <mat-form-field class="col-md-12">
+                <mat-label>Select Shop</mat-label>
+                <mat-select formControlName="shop_id" (selectionChange)="onShopChanged($event?.value)">
+                    <mat-option *ngFor="let item of myShops" [value]="item?.id">{{item?.business_name}}</mat-option>
+                </mat-select>
+                <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please select Shop</mat-hint>
+            </mat-form-field>
+            <div class="col-12 my-3">
+                <mat-slide-toggle color="primary" formControlName="receive_reports">
+                    <span *ngIf="receive_reports.value === true">Disable </span>
+                    <span *ngIf="receive_reports.value === false">Enable </span> Email Reporting
+                </mat-slide-toggle>
+            </div>
+            <div class="full-width" *ngIf="receive_reports.value === true">
+                <mat-form-field class="col-12">
+                    <mat-label>Reporting Interval</mat-label>
+                    <mat-select formControlName="report_frequency">
+                        <mat-option [value]="reportFrequency?.DAILY">DAILY</mat-option>
+                        <mat-option [value]="reportFrequency?.WEEKLY">WEEKLY</mat-option>
+                        <mat-option [value]="reportFrequency?.MONTHLY">MONTHLY</mat-option>
+                        <mat-option [value]="reportFrequency?.YEARLY">YEARLY</mat-option>
+                    </mat-select>
+                    <mat-hint class="text-danger" *ngIf="!report_frequency?.valid && report_frequency?.touched">
+                        Please reporting interval</mat-hint>
+                </mat-form-field>
+
+                <!-- <mat-form-field class="col-12">
+                        <input type="text" matInput placeholder="Reporting Date/Time" formControlName="reporting_date"
+                            [ngxMatDatetimePicker]="recurringDatePicker" (focus)="recurringDatePicker?.open()">
+                        <mat-hint class="text-danger" *ngIf="!reporting_date?.valid && reporting_date?.touched">Please enter
+                            Reporting Date and Time</mat-hint>
+                        <ngx-mat-datetime-picker #recurringDatePicker [showSeconds]="true"></ngx-mat-datetime-picker>
+                    </mat-form-field> -->
+            </div>
+        </div>
+    </div>
+
+    <mat-dialog-actions class="text-right mb-1">
+        <button mat-raised-button mat-dialog-close>Close</button>
+        <button mat-raised-button color="primary" [disabled]="emailOptFormGroup?.invalid || isProcessing"
+            type="submit">Update</button>
+    </mat-dialog-actions>
+</form>

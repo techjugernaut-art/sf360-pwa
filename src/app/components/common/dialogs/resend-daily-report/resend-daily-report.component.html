@@ -1,0 +1,36 @@
+<h1 mat-dialog-title>Resend Daily Report</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessingEditStock"></mat-progress-bar>
+<form [formGroup]="increaseOrDecreaseStockFormGroup" (ngSubmit)="onResendReport(increaseOrDecreaseStockFormGroup?.value)" >
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <mat-label>Select Shop</mat-label>
+      <mat-select formControlName="shop_id">
+        <mat-option *ngFor="let item of myShops" [value]="item?.id">{{item?.business_name}}</mat-option>
+      </mat-select>
+      <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please select Shop</mat-hint>
+    </mat-form-field>
+  </div>
+
+
+  <div class="row">
+    <mat-form-field class="col-md-6">
+      <input type="text" matInput placeholder="Start Date" formControlName="start_date"
+        [matDatepicker]="startDatePicker" (focus)="startDatePicker?.open()">
+      <mat-hint class="text-danger" *ngIf="!start_date?.valid && start_date?.touched">
+        Please enter Start Date</mat-hint>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="col-md-6">
+      <input type="text" matInput placeholder="End Date" formControlName="end_date"
+        [matDatepicker]="endDatePicker" (focus)="endDatePicker?.open()">
+      <mat-hint class="text-danger" *ngIf="!end_date?.valid && end_date?.touched">Please enter End Date
+      </mat-hint>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+      <mat-dialog-actions class="text-right">
+          <button mat-button mat-dialog-close>Close</button>
+          <button mat-raised-button color="primary" [disabled]="increaseOrDecreaseStockFormGroup?.invalid || isProcessingEditStock" type="submit">Send</button>
+        </mat-dialog-actions>
+</form>

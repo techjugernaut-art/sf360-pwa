@@ -1,0 +1,28 @@
+<div mat-dialog-content class="congratulation" *ngIf="platform === '' || platform === platformsEnum?.ONLINE_STORE || platform === undefined" >
+  <img class="congratulation-img" src="/assets/img/icons/cup.svg">
+  <p class="congratulation-heading">Congratulations! You made it!</p>
+  <p class="congratulation-desc">Your StoreFront Mall is ready to share with your customers to buy from you,<br>
+    your mall can be accessed using <a href="{{protocol}}{{onlineAddress}}.{{storefrontMallDomain}}"  target="_blank"><b>{{onlineAddress}}.{{storefrontMallDomain}}</b></a></p>
+    <p class="congratulation-sub-heading mb-0">IMPORTANT</p>
+    <p class="congratulation-sub-desc">To accept payments on Storefront Mall, you need to Submit Payment Request for <br>
+      approval. Go to <b>Settings > Payment Request</b> to submit request</p>
+      <button class="mt-3" (click)="onJumpIn()"  mat-raised-button color="primary">GO TO DASHBOARD</button>
+</div>
+
+<div mat-dialog-content class="congratulation" *ngIf="platform === platformsEnum?.PHYSICAL_STORE" >
+  <img class="congratulation-img" src="/assets/img/icons/cup.svg">
+  <p class="congratulation-heading">Congratulations! You made it!</p>
+  <p class="congratulation-desc">Your StoreFront Subscription payment successful. Thank you for choosing us.</p>
+    <p class="congratulation-sub-heading mb-0">IMPORTANT</p>
+    <p class="congratulation-sub-desc">To accept payments on Storefront Mall, you need to Submit Payment Request for <br>
+      approval. Go to <b>Settings > Payment Request</b> to submit request</p>
+      <button class="mt-3" (click)="onClose()"   mat-raised-button color="primary">CLOSE</button>
+</div>
+
+
+<div mat-dialog-content class="congratulation" *ngIf="platform === platformsEnum?.SMS_PURCHASE" >
+  <img class="congratulation-img" src="/assets/img/icons/cup.svg">
+  <p class="congratulation-heading">Thank You!</p>
+  <p class="congratulation-desc">Your StoreFront SMS credit purchase payment was successful. Thank you for choosing us.</p>
+      <button class="mt-3" (click)="onClose()"   mat-raised-button color="primary">CLOSE</button>
+</div>

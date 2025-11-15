@@ -1,0 +1,43 @@
+
+<div class="step-content">
+  <mat-progress-bar class="mb-0" *ngIf="isProcessing" mode="indeterminate">
+  </mat-progress-bar>
+  <div class="step-content-heading">
+    <img class="step-heading-img" src="assets/img/icons/industry.svg" />
+    <p class="text-primary step-content-heading-desc">Select Your Business Type</p>
+  </div>
+  <div class="ml-3 mr-3">
+    <mat-form-field class="full-width">
+      <input type="text" class="input-text-center" matInput placeholder="Search Business Type" [formControl]="searchIndustryFormControl">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="row mlr-0" *ngIf="allIndustries?.length > 0">
+    <div class="col-md-3" *ngFor="let item of allIndustries; let i = index">
+      <label class="onboarding-grid-list-item" for="industry{{i}}">
+        <input type="radio" id="industry{{i}}" [value]="item?.name" [formControl]="industryFormControl" name="industry">
+        <img src="assets/img/icons/check.svg" class="industry-selected-icon" />
+        <img [src]="item?.icon" alt="" class="onboarding-grid-list-item-media">
+        <p class="mb-0 onboarding-grid-list-item-description">{{item?.name}}</p>
+      </label>
+    </div>
+  </div>
+</div>
+
+<div class="stepper-bottom-action">
+  <!-- <div class="step-left-action">
+    <a [routerLink]="['/onboarding/personal-info']" [queryParams]="{ step: 1, state: 'back' }" mat-raised-button  >BACK</a>
+  </div> -->
+  <div class="stepper-right-action">
+    <button mat-raised-button color="primary"
+    (click)="onSaveIndustryAndContinue()"
+      [disabled]="industryFormControl.value === ''">NEXT</button>
+  </div>
+</div>
+
+
+
+
+
+
+

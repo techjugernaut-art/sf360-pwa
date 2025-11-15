@@ -1,0 +1,38 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+  <mat-card class="mt-4">
+    <mat-card-content class="ml-3 mr-3">
+      <h3>Current Premium Plan: <span class="text-primary" *ngIf="currentPremiumPlan">{{currentPremiumPlan?.name}} @ {{currentPremiumPlan?.currency}} {{currentPremiumPlan?.amount_to_show_on_app}}</span></h3>
+        <h3 class="text-primary">Due Renewal on: {{shopInfo?.days_left | subscriptionRenewalDate}}</h3>
+    </mat-card-content>
+  </mat-card>
+  
+  <div class="pricing-bg-gradient">
+    <div class="row m-auto text-center">
+      <div class="col-xl-4 col-lg-6 col-md-6 col-12" *ngFor="let item of premiumPlans">
+        <div class="princing-item green">
+          <div class="pricing-divider ">
+            <h3 class="text-white font-weight-600">{{item?.name}}</h3>
+            <h4 class="my-0 display-4 text-white font-weight-normal mb-3">
+              <span class="h3 font-weight-600 fs-20">{{item?.currency}} {{item?.amount_to_show_on_app}} </span>
+              <!-- <span class="h5"> {{item?.description}} </span> -->
+            </h4>
+            <img class='pricing-divider-img' src="assets/img/icons/sms-pricing.svg" alt="">
+          </div>
+          <div class="bg-white mt-0 pb-4 ">
+            <ul class="list-unstyled mb-4 position-relative">
+              <li><b> {{item?.description}}</b> </li>
+              <li><b> {{item?.number_of_months}}</b> Month(s) KudiGo Storefront access</li>
+              <li><b>Help supports</b></li>
+            </ul>
+            <button mat-raised-button color="primary" class="w-120" (click)="payPremiumNow(item)"
+            >Pay Now</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div> 
+
+</app-main-nav>

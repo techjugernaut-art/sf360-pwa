@@ -1,0 +1,98 @@
+<h1 mat-dialog-title>{{modalTitle}}</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<form [formGroup]="formGroup" (ngSubmit)="showPaymentPrompt(formGroup?.value)">
+  <div mat-dialog-content>
+
+    <div class="row mlr-0">
+      <mat-form-field class="col-md-12 pl-0">
+        <mat-label>I have a Discount Code </mat-label>
+        <input matInput formControlName="discount_code">
+        <i matSuffix class="fa fa-spinner fa-spin text-primary" *ngIf="isProcessingDiscountCheck"></i>
+      </mat-form-field>
+    </div>
+
+    <p class="mb-1 text-left"><b class="mr-1 subscription-payment-desc">SUBSCRIPTION FEE:</b> <span>{{currency}}
+        {{premiumPlanAmount}}</span></p>
+    <p class="mb-1 text-left"><b class="mr-1  subscription-payment-desc">DISCOUNT:</b> <span>{{currency}}
+        {{discountPercentage * premiumPlanAmount}}</span>
+        <span *ngIf="exchangeRateDiscountAmt > 0">({{shopCurrency}} {{exchangeRateDiscountAmt | number: '1.2-2'}})</span></p>
+    <p class="text-left"><b class="mr-1  subscription-payment-desc">GRAND TOTAL:</b> <span>{{currency}}
+        {{(premiumPlanAmount - (discountPercentage * premiumPlanAmount)) | number: '1.2-2'}}</span>
+      <span *ngIf="exchangeRateAmt > 0">({{shopCurrency}} {{exchangeRateAmt | number: '1.2-2'}})</span>
+      </p>
+
+    <p class="text-primary subscription-payment-method-heading">Payment Method</p>
+    <div class="d-flex justify-content-center">
+
+      <!-- <div class="payment-method-item-wrapper mr-3" *ngIf="currency === currencies.NGN">
+        <input type="radio" id="paga" [value]="'PAGA'" name="momo">
+        <label class="payment-method-grid-list-item" for="paga" (click)="selectPaymentMethod('PAGA', '', '')">
+          <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+          <img src="./assets/img/icons/paga.png" alt="" class="payment-method-grid-list-item-media mx-0" style="margin-top: -2rem; width: 82px;">
+          <p class="mb-0 payment-method-grid-list-item-description"></p>
+        </label>
+      </div> -->
+
+      <div class="payment-method-item-wrapper mr-3" *ngIf="shopCurrency === currencies.GHS">
+        <input type="radio" id="momo" [value]="'MOMO'" name="momo">
+        <label class="payment-method-grid-list-item" for="momo"
+          (click)="selectPaymentMethod('MOMO', 'MTN', 'MTN MOMO')">
+
+          <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+          <img src="./assets/img/icons/ic_mtn_money.png" alt="" class="payment-method-grid-list-item-media" style="margin-top: -2rem; margin-left:10px; margin-right: 10px;">
+          <p class="mb-0 payment-method-grid-list-item-description"></p>
+        </label>
+      </div>
+
+      <div class="payment-method-item-wrapper mr-3" *ngIf="shopCurrency === currencies.GHS">
+        <input type="radio" id="voda" [value]="'MOMO'" name="momo">
+        <label class="payment-method-grid-list-item" for="voda"
+          (click)="selectPaymentMethod('MOMO', 'VOD', 'VODAFONE CASH')">
+
+          <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+          <img src="./assets/img/icons/voda.png" alt="" class="payment-method-grid-list-item-media" style="margin-top: -2rem; margin-left:10px; margin-right: 10px;">
+          <p class="mb-0 payment-method-grid-list-item-description"></p>
+        </label>
+      </div>
+
+      <div class="payment-method-item-wrapper mr-3" *ngIf="shopCurrency === currencies.GHS">
+        <input type="radio" id="atigo" [value]="'MOMO'" name="momo">
+        <label class="payment-method-grid-list-item" for="atigo"
+          (click)="selectPaymentMethod('MOMO', 'AIR', 'AIRTELTIGO CASH')">
+
+          <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+          <img src="./assets/img/icons/atigo.png" alt="" class="payment-method-grid-list-item-media" style="margin-top: -2rem; margin-left:10px; margin-right: 10px;">
+          <p class="mb-0 payment-method-grid-list-item-description"></p>
+        </label>
+      </div>
+
+      <div class="payment-method-item-wrapper mr-3" *ngIf="currency !== ''">
+        <input type="radio" id="card" [value]="'CARD'" name="momo">
+        <label class="payment-method-grid-list-item" for="card" (click)="selectPaymentMethod('CARD', '', '')">
+          <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+          <img src="./assets/img/icons/card_payment.png" alt="" class="payment-method-grid-list-item-media mx-0" style="margin-top: -2rem; width: 82px;">
+          <p class="mb-0 payment-method-grid-list-item-description"></p>
+        </label>
+      </div>
+
+      <!-- <div class="payment-method-item-wrapper mr-3" *ngIf="currency !== ''">
+        <input type="radio" id="DIRECT_TRANSFER" [value]="'DIRECT_TRANSFER'" name="momo">
+        <label class="payment-method-grid-list-item" for="DIRECT_TRANSFER"
+          (click)="selectPaymentMethod('DIRECT_TRANSFER', '', '')">
+          <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+          <img src="./assets/img/icons/bank_transfer.png" alt="" class="payment-method-grid-list-item-media" style="margin-top: -2rem; width: 82px;">
+          <p class="mb-0 payment-method-grid-list-item-description"></p>
+        </label>
+      </div> -->
+
+    </div>
+  </div>
+
+  <mat-dialog-actions class="text-right mb-2">
+    <button mat-raised-button mat-dialog-close>Close</button>
+    <button mat-raised-button color="primary" [disabled]="formGroup?.invalid || isProcessing" type="submit">PAY
+      NOW</button>
+  </mat-dialog-actions>
+</form>
+
+<app-iframe-dialog [src]="redirectUrl" *ngIf="redirectUrl !== ''"></app-iframe-dialog>

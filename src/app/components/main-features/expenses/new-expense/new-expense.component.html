@@ -1,0 +1,77 @@
+<div >
+    <h1 mat-dialog-title>{{newExpenseModalTitle | titlecase}}</h1>
+  <mat-progress-bar mode="indeterminate" *ngIf="isProcessingNewExpense"></mat-progress-bar>
+  <form [formGroup]="newExpenseFormGroup" (ngSubmit)="onSubmit(newExpenseFormGroup?.value)">
+    <div class="">
+      <div class="row">
+        <mat-form-field class="col-md-12">
+          <mat-label>Shop</mat-label>
+          <mat-select formControlName="shop_id" (selectionChange)="onShopChanged($event?.value)">
+            <mat-option *ngFor="let item of myShops" [value]="item?.id" >{{item?.business_name}}</mat-option>
+          </mat-select>
+          <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please provide Shop</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-12">
+          <mat-label>Category</mat-label>
+          <mat-select formControlName="category_id">
+            <mat-option *ngFor="let item of expenseCategories"  [value]="item?.id">{{item?.name}}</mat-option>
+          </mat-select>
+          <button type="button" mat-button matSuffix mat-icon-button aria-label="Edit Category" *ngIf="category?.value !== ''"  (click)="onEditExpenseCategory(category?.value)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button type="button" mat-button matSuffix mat-icon-button aria-label="Add Category" (click)="addExpenseCategory()" >
+            <mat-icon>add</mat-icon>
+          </button>
+          <mat-hint class="text-danger" *ngIf="!category?.valid && category?.touched">Please provide Category</mat-hint>
+        </mat-form-field>
+
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-12">
+          <input type="text" matInput placeholder="Amount" formControlName="amount" decimalOnly>
+          <mat-hint class="text-danger" *ngIf="!amount?.valid && amount?.touched">Please enter Amount
+          </mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-12">
+          <input type="text" matInput [max]="maxDate" (focus)="myDatepicker?.open()" placeholder="Transaction Date" [matDatepicker]="myDatepicker" formControlName="transaction_date" >
+          <mat-hint class="text-danger" *ngIf="!transaction_date?.valid && transaction_date?.touched">Please enter Transaction Date
+          </mat-hint>
+          <mat-datepicker #myDatepicker ></mat-datepicker>
+        </mat-form-field>
+
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-12">
+          <input type="text" matInput placeholder="Note" formControlName="note" alphaNumericOnly>
+          <mat-hint class="text-danger" *ngIf="!note?.valid && note?.touched">Please enter Note</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-md-12">
+          <mat-checkbox formControlName="is_recurring">Is Recurring</mat-checkbox>
+        </div>
+      </div>
+      <div class="row" *ngIf="is_recurring?.value" >
+        <mat-form-field class="col-md-12">
+          <mat-label>Recurring Interval</mat-label>
+          <mat-select formControlName="recurring_interval">
+            <mat-option value="DAILY">DAILY</mat-option>
+            <mat-option value="WEEKLY">WEEKLY</mat-option>
+            <mat-option value="MONTHLY">MONTHLY</mat-option>
+          </mat-select>
+          <mat-hint class="text-danger" *ngIf="!recurring_interval?.valid && recurring_interval?.touched">Please provide Recurring Interval</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="text-right">
+      <button mat-raised-button type="button" (click)="onClose()" class="mr-2" >Close</button>
+      <button mat-raised-button color="primary" [disabled]="newExpenseFormGroup?.invalid || isProcessingNewExpense"
+        type="submit">{{btnText}}</button>
+    </div>
+  </form>
+</div>

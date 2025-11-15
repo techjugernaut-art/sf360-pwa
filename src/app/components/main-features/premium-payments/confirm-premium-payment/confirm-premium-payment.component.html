@@ -1,0 +1,204 @@
+<h1 mat-dialog-title *ngIf="paymentMethod == 'MOMO' && !isProcessingTransaction">{{networkName}} PAYMENT</h1>
+<h1 mat-dialog-title *ngIf="paymentMethod == 'PAGA' && !isProcessingTransaction">PAGA PAYMENT</h1>
+<h1 mat-dialog-title *ngIf="paymentMethod == 'CARD' && !isProcessingTransaction">CARD PAYMENT</h1>
+<h1 mat-dialog-title *ngIf="paymentMethod == 'DIRECT_TRANSFER' && !isProcessingTransaction">DIRECT TRANSFER</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing && !isProcessingTransaction"></mat-progress-bar>
+
+<form [formGroup]="pagaFormGroup" (ngSubmit)="onPagaSubmit(pagaFormGroup?.value)" *ngIf="paymentMethod == 'PAGA'">
+  <div mat-dialog-content>
+    <div class="row">
+      <div class="col-12 mb-3" *ngIf="data?.sms_package !== null && data?.sms_package !== undefined && data?.sms_package !== ''">
+        <b>Amount {{data?.sms_package?.currency}} {{data?.sms_package?.amount}}</b>
+      </div>
+      <div class="col-12 mb-3" *ngIf="data?.subscription_data !== null && data?.subscription_data !== undefined && data?.subscription_data !== ''">
+        <b>Amount {{data?.subscription_data?.currency}} {{data?.subscription_data?.amount_to_show_on_app}}</b>
+      </div>
+      <mat-form-field class="col-12">
+        <mat-select formControlName="paymentMethods" placeholder="Payment Method">
+          <mat-option value="">Select Paga Payment Method</mat-option>
+          <mat-option value="BANK_TRANSFER">BANK TRANSFER</mat-option>
+          <mat-option value="FUNDING_USSD">FUNDING USSD</mat-option>
+          <mat-option value="BANK_TRANSFER">REQUEST MONEY</mat-option>
+          <mat-hint class="text-danger" *ngIf="!paymentMethods?.valid && paymentMethods?.touched">Please select payment
+            method</mat-hint>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="col-12">
+        <input type="text" matInput placeholder="Enter Reference Number" formControlName="referenceNumber">
+        <mat-hint class="text-danger" *ngIf="!referenceNumber?.valid && referenceNumber?.touched">Please enter reference
+          number</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="col-12">
+        <input type="text" matInput placeholder="Enter Account Reference" formControlName="accountReference">
+        <mat-hint class="text-danger" *ngIf="!accountReference?.valid && accountReference?.touched">Please enter account reference</mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+  <mat-dialog-actions class="text-right">
+    <button mat-button mat-dialog-close>CLOSE</button>
+    <!-- <button mat-button color="primary" *ngIf="!isProceedForDirectTransfer"
+      (click)="isProceedForDirectTransfer = true">PROCEED</button> -->
+    <button mat-raised-button color="primary" *ngIf="isProceedForDirectTransfer"
+      [disabled]="formGroup?.invalid || isProcessing" type="submit">SUBMIT</button>
+  </mat-dialog-actions>
+</form>
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup?.value)" *ngIf="!isProcessingTransaction && paymentMethod !== 'PAGA'">
+  <div mat-dialog-content>
+    <div class="row">
+      <mat-form-field class="col-12" *ngIf="paymentMethod == 'MOMO'">
+        <input type="text" matInput placeholder="Enter {{networkName}} Number" formControlName="phone_number">
+        <mat-hint class="text-danger" *ngIf="!phone_number?.valid && phone_number?.touched">Please enter valid phone
+          number</mat-hint>
+      </mat-form-field>
+      <!-- <mat-form-field class="col-12" *ngIf="paymentMethod == 'MOMO' && paymentNetwork === 'VOD'">
+        <input type="text"  matInput placeholder="Enter voucher"
+          formControlName="payment_voucher_code">
+        <mat-hint class="text-danger" *ngIf="!payment_voucher_code?.valid && payment_voucher_code?.touched">Please enter
+          voucher</mat-hint>
+      </mat-form-field> -->
+      <!-- <div class="col-12">
+        <div class="text-center mb-2">
+          <mat-button-toggle-group color="primary" class="mat-toggle-buttons-adjustment"
+            [formControl]="bankOrMoMoCtrl">
+            <mat-button-toggle color="primary" value="BANK">BANK TRANSFER</mat-button-toggle>
+            <mat-button-toggle color="primary" value="MOMO">MOBILE MONEY</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>-->
+      <mat-form-field class="col-12"
+        *ngIf="paymentMethod == 'DIRECT_TRANSFER' && isProceedForDirectTransfer && bankOrMoMoCtrl?.value == 'BANK'">
+        <input type="text" matInput placeholder="Enter your bank name" formControlName="payment_network">
+        <mat-hint class="text-danger" *ngIf="!payment_network?.valid && payment_network?.touched">Please enter
+          bank/sender name</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="col-12" *ngIf="paymentMethod == 'DIRECT_TRANSFER' && isProceedForDirectTransfer">
+        <input type="text" matInput placeholder="Enter your transaction id" formControlName="bank_reference_code">
+        <mat-hint class="text-danger" *ngIf="!bank_reference_code?.valid && bank_reference_code?.touched">Please enter
+          transaction id</mat-hint>
+      </mat-form-field>
+
+
+      <div class="col-12" *ngIf="!isProceedForDirectTransfer">
+        <p class="confirm-order-payment-heading-desc text-left">
+          By selecting this option, you will be making payment to KudiGo's bank account/mobile <br> money wallet as
+          indicated below:
+        </p>
+        <span>
+          <p class="text-primary bold mb-0">GHANA BANK ACCOUNT</p>
+          <b>Bank Name:</b> Guaranty Trust Bank Ltd <br>
+          <b>Branch:</b> Industrial Area <br>
+          <b>Account Name:</b> KudiGO Limited <br>
+          <b>Account Number:</b> 212109482110 <br>
+        </span>
+        <span>
+          <p class="text-primary bold mb-0 mt-2">NIGERIA BANK ACCOUNT</p>
+          <b>Bank Name:</b> Stanbic IBTC Bank <br>
+          <b>Branch:</b> Lekki Admiralty <br>
+          <b>Account Name:</b> KudiGO Limited <br>
+          <b>Account Number:</b> 0031632211 <br>
+        </span>
+        <span>
+          <p class="text-primary bold mb-0 mt-2">MOBILE MONEY ACCOUNT</p>
+          <b>Account Name: </b> KudiGO Limited/Kingsley Abrokwah <br>
+          <b>Network:</b> MTN
+          <b>Merchant Number:</b> 0247656862
+        </span>
+
+
+      </div>
+
+    </div>
+    <p class="" *ngIf="paymentMethod == 'MOMO' && paymentNetwork === 'VOD'">
+      Dial <b>*110#</b> and select option <b>4</b> to generate your voucher code
+    </p>
+    <p class="" *ngIf="paymentMethod == 'MOMO' && (paymentNetwork === 'MTN' || paymentNetwork === 'AIR')">
+      Check your phone for prompt to approve payment
+    </p>
+  </div>
+  <mat-dialog-actions class="text-right">
+    <button mat-button mat-dialog-close>CLOSE</button>
+    <button mat-button color="primary" *ngIf="!isProceedForDirectTransfer"
+      (click)="isProceedForDirectTransfer = true">PROCEED</button>
+    <button mat-raised-button color="primary" *ngIf="isProceedForDirectTransfer"
+      [disabled]="formGroup?.invalid || isProcessing" type="submit">SUBMIT</button>
+  </mat-dialog-actions>
+</form>
+<div *ngIf="isProcessingTransaction && paymentMethod == 'DIRECT_TRANSFER'">
+  <div mat-dialog-content>
+    <div class="text-center"><img class="spinner-img " src="assets/img/icons/agreement.svg"></div>
+    <p class="confirm-order-payment-heading">
+      Thank You
+    </p>
+    <p class="confirm-order-payment-heading-desc">
+      Your request has been successfully submitted. Our Accounts Department will confirm your payment <br /> from our
+      Bank and
+      update your invoice accordingly. You can check the <a routerLink="/premium-subscriptions/invoices"
+        class="text-primary">Invoice History</a> module to know the status of your invoice. Our
+      Agents will reach out to you for any further information we might need. <br /> Kindly <b
+        class="text-primary">CLOSE</b> to close this dialog
+    </p>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button (click)="onFinish()">CLOSE</button>
+  </div>
+</div>
+<div *ngIf="isProcessingTransaction && paymentMethod != 'DIRECT_TRANSFER'">
+  <div mat-dialog-content>
+    <div class="text-center" *ngIf="isProcessing"><img class="spinner-img " src="assets/img/icons/spinner.svg"></div>
+    <p class="confirm-order-payment-heading" *ngIf="!IsTransactionStatusCheck">
+      We are waiting on you
+    </p>
+    <p class="confirm-order-payment-heading" *ngIf="IsTransactionStatusCheck">
+      Checking Approval Status
+    </p>
+    <p class="confirm-order-payment-heading-desc" *ngIf="!IsTransactionStatusCheck">Kindly follow the instructions
+      bellow, and do note to not refresh or
+      leave
+      this page. <br> This might take up to 2 mins</p>
+    <p class="confirm-order-payment-heading-desc" *ngIf="IsTransactionStatusCheck">Kindly inform Customer to check phone
+      for prompt to approve payment. Do note to not refresh or
+      leave
+      this page. <br> This might take up to 2 mins</p>
+    <div>
+      <p class="" *ngIf="paymentMethod == 'MOMO' && paymentNetwork === 'VOD' && !IsTransactionStatusCheck">
+        <!-- Dial <b>*110#</b> and select option <b>6</b> to generate your voucher code -->
+        Kindly check your phone for prompt to approve payment
+      </p>
+      <p class="" *ngIf="paymentMethod == 'MOMO' && paymentNetwork === 'AIR' && !IsTransactionStatusCheck">
+        Kindly check your phone for prompt to approve payment
+      </p>
+      <p class="order-payment-instruction-desc"
+        *ngIf="paymentMethod == 'MOMO' && paymentNetwork === 'MTN' && !IsTransactionStatusCheck">
+        You will receive a prompt on your mobile number to enter your PIN to authorize your payment request. <br>
+        If you do not receive the prompt within 10 seconds follow the following instructions:</p>
+
+      <ol class="order-payment-instruction-desc"
+        *ngIf="paymentMethod == 'MOMO' && paymentNetwork === 'MTN' && !IsTransactionStatusCheck">
+        <li>Dial *170# to see the main MTN USSD menu</li>
+        <li>If the prompt appears instead, cancel it and dial *170# again</li>
+        <li>Choose 6) My Wallet</li>
+        <li>Choose 3) My Approvals</li>
+        <li>Enter your PIN to proceed</li>
+        <li>Look for the transaction and follow the prompts to authorise it. Make sure the amount is correct</li>
+      </ol>
+    </div>
+
+    <div class="alert alert-danger" *ngIf="isTransactionStatusDelayed || isFailed">
+      We were unable to process your payment.
+    </div>
+  </div>
+  <div mat-dialog-actions *ngIf="isTransactionStatusDelayed || isFailed">
+    <button mat-raised-button [disabled]="isProcessing" class="mr-2" mat-dialog-close>CLOSE</button>
+    <button mat-raised-button color="primary" *ngIf="!IsTransactionStatusCheck" [disabled]="isProcessing"
+      (click)="checkMoMoStatus(transactionId)">TRY
+      AGAIN</button>
+    <button mat-raised-button color="primary" *ngIf="IsTransactionStatusCheck" [disabled]="isProcessing"
+      (click)="checOrderkMoMoStatus(frontendOrderId)">TRY
+      AGAIN</button>
+    <button mat-raised-button color="primary" [disabled]="isProcessing" *ngIf="IsTransactionStatusCheck"
+      (click)="onChangePaymentMethod()">CHANGE PAYMENT OPTION</button>
+  </div>
+
+</div>

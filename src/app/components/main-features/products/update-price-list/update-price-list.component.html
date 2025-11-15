@@ -1,0 +1,80 @@
+<h1 mat-dialog-title>Change Price List</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<form [formGroup]="productGroupFormGroup" (ngSubmit)="onSubmit(productGroupFormGroup?.value)" >
+  <h4 class="new-product-heading-info d-flex justify-content-between align-items-center mr-3">
+    <span>Unit of Measurement Info</span>
+    <button mat-button color="primary" class="remove-outline primary-transparent-20 add-unit-of-measurement-button d-flex align-items-center justify-content-center" type="button"
+      (click)="addPriceList()">
+      ADD ANOTHER UNIT
+    </button>
+  </h4>
+  <p class="mr-3 ml-3 new-product-heading-desc">One unit is REQUIRED to be set as the base unit for this product</p>
+  <mat-accordion class="accordion-headers-align" [displayMode]="'flat'">
+    <mat-expansion-panel class="remove-shadow"
+      *ngFor="let unitFormGroup of price_list?.controls; let i = index;" [formGroup]="unitFormGroup" [expanded]="i === 0">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Unit of Measurement {{i + 1}} - {{unitFormGroup?.get('unit_name')?.value | unitOfMeasurementDisplay}}
+        </mat-panel-title>
+        <mat-panel-description>
+
+          <b *ngIf="isBaseUnitSelected && selectedBaseUnitIndex === i" > &nbsp; - BASE UNIT</b>
+        </mat-panel-description>
+        <button mat-icon-button color="primary" (click)="removePriceList(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-expansion-panel-header>
+
+      <div class="row mlr-0">
+        <mat-form-field class="col-md-4">
+          <mat-label>Select Unit of Measurement</mat-label>
+          <mat-select formControlName="unit_name">
+            <mat-option *ngFor="let item of unitsOfMeasurements" [value]="item?.name">{{item?.name}}
+            </mat-option>
+          </mat-select>
+
+          <mat-hint class="text-danger"
+            *ngIf="!unitFormGroup?.get('unit_name')?.valid && unitFormGroup?.get('unit_name')?.touched">Please
+            provide Unit of Measurement</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="col-md-4">
+          <small matPrefix>{{productDetail?.currency}} &nbsp;</small>
+          <input matInput placeholder="Supplier Price Per {{unitFormGroup?.get('unit_name')?.value | unitOfMeasurementDisplay}}" formControlName="supplier_price" decimalOnly>
+          <mat-hint class="text-danger"
+            *ngIf="!unitFormGroup?.get('supplier_price')?.valid && unitFormGroup?.get('supplier_price')?.touched">
+            Please provide Supplier Price</mat-hint>
+        </mat-form-field>
+
+
+        <mat-form-field class="col-md-4">
+          <small matPrefix>{{productDetail?.currency}} &nbsp;</small>
+          <input matInput placeholder="Selling Price Per {{unitFormGroup?.get('unit_name')?.value | unitOfMeasurementDisplay}}" formControlName="selling_price" decimalOnly>
+          <mat-hint class="text-danger"
+            *ngIf="!unitFormGroup?.get('selling_price')?.valid && unitFormGroup?.get('selling_price')?.touched">
+            Please provide Selling Price</mat-hint>
+        </mat-form-field>
+
+      </div>
+<div class="row">
+  <div class="col-md-4 pt-4">
+    <mat-checkbox formControlName="is_base_unit" (change)="onIsBaseUnitChange($event, unitFormGroup?.get('base_unit_multiplier'), unitFormGroup?.get('unit_name')?.value, i)" [disabled]="isBaseUnitSelected && selectedBaseUnitIndex !== i">Set as the smallest unit</mat-checkbox>
+  </div>
+  <mat-form-field class="col-md-4" *ngIf="!unitFormGroup?.get('is_base_unit')?.value" >
+    <input matInput placeholder="How many {{baseUnitName | unitOfMeasurementDisplay }} in {{unitFormGroup?.get('unit_name')?.value | unitOfMeasurementDisplay}}" formControlName="base_unit_multiplier" decimalOnly>
+    <mat-hint class="text-danger"
+      *ngIf="!unitFormGroup?.get('base_unit_multiplier')?.valid && unitFormGroup?.get('base_unit_multiplier')?.touched">
+      Please provide Base Unit Multiplier not less than 1</mat-hint>
+  </mat-form-field>
+</div>
+    </mat-expansion-panel>
+
+
+
+  </mat-accordion>
+
+
+      <mat-dialog-actions class="text-right">
+          <button mat-button mat-dialog-close>Close</button>
+          <button mat-raised-button color="primary" [disabled]="productGroupFormGroup?.invalid || isProcessing" type="submit">Save</button>
+        </mat-dialog-actions>
+</form>

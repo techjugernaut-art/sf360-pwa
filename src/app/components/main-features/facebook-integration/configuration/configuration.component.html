@@ -1,0 +1,64 @@
+<app-main-nav [isProcessing]="isProcessing">
+
+    <div class="row section-wrapper">
+        <div class="col-md-6 col-12 stretch-card">
+            <div class="box-white-bg">
+                <div class="campaign-box-body">
+                    <div class="integrate-username">
+                        <div class="bolded">
+                            User Details
+                        </div>
+                        <div class="row">
+                           <div class="col-12">
+                               <p class="mb-0 bolded">User Name</p>
+                               <span>Joshua Shine</span>
+                           </div>
+                           <div class="col-12 mt-3">
+                            <p class="mb-0 bolded">Email</p>
+                            <span>joshua@kudigo.com</span>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="facebook-box-bg">
+                            <div class="box-item">
+                                <div>
+                                    <h4><span>Connect to Facebook</span> </h4>
+                                    <a (click)="loginWithFacebook()" class="btn-integrate">Setup</a> 
+                                </div>
+                                <div class="icon">
+                                    <span>
+                                        <img class="bg-trans-svg" src="assets/img/icons/face-book.svg" alt="Facebook">
+                                    </span>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="instagram-box-bg">
+                            <div class="box-item">
+                                <div>
+                                    <h4><span>Connect to Instagram</span> </h4>  
+                                    <div class="mt-2">
+                                        <a class="btn-integrate">Setup</a> 
+                                    </div>
+                                </div>
+                                <div class="icon">
+                                    <span>
+                                        <img class="bg-trans-svg" src="assets/img/icons/instagram.svg" alt="Instagram"> 
+                                    </span>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</app-main-nav>

@@ -1,0 +1,445 @@
+// Extra small devices (portrait phones, less than 576px)
+// No media query for `xs` since this is the default in Bootstrap
+$stepper-text-color: #e4e4e4;
+@media (max-width: 480px) {
+  .col-xxs-6 {
+    width: 50%;
+  }
+  .col-xxs-1,
+  .col-xxs-2,
+  .col-xxs-3,
+  .col-xxs-4,
+  .col-xxs-5,
+  .col-xxs-6,
+  .col-xxs-7,
+  .col-xxs-8,
+  .col-xxs-9,
+  .col-xxs-10,
+  .col-xxs-11 {
+    float: left;
+  }
+  .col-xxs-1,
+  .col-xxs-2,
+  .col-xxs-3,
+  .col-xxs-4,
+  .col-xxs-5,
+  .col-xxs-6,
+  .col-xxs-7,
+  .col-xxs-8,
+  .col-xxs-9,
+  .col-xxs-10,
+  .col-xxs-11,
+  .col-xxs-12 {
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+  }
+}
+@media (min-width: 576px){.card-deck{
+  flex-flow:row wrap;margin-right:-12px;margin-left:-12px}
+  .card-deck .card{
+    display:flex;
+    flex:1 0 0%;
+    flex-direction:column;
+    margin-right:12px;
+    margin-bottom:0;
+    margin-left:12px
+  }
+  .card-group{flex-flow:row wrap}
+  .card-group>.card{flex:1 0 0%;margin-bottom:0}
+  .card-group>.card+.card{margin-left:0;border-left:0}
+  .card-group>.card:first-child{border-top-right-radius:0;border-bottom-right-radius:0}
+  .card-group>.card:first-child .card-img-top,.card-group>.card:first-child 
+  .card-header{border-top-right-radius:0}
+  .card-group>.card:first-child .card-img-bottom,.card-group>.card:first-child .card-footer{border-bottom-right-radius:0}
+  .card-group>.card:last-child{border-top-left-radius:0;border-bottom-left-radius:0}
+  .card-group>.card:last-child .card-img-top,.card-group>.card:last-child .card-header{border-top-left-radius:0}
+  .card-group>.card:last-child .card-img-bottom,.card-group>.card:last-child .card-footer{border-bottom-left-radius:0}
+  .card-group>.card:only-child{border-radius:.25rem}
+  .card-group>.card:only-child .card-img-top,.card-group>.card:only-child .card-header{border-top-left-radius:.25rem;border-top-right-radius:.25rem}
+  .card-group>.card:only-child .card-img-bottom,.card-group>.card:only-child .card-footer{border-bottom-right-radius:.25rem;border-bottom-left-radius:.25rem}
+  .card-group>.card:not(:first-child):not(:last-child):not(:only-child){border-radius:0}
+  .card-group>.card:not(:first-child):not(:last-child):not(:only-child) .card-img-top,.card-group>.card:not(:first-child):not(:last-child):not(:only-child) .card-img-bottom,.card-group>.card:not(:first-child):not(:last-child):not(:only-child) .card-header,.card-group>.card:not(:first-child):not(:last-child):not(:only-child) .card-footer{border-radius:0}
+
+  .card-columns{
+    column-count:3;
+    column-gap:1.25rem;
+    orphans:1;
+    widows:1
+  }
+  .card-columns .card{
+    display:inline-block;
+    width:100%
+  }
+}
+@media (max-width: 575px) {
+
+  .hidden-xs-down,
+  .hidden-sm-down,
+  .hidden-lg-down,
+  .hidden-xl-down,
+  .hidden-xs-up,
+  .hidden-unless-sm,
+  .hidden-unless-md,
+  .hidden-unless-lg,
+  .hidden-unless-xl {
+    display: none !important;
+  }
+  .text-center-sm {
+    text-align: center;
+  }
+  .breadcrumb {
+    height: auto;
+    margin-top: 55px;
+  }
+  .breadcrumb-actions {
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 30px;
+    padding-left: unset !important;
+  }
+  .breadcrumb-actions li {
+    margin-right: unset !important;
+  }
+  .page-title {
+    text-align: center;
+  }
+  .mat-nav-bar {
+    position: fixed !important;
+  }
+  .mt-sm-1 {
+    margin-top: 1rem;
+  }
+  .md-drppicker.shown.drops-down-right {
+    left: unset !important;
+  }
+  .single-transaction-card{margin-top:8rem}
+  .single-transaction-card .card-info a{margin-top:2rem}
+
+}
+@media (max-height: 638px) {
+  .free-trial {
+    visibility: hidden !important;
+  }
+  .free-trial-text {
+    visibility: hidden !important;
+
+  }
+}
+
+@media (max-width: 768px) {
+  .single-transaction-card{
+    margin-top:6rem;
+    margin-bottom:0;
+    // height:30.8rem
+  }
+  .single-transaction-card.add-new-card{
+    margin-top:2rem
+  }
+  .switch-shop-icon {
+    display: block !important;
+  }
+  .hide-shop-name-md {
+    display: none !important;
+  }
+  .prem-carousel-wrapper .feature-icon {
+    width: 80% !important;
+    height: 80% !important;
+    display: unset !important;
+  }
+  .princing-item {
+    margin-bottom: 2rem;
+  }
+  .mat-dialog-container {
+    min-width: 90vw;
+  }
+  .order-details-info{
+    margin-bottom: 1.2rem;
+  }
+  .d-md-block {
+    display: block !important;
+  }
+  .hidden-md-down {
+    display: none !important;
+  }
+  .page-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+  }
+  .breadcrumb-actions {
+    padding-left: 0px;
+    justify-content: center;
+  }
+}
+@media only screen and (max-width: 991px) {
+  .footer {
+    padding-left: 0px;
+    // margin-top: 2rem;
+  }
+  .horizontalMenu {
+    height: 100vh !important;
+  }
+}
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .switch-shop-icon {
+    display: none !important;
+  }
+  .mt-sm-1 {
+    margin-top: unset;
+  }
+  .d-sm-none {
+    display: none !important;
+  }
+  .my-content-dialog {
+    min-width: 30vw;
+  }
+  .dashboard-card-row .card-icon-left {
+    -ms-flex: 0 0 22%;
+    flex: 0 0 22%;
+    max-width: 22%;
+  }
+  .dashboard-card-row .card-content-right {
+    -ms-flex: 0 0 78%;
+    flex: 0 0 78%;
+    max-width: 78%;
+  }
+  .format-daterange-picker-in-tab + ngx-daterangepicker-material .md-drppicker {
+    position: fixed !important;
+    left: unset !important;
+    right: 60px !important;
+  }
+  .banners-wrapper {
+    flex-direction: row;
+  }
+  .banners-wrapper .banner-img {
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+  .banners-wrapper .banner-img img {
+    width: 100%;
+    height: 100%;
+  }
+  .banners-wrapper .banner-content {
+    -ms-flex: 0 0 80%;
+    flex: 0 0 80%;
+    max-width: 80%;
+    padding-left: 1rem;
+  }
+  .my-mall-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+@media (max-width: 970px) {
+  .home-dashboard-content {
+    margin-top: 1.5rem;;
+  }
+}
+@media (min-width: 980px) {
+  .premium-features-wrapper .feature-content .feature-content-container {
+    width: 50vw;
+    height: 90%;
+  }
+  .onboarding-wrapper {
+    flex-direction: row;
+  }
+  .onboarding-wrapper .onboarding-step-nav {
+    height: 100vh;
+    -ms-flex: 0 0 30%;
+    flex: 0 0 30%;
+    max-width: 30%;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+  }
+  .onboarding-wrapper .onboarding-step-content {
+    height: 100vh;
+    -ms-flex: 0 0 70%;
+    flex: 0 0 70%;
+    max-width: 70%;
+    display: flex;
+    align-items: center;
+  }
+  .onboarding-wrapper .onboarding-step-content .step-content-wrapper {
+    width: 66.67vw;
+    height: 80vh;
+    background-color: #ffffff;
+    margin-left: 4rem;
+    position: absolute;
+    z-index: 5;
+    box-shadow: 2px 9px 10px #00000020;
+  }
+  .onboarding-wrapper .onboarding-step-nav .step-list {
+    list-style: none;
+    padding-left: 0px;
+    margin-bottom: 0px;
+    flex-direction: column;
+    z-index: 10;
+  }
+  .onboarding-wrapper .onboarding-step-nav .step-list:last-child {
+    margin-bottom: 0px;
+  }
+  .onboarding-wrapper .onboarding-step-nav .step-list .step-list-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.9rem;
+  }
+  .onboarding-wrapper
+    .onboarding-step-nav
+    .step-list
+    .step-list-item
+    .step-indicator {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: $stepper-text-color;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .onboarding-wrapper
+    .onboarding-step-nav
+    .step-list
+    .step-list-item
+    .step-detail {
+    display: block;
+    padding-left: 0.7rem;
+  }
+  .onboarding-wrapper
+    .onboarding-step-nav
+    .step-list
+    .step-list-item
+    .step-detail
+    .step-heading {
+    margin-bottom: 0px !important;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+  .onboarding-wrapper
+    .onboarding-step-nav
+    .step-list
+    .step-list-item
+    .step-detail
+    .step-desc {
+    margin-bottom: 0px !important;
+    font-size: 0.7rem;
+  }
+  .home-main-content {
+    padding: 3rem!important;
+  }
+}
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .md-drppicker.shown.drops-down-right {
+    min-width: 30vw;
+  }
+  .dashboard-card-row .card-icon-left {
+    -ms-flex: 0 0 12%;
+    flex: 0 0 12%;
+    max-width: 12%;
+  }
+  .dashboard-card-row .card-content-right {
+    -ms-flex: 0 0 80%;
+    flex: 0 0 80%;
+    max-width: 80%;
+  }
+  .stepper-logo {
+    width: 170px;
+    position: absolute;
+    top: 1rem;
+    left: 4rem;
+    display: inline-block;
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .onboarding-wrapper .onboarding-step-content .step-content-wrapper {
+    margin-left: 4.78rem;
+  }
+  .stepper-logo {
+    width: 170px;
+    position: absolute;
+    top: 1.5rem;
+    left: 5rem;
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1600px) {
+  .onboarding-wrapper .onboarding-step-content .step-content-wrapper {
+    margin-left: 5.2rem;
+  }
+  .stepper-logo {
+    width: 170px;
+    position: absolute;
+    top: 1.5rem;
+    left: 5rem;
+  }
+  .onboarding-wrapper .onboarding-step-nav .step-list .step-list-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .onboarding-wrapper
+    .onboarding-step-nav
+    .step-list
+    .step-list-item
+    .step-detail {
+    display: block;
+    padding-left: 1.5rem;
+  }
+  .onboarding-wrapper
+    .onboarding-step-nav
+    .step-list
+    .step-list-item
+    .step-detail
+    .step-heading {
+    margin-bottom: 0px !important;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  .onboarding-wrapper
+    .onboarding-step-nav
+    .step-list
+    .step-list-item
+    .step-detail
+    .step-desc {
+    margin-bottom: 0px !important;
+    font-size: 0.9rem;
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .animated-arrow {
+    margin: 5px 0 0 15px;
+  }
+}
+
+
+
+@media only screen and (min-width: 1200px) and (max-width: 1550px){
+  .single-transaction-card{padding:1rem}
+}
+@media only screen and (min-width: 945px) and (max-width: 1070px){
+  .single-transaction-card .card-img{
+    margin-top:-3.5rem !important
+  }
+
+}
+@media only screen and (min-width: 1180px) and (max-width: 1330px){
+  .single-transaction-card .card-img {
+    margin-top: -3.5rem !important;
+}
+}

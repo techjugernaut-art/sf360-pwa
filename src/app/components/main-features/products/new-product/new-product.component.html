@@ -1,0 +1,247 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions" ></app-breadcrumb-actions>
+
+  <mat-card class="mt-4">
+    <mat-card-content class="ml-3 mr-3">
+      <div class="table-responsive">
+        <form [formGroup]="productInfoFormGroup" (ngSubmit)="onSubmit(productInfoFormGroup?.value)">
+          <!-- <div class="text-center pt-3">
+            <mat-checkbox formControlName="is_available_oneline">This Product is available in my online shop</mat-checkbox>
+          </div> -->
+          <div class="text-center mb-2">
+            <mat-button-toggle-group color="primary" class="mat-toggle-buttons-adjustment"
+              [formControl]="imageOrColorCtrl">
+              <mat-button-toggle color="primary" value="IMAGE">IMAGE</mat-button-toggle>
+              <mat-button-toggle color="primary" [disabled]="is_available_oneline?.value" value="COLOR">COLOR</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+
+          <div class="new-product-img" *ngIf="imageOrColorCtrl?.value === 'IMAGE'">
+            <input type="file" class="inputfile" #filePrimaryPicture (change)="uploadImages($event?.target)">
+            <img class="product-img new-product-sm-img mr-0" [class.img-bg-spinner]="isProcessingImageUpload" [src]="imageUrl"
+              (click)="filePrimaryPicture?.click()" />
+            <input type="hidden" formControlName="image_url"> <br>
+            <a class="cursor-pointer text-primary text-sm product-image-guide" (click)="showImageRequirement()">What image can I upload?</a>
+          </div>
+          <div class="text-center"><mat-hint class="text-danger" *ngIf="!image_url?.valid ">Product image is required</mat-hint></div>
+          <div class="new-product-img" *ngIf="imageOrColorCtrl?.value === 'COLOR'">
+            <img class="product-img new-product-sm-img mr-0" (click)="showColorPicker()"
+              [ngStyle]="{'background-color': color_code?.value }" />
+            <input type="hidden" formControlName="color_code">
+          </div>
+          <div class="text-center mb-2 mt-2">
+            <mat-button-toggle-group color="primary" class="mat-toggle-buttons-adjustment"
+            formControlName="is_service">
+              <mat-button-toggle color="primary" [value]="false">PHYSICAL ITEM</mat-button-toggle>
+              <mat-button-toggle color="primary" [value]="true">SERVICE</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+          <h4 class="new-product-heading-info">Product Info</h4>
+          <div class="row mlr-0">
+            <mat-form-field class="col-md-6">
+              <mat-label>Select Shop</mat-label>
+              <mat-select formControlName="shop_id" (selectionChange)="onShopChanged($event?.value)">
+                <mat-option *ngFor="let item of myShops" [value]="item?.id">{{item?.business_name}}</mat-option>
+              </mat-select>
+
+              <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please provide Shop</mat-hint>
+            </mat-form-field>
+            <mat-form-field class="col-md-6">
+              <input type="text" matInput placeholder="Product Name" formControlName="product_name">
+              <mat-hint class="text-danger" *ngIf="!product_name?.valid && product_name?.touched">Please enter Product
+                Name</mat-hint>
+            </mat-form-field>
+          </div>
+          <!-- <div class="row mlr-0" *ngIf="!isEdit && !is_service?.value">
+            <div class="col-md-6 pt-3">
+              <mat-checkbox formControlName="has_unit_measurement">Product has units of measurement</mat-checkbox>
+            </div>
+
+            <mat-form-field class="col-md-6" *ngIf="has_unit_measurement?.value === false && !is_service?.value">
+              <input matInput placeholder="Stock Value" formControlName="new_quantity">
+              <mat-hint class="text-danger" *ngIf="!new_quantity?.valid && new_quantity?.touched">Please enter stock value</mat-hint>
+            </mat-form-field>
+
+          </div> -->
+          <div class="row mlr-0">
+            <mat-form-field class="col-md-12">
+              <mat-label>Description</mat-label>
+              <input matInput placeholder="Description" formControlName="description">
+            </mat-form-field>
+            <!-- <mat-form-field class="col-md-6">
+              <mat-label>Select Promo Tags </mat-label>
+              <mat-select formControlName="tags" [multiple]="true">
+                <mat-option *ngFor="let item of productTags" [value]="item?.name">{{item?.name}}</mat-option>
+              </mat-select>
+            </mat-form-field> -->
+          </div>
+          <div class="row mlr-0">
+            <mat-form-field class="col-md-6">
+              <mat-label>Product Category</mat-label>
+              <mat-select formControlName="product_group_id">
+                <mat-option *ngFor="let item of productCategories" [value]="item?.id">{{item?.name}} <span class="pull-right text-muted fs-12">({{item.num_of_products}} Items)</span></mat-option>
+              </mat-select>
+              <button title="Add New Product Category" type="button" mat-button matSuffix mat-icon-button aria-label="Add Product Category"
+                (click)="addProductGroup()">
+                <mat-icon>add</mat-icon>
+              </button>
+              <mat-hint class="text-danger" *ngIf="!product_group_id?.valid && product_group_id?.touched">Please provide
+                Product Category</mat-hint>
+            </mat-form-field>
+            <mat-form-field class="col-md-6">
+              <mat-label>Supplier</mat-label>
+              <mat-select formControlName="supplier_id">
+                <mat-option *ngFor="let item of suppliers" [value]="item?.id">{{item?.name}}</mat-option>
+              </mat-select>
+              <button title="Add New Supplier" type="button" mat-button matSuffix mat-icon-button aria-label="Add Supplier"
+                (click)="addSupplier()">
+                <mat-icon>add</mat-icon>
+              </button>
+              <mat-hint class="text-danger" *ngIf="!supplier_id?.valid && supplier_id?.touched">Please provide Supplier
+              </mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="row mlr-0" *ngIf="price_list?.length <= 0">
+            <mat-form-field class="col-md-6">
+              <mat-label>Supplier Price</mat-label>
+              <small matPrefix>{{shopInfo?.currency}} &nbsp;</small>
+              <input matInput placeholder="Supplier Price" decimalOnly formControlName="supplier_price">
+            </mat-form-field>
+            <mat-form-field class="col-md-6">
+              <mat-label>Selling Price</mat-label>
+              <small matPrefix>{{shopInfo?.currency}} &nbsp;</small>
+              <input matInput placeholder="Selling Price" decimalOnly formControlName="selling_price">
+            </mat-form-field>
+          </div>
+          <div class="row mlr-0" *ngIf="!is_service?.value">
+            <mat-form-field class="col-md-6">
+              <mat-label>Low Stock Level</mat-label>
+              <input matInput placeholder="Low Stock Level" decimalOnly formControlName="new_low_stock_threshold">
+            </mat-form-field>
+            <mat-form-field class="col-md-6">
+              <mat-label>Barcode</mat-label>
+              <input matInput placeholder="Barcode" formControlName="serial_number">
+            </mat-form-field>
+          </div>
+          <div class="row mlr-0" *ngIf="!is_service?.value">
+            <div class="col-md-6 pt-3">
+              <mat-checkbox formControlName="product_does_not_expire">Product does not expire</mat-checkbox>
+            </div>
+
+            <mat-form-field class="col-md-6" *ngIf="!product_does_not_expire?.value && !is_service?.value">
+              <input matInput placeholder="Expiry Date" [matDatepicker]="transactionSettlementDatepicker"
+                (click)="transactionSettlementDatepicker.open()" formControlName="expiry_date">
+              <mat-datepicker #transactionSettlementDatepicker></mat-datepicker>
+            </mat-form-field>
+
+          </div>
+          <h4 *ngIf="!isEdit "  class="new-product-heading-info d-flex justify-content-between align-items-center mr-3">
+            <span>Unit of Measurement Info</span>
+            <button mat-button color="primary" class="remove-outline primary-transparent-20 add-unit-of-measurement-button d-flex align-items-center justify-content-center" type="button"
+              (click)="addPriceList()" >
+              ADD ANOTHER UNIT
+            </button>
+            <!-- <button mat-button color="primary" class="remove-outline primary-transparent-20 add-unit-of-measurement-button d-flex align-items-center justify-content-center" type="button"
+              (click)="addNewUnitOfMeasurement()" *ngIf="unitsOfMeasurements?.length <= 0" >
+              ADD NEW UNIT
+            </button> -->
+          </h4>
+          <p *ngIf="!isEdit && unitsOfMeasurements?.length > 0" class="mr-3 ml-3 new-product-heading-desc">One unit is REQUIRED to be set as the base unit for this product</p>
+          <p *ngIf="!isEdit && unitsOfMeasurements?.length <= 0" class="mr-3 ml-3 new-product-heading-desc">You currently do not have any unit of measurement. You can add new unit</p>
+          <mat-accordion class="accordion-headers-align" [displayMode]="'flat'" *ngIf="!isEdit">
+            <mat-expansion-panel class="remove-shadow"
+              *ngFor="let unitFormGroup of price_list?.controls; let i = index;" [formGroup]="unitFormGroup" [expanded]="i === 0">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Unit of Measurement {{i + 1}} - {{unitFormGroup?.get('unit_name')?.value | unitOfMeasurementDisplay}} <b *ngIf="isBaseUnitSelected && selectedBaseUnitIndex === i" > &nbsp; - BASE UNIT</b>
+                </mat-panel-title>
+                <mat-panel-description>
+
+
+                </mat-panel-description>
+                <button mat-icon-button color="primary" *ngIf="unitsOfMeasurements?.length > 1"  (click)="removePriceList(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-expansion-panel-header>
+
+              <div class="row mlr-0 mt-3">
+                <mat-form-field class="col-md-4">
+                  <mat-label>Select Unit of Measurement</mat-label>
+                  <mat-select formControlName="unit_name">
+                    <mat-option *ngFor="let item of unitsOfMeasurements" [value]="item?.name">{{item?.name}}
+                    </mat-option>
+                  </mat-select>
+                  <button type="button" mat-button matSuffix mat-icon-button aria-label="Add Unit of Measurement"
+                (click)="addNewUnitOfMeasurement()">
+                <mat-icon>add</mat-icon>
+              </button>
+                  <mat-hint class="text-danger"
+                    *ngIf="!unitFormGroup?.get('unit_name')?.valid && unitFormGroup?.get('unit_name')?.touched">Please
+                    provide Unit of Measurement</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <small matPrefix>{{shopInfo?.currency}} &nbsp;</small>
+                  <input matInput placeholder="Supplier Price Per {{unitFormGroup?.get('unit_name')?.value | unitOfMeasurementDisplay}}" formControlName="supplier_price" decimalOnly>
+                  <mat-hint class="text-danger"
+                    *ngIf="!unitFormGroup?.get('supplier_price')?.valid && unitFormGroup?.get('supplier_price')?.touched">
+                    Please provide Supplier Price</mat-hint>
+                </mat-form-field>
+
+
+                <mat-form-field class="col-md-4">
+                  <small matPrefix>{{shopInfo?.currency}} &nbsp;</small>
+                  <input matInput placeholder="Selling Price Per {{unitFormGroup?.get('unit_name')?.value | unitOfMeasurementDisplay}}" formControlName="selling_price" decimalOnly>
+                  <mat-hint class="text-danger"
+                    *ngIf="!unitFormGroup?.get('selling_price')?.valid && unitFormGroup?.get('selling_price')?.touched">
+                    Please provide Selling Price</mat-hint>
+                </mat-form-field>
+
+              </div>
+              <div class="row mlr-0">
+                <div class="col-md-4 pt-4">
+                  <mat-checkbox formControlName="is_base_unit" (change)="onIsBaseUnitChange($event, unitFormGroup?.get('base_unit_multiplier'), unitFormGroup?.get('unit_name')?.value, i)" [disabled]="isBaseUnitSelected && selectedBaseUnitIndex !== i">Set as the smallest unit</mat-checkbox>
+                </div>
+                <mat-form-field class="col-md-4" *ngIf="!unitFormGroup?.get('is_base_unit')?.value" >
+                  <input matInput placeholder="How many {{baseUnitName | unitOfMeasurementDisplay }} in {{unitFormGroup?.get('unit_name')?.value | unitOfMeasurementDisplay}}" formControlName="base_unit_multiplier" decimalOnly>
+                  <mat-hint class="text-danger"
+                    *ngIf="!unitFormGroup?.get('base_unit_multiplier')?.valid && unitFormGroup?.get('base_unit_multiplier')?.touched">
+                    Please provide Base Unit Multiplier not less than 1</mat-hint>
+                </mat-form-field>
+              </div>
+            </mat-expansion-panel>
+
+
+
+          </mat-accordion>
+
+          <h4 class="new-product-heading-info mb-3 mt-4">VAT Info</h4>
+          <div class="row mlr-0">
+            <div class="col-md-6">
+              <mat-checkbox formControlName="apply_vat">Apply VAT</mat-checkbox>
+            </div>
+            <div class="col-md-6" >
+              <mat-checkbox formControlName="vat_inclusive">VAT Inclusive</mat-checkbox>
+            </div>
+          </div>
+          <div class="row mlr-0" *ngIf="apply_vat?.value">
+            <mat-form-field class="col-md-6">
+              <input matInput placeholder="VAT Value" formControlName="vat_value">
+            </mat-form-field>
+          </div>
+          <div class="d-flex justify-content-end mb-2 pr-3 full-width">
+            <button mat-raised-button type="submit" color="primary"
+              [disabled]="productInfoFormGroup?.invalid || isProcessing "
+              class="remove-outline mr-2">Save</button>
+              <!-- <button mat-raised-button type="button" color="default" (click)="onSubmit(productInfoFormGroup?.value, true)"
+              [disabled]="productInfoFormGroup?.invalid || isProcessing || (!isBaseUnitSelected && !isEdit)"
+              class="remove-outline">Save and Add</button> -->
+          </div>
+        </form>
+
+      </div>
+
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>

@@ -1,0 +1,257 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"  (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+  <mat-card class="mt-4">
+    <mat-card-content>
+      <div class="table-responsive">
+
+        <ul class="row settings-list">
+          <li class="col-md-6">
+            <div class="settings-list-item">
+              <div class="row">
+                <div class="col-6 settings-list-item-d-flex-center">
+                  <h4 class="settings-list-item-heading">
+                    {{ 'SETTINGS.GENERAL.CURRENCY.HEADING' | translate}}</h4>
+                </div>
+                <div class="col-6 text-right">
+                  <button mat-button color="primary" (click)="editShopSettings(shopSettingsEditingActions.currency)">
+                    <b *ngIf="shopInfo?.currency !== null && shopInfo?.currency !== undefined && shopInfo?.currency !== ''" >{{shopInfo?.currency}}</b>
+                    <b *ngIf="shopInfo?.currency === null || shopInfo?.currency === undefined || shopInfo?.currency === ''" >N/A</b>
+                    <b> <i class="fe fe-chevron-right"></i></b>
+                  </button>
+                </div>
+              </div>
+              <div class="settings-list-item-content row">
+                <div class="settings-list-item-content-action-desc col-12">
+                  <p>
+                    {{ 'SETTINGS.GENERAL.CURRENCY.DESCRIPTION' | translate}}
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </li>
+          <li class="col-md-6">
+            <div class="settings-list-item">
+              <div class="row">
+                <div class="col-6 settings-list-item-d-flex-center">
+                  <h4 class="settings-list-item-heading">
+                    {{ 'SETTINGS.GENERAL.SAGEONE_ACCOUNTING.HEADING' | translate}}</h4>
+                </div>
+                <div class="col-6 text-right">
+                  <button mat-button color="primary" (click)="connectToSageOne()" ><b>
+                    <span *ngIf="shopInfo?.sageone_email !== undefined && shopInfo?.sageone_email !== null && shopInfo?.sageone_email !== ''" >{{shopInfo?.sageone_email}}</span>
+                    <span *ngIf="shopInfo?.sageone_email === undefined || shopInfo?.sageone_email === null || shopInfo?.sageone_email === ''">ENABLE</span> <i class="fe fe-chevron-right"></i></b>
+
+                  </button>
+
+
+                </div>
+              </div>
+              <div class="settings-list-item-content row">
+                <div class="settings-list-item-content-action-desc col-12">
+                  <p>
+                    {{ 'SETTINGS.GENERAL.SAGEONE_ACCOUNTING.DESCRIPTION' | translate}}
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </li>
+          <li class="col-md-6">
+            <div class="settings-list-item">
+              <div class="row">
+                <div class="col-6 settings-list-item-d-flex-center">
+                  <h4 class="settings-list-item-heading">
+                    {{ 'SETTINGS.GENERAL.RETURN_POLICY.HEADING' | translate}}</h4>
+                </div>
+                <div class="col-6 text-right">
+                  <button mat-button color="primary" (click)="updateReturnPolicy()"><b>{{shopInfo?.return_policy_days}}</b> <b> <i class="fe fe-chevron-right"></i></b></button>
+
+                </div>
+              </div>
+              <div class="settings-list-item-content row">
+                <div class="settings-list-item-content-action-desc col-12">
+                  <p>
+                    {{ 'SETTINGS.GENERAL.RETURN_POLICY.DESCRIPTION' | translate}}
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </li>
+          <li class="col-md-6">
+            <div class="settings-list-item">
+              <div class="row">
+                <div class="col-6 settings-list-item-d-flex-center">
+                  <h4 class="settings-list-item-heading">
+                    {{ 'SETTINGS.GENERAL.WHATSAPP_COMMUNICATIONS.HEADING' | translate}}</h4>
+                </div>
+                <div class="col-6 text-right">
+                  <button mat-button color="primary" (click)="enableWhatsApp(whatsComAction?.NEW)" *ngIf="shopInfo?.send_communications_via_whatsapp === false" ><b> ENABLE<i class="fe fe-chevron-right"></i></b></button>
+
+                    <button mat-button color="primary" [matMenuTriggerFor]="whatsAppComMatMenu" *ngIf="shopInfo?.send_communications_via_whatsapp === true">
+                      <b *ngIf="shopInfo?.whatsapp_number === undefined || shopInfo?.whatsapp_number === null || shopInfo?.whatsapp_number === ''">NO WHATSAPP NUMBER <i class="fe fe-chevron-right"></i></b>
+                      <b *ngIf="shopInfo?.whatsapp_number !== undefined && shopInfo?.whatsapp_number !== null && shopInfo?.whatsapp_number !== ''">{{shopInfo?.whatsapp_number}} <i class="fe fe-chevron-right"></i></b>
+                    </button>
+                    <mat-menu #whatsAppComMatMenu="matMenu">
+                      <button mat-menu-item (click)="enableWhatsApp(whatsComAction?.NEW)">
+                        <span *ngIf="shopInfo?.whatsapp_number === undefined || shopInfo?.whatsapp_number === null || shopInfo?.whatsapp_number === ''">Add WhatsApp Number</span>
+                        <span *ngIf="shopInfo?.whatsapp_number !== undefined && shopInfo?.whatsapp_number !== null && shopInfo?.whatsapp_number !== ''">Change WhatsApp Number</span>
+                        </button>
+                      <button mat-menu-item (click)="enableWhatsApp(whatsComAction?.DISABLE)">Disable</button>
+                    </mat-menu>
+
+                </div>
+              </div>
+              <div class="settings-list-item-content row">
+                <div class="settings-list-item-content-action-desc col-12">
+                  <p>
+                    {{ 'SETTINGS.GENERAL.WHATSAPP_COMMUNICATIONS.DESCRIPTION' | translate}}
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </li>
+          <li class="col-md-6">
+            <div class="settings-list-item">
+              <div class="row">
+                <div class="col-6 settings-list-item-d-flex-center">
+                  <h4 class="settings-list-item-heading">
+                    {{ 'SETTINGS.GENERAL.PARTNER_CONNECT.HEADING' | translate}}</h4>
+                </div>
+                <div class="col-6 text-right">
+                  <button mat-button color="primary" (click)="editShopSettings(shopSettingsEditingActions.partner_code)">
+                    <b *ngIf="shopInfo?.partner_code !== null && shopInfo?.partner_code !== undefined && shopInfo?.partner_code !== ''" >{{shopInfo?.partner_code}}</b>
+                    <b *ngIf="shopInfo?.partner_code === null || shopInfo?.partner_code === undefined || shopInfo?.partner_code === ''" >N/A</b>
+                    <b> <i class="fe fe-chevron-right"></i></b>
+                  </button>
+
+                </div>
+              </div>
+              <div class="settings-list-item-content row">
+                <div class="settings-list-item-content-action-desc col-12">
+                  <p>
+                    {{ 'SETTINGS.GENERAL.PARTNER_CONNECT.DESCRIPTION' | translate}}
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </li>
+          <li class="col-md-6">
+            <div class="settings-list-item">
+              <div class="row">
+                <div class="col-6 settings-list-item-d-flex-center">
+                  <h4 class="settings-list-item-heading">
+                    {{ 'SETTINGS.GENERAL.ALLOW_GLOBAL_DELIVERY.HEADING' | translate}}</h4>
+                </div>
+                <div class="col-6 text-right">
+                  <button mat-button color="primary" (click)="editShopSettings(shopSettingsEditingActions.allow_global_delivery)">
+                    <b *ngIf="shopInfo?.allow_global_delivery == true" >ALLOWED</b>
+                    <b *ngIf="shopInfo?.allow_global_delivery == false" >N/A</b>
+                    <b> <i class="fe fe-chevron-right"></i></b>
+                  </button>
+
+                </div>
+              </div>
+              <div class="settings-list-item-content row">
+                <div class="settings-list-item-content-action-desc col-12">
+                  <p>
+                    {{ 'SETTINGS.GENERAL.ALLOW_GLOBAL_DELIVERY.DESCRIPTION' | translate}}
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </li>
+          <li class="col-md-6">
+            <div class="settings-list-item">
+              <div class="row">
+                <div class="col-6 settings-list-item-d-flex-center">
+                  <h4 class="settings-list-item-heading">
+                    {{ 'SETTINGS.GENERAL.DATA_BACKUP.HEADING' | translate}}</h4>
+                </div>
+                <div class="col-6 text-right">
+                  <button mat-button color="primary" ><b></b></button>
+
+                </div>
+              </div>
+              <div class="settings-list-item-content row">
+                <div class="settings-list-item-content-action-desc col-12">
+                  <p>
+                    {{ 'SETTINGS.GENERAL.DATA_BACKUP.DESCRIPTION' | translate}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="col-md-6">
+            <div class="settings-list-item">
+              <div class="row">
+                <div class="col-6 settings-list-item-d-flex-center">
+                  <h4 class="settings-list-item-heading">
+                    {{ 'SETTINGS.GENERAL.EMAIL_REPORTING.HEADING' | translate}}
+                  </h4>
+                </div>
+                <div class="col-2">
+                  <span class="text-muted pull-right" *ngIf="shopInfo?.receive_reports === true && shopInfo?.report_frequency !== null && shopInfo?.report_frequency !== undefined && shopInfo?.report_frequency !== ''" >{{shopInfo?.report_frequency | titlecase}}</span>
+                </div>
+                <div class="col-4 text-right">
+                  <button mat-button color="primary" (click)="updateEmailReporting()">
+                    <b *ngIf="shopInfo?.receive_reports === true" >ENABLED</b>
+                    <b *ngIf="shopInfo?.receive_reports === false" >DISABLED</b>
+                    <b *ngIf="shopInfo?.receive_reports === 'null' || shopInfo?.receive_reports === 'undefined' || shopInfo?.receive_reports === ''" >N/A</b>
+                    <b> <i class="fe fe-chevron-right"></i></b>
+                  </button>
+                </div>
+              </div>
+              <div class="settings-list-item-content row">
+                <div class="settings-list-item-content-action-desc col-12">
+                  <p>
+                    {{ 'SETTINGS.GENERAL.EMAIL_REPORTING.DESCRIPTION' | translate}}
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </li>
+          <li class="col-md-6">
+            <div class="settings-list-item">
+              <div class="row">
+                <div class="col-8 settings-list-item-d-flex-center">
+                  <h4 class="settings-list-item-heading">
+                    {{ 'SETTINGS.GENERAL.VERIFY_EMAIL.HEADING' | translate}}
+                  </h4>
+                </div>
+               
+                <div class="col-4 text-right">
+                  <button mat-button color="primary" (click)="verifyEmail()">
+                    <b *ngIf="shopInfo?.receive_reports === true" >VERIFIED</b>
+                    <b *ngIf="shopInfo?.receive_reports === false" >NOT VERIFY</b>
+                    <b *ngIf="shopInfo?.receive_reports === 'null' || shopInfo?.receive_reports === 'undefined' || shopInfo?.receive_reports === ''" >N/A</b>
+                    <b> <i class="fe fe-chevron-right"></i></b>
+                  </button>
+                </div>
+              </div>
+              <div class="settings-list-item-content row">
+                <div class="settings-list-item-content-action-desc col-12">
+                  <p>
+                    {{ 'SETTINGS.GENERAL.VERIFY_EMAIL.DESCRIPTION' | translate}}
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </mat-card-content>
+
+  </mat-card>
+
+
+
+
+</app-main-nav>

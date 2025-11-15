@@ -1,0 +1,65 @@
+<div class="after-sales-bottom-sheet-wrapper">
+  <div class="receipt-qr mb-3">
+    <qrcode [level]="1" [qrvalue]="url"></qrcode>
+  </div>
+  <div class="row text-left">
+    <div class="col-12 mb-3">
+      <mat-progress-bar class="mb-2mt-0" *ngIf="isProcessing" mode="indeterminate"></mat-progress-bar>
+    </div>
+    <mat-form-field class="col-12 mb-2" *ngIf="action=='Email'">
+      <input type="text" matInput placeholder="Email" class="text-center" [formControl]="emailCtrl">
+      <button mat-icon-button matSuffix>
+          <mat-icon class="mat-18" (click)="onSendingEmail()">send</mat-icon>
+      </button>
+      <mat-hint class="text-danger" *ngIf="!emailCtrl?.valid && emailCtrl?.touched">Please enter valid email to send receipt
+      </mat-hint>
+    </mat-form-field>
+    <mat-form-field class="col-12 mb-2" *ngIf="action=='SMS'">
+      <app-intl-country-codes matPrefix (countryCodeSelected)="onCountry($event)"></app-intl-country-codes>
+      <input type="text" matInput placeholder="SMS" numbersOnly class="text-center" [formControl]="smsCtrl">
+      <button mat-icon-button matSuffix (click)="onSendingSMS()">
+        <mat-icon class="mat-18">send</mat-icon>
+    </button>
+      <mat-hint class="text-danger" *ngIf="!smsCtrl?.valid && smsCtrl?.touched">Please enter valid phone number to send recipt
+      </mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="d-flex flex-column justify-content-between after-sales-icons">
+    <button mat-stroked-button color="primary" (click)="action = 'Email'">
+      <img src="assets/icons/sales-email.svg" class="w-32">
+      <p class="receipt-action-desc"><span class="after-sales-icons-text">SEND RECEIPT IN EMAIL</span></p>
+    </button>
+    <button mat-stroked-button color="primary" class="icons-padding-42 mt-3" (click)="onPrint()">
+      <img src="assets/icons/sales-printer.svg" class="w-30">
+      <p class="receipt-action-desc"><span class="after-sales-icons-text">PRINT RECIPT</span></p>
+    </button>
+    <button mat-stroked-button color="primary" class="icons-padding-26 mt-3" (click)="onPerformNewSale()">
+      <img src="assets/icons/new-sales.svg" class="w-30">
+      <p class="receipt-action-desc"><span class="after-sales-icons-text">START NEW SALE</span></p>
+    </button>
+    <!-- <div class="col-12">
+    </div>
+    <div class="col-xs-12 col-md-12 text-right">
+
+    </div> -->
+    <!-- <div class="col-xs-6 col-md-6 mb-3 ">
+      <button mat-stroked-button color="primary" (click)="onSendingEmail()">
+        <img src="assets/img/icons/sms-primary.svg" class="w-30">
+        <p class="receipt-action-desc"><span class="after-sales-icons-text">SEND RECEIPT IN SMS</span> </p>
+      </button>
+    </div> -->
+  </div>
+  <!-- <div class="row after-sales-icons">
+    <div class="col-xs-12 col-md-12  text-right">
+
+    </div>
+    <div class="col-xs-12 col-md-12">
+
+    </div>
+  </div> -->
+
+
+</div>
+<div class="d-none">
+  <app-pos-receipt [printData]="salesOrder" [orderItems]="orderItems" [currency]="currency"></app-pos-receipt>
+</div>

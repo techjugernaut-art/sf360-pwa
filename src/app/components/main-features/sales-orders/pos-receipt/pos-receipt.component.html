@@ -1,0 +1,115 @@
+<div class="container d-flex justify-content-center">
+    <div class="pos-container">
+
+        <span class="stretch">
+            <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span>
+            <span>=</span> <span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span>
+        </span>
+        <div class="pos-receipt-header">
+            <span>====</span>
+            <div class="pos-receipt-header-title">Sales Receipt</div>
+            <span>====</span>
+        </div>
+        <span class="stretch">
+            <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span>
+            <span>=</span> <span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span>
+        </span>        <div class="pos-receipt-body">
+            <div class="text-center mt-2">
+                <div class="pos-receipt-barcode">
+                <qrcode [level]="1" [qrvalue]="url"></qrcode>
+                </div>
+            </div>
+            <div class="text-left mt-3">
+                <p class="mb-0">Shop Name: <span class="ml-2">{{activeShop?.business_name}}</span></p>
+                <p class="mb-0">Tax No: <span class="ml-2"></span></p>
+                <p class="mb-0 ">Receipt #: <span class="ml-2">{{printData?.frontend_order_id}}</span></p>
+                <p class="mb-0">Agent: <span class="ml-2">{{currentUser?.first_name}} {{currentUser?.last_name}}</span></p>
+                <p class="mb-0">Date: <span class="ml-2">{{printData?.frontend_order_datetime }}</span></p>
+                <p class="mb-0">Paid: <span class="ml-2">{{printData?.payment_method}}</span></p>
+            </div>
+            <div class="row">
+                <div class="col-12">
+
+                    <span class="stretch">
+                        <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span>
+                        <span>=</span> <span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span>
+                    </span>                    <tr class="d-flex justify-content-between">
+                        <th style="width: 40%" class="px-0">Item(s)</th>
+                        <th class="px-0">Qty</th>
+                        <th class="px-0">Amt({{currency}})</th>
+                    </tr>
+                    <!-- <span class="full-wdith">====================================</span> -->
+                    <tr class="d-flex justify-content-between" *ngFor="let item of orderItems">
+                        <td style="width: 40%">{{item?.sku?.name}}</td>
+                        <td>{{item?.qty}} * item</td>
+                        <td class="mr-3">{{item?.total_amount}}</td>
+                    </tr>
+                    <span class="stretch">
+                        <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span>
+                        <span>=</span> <span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span>
+                    </span>
+                    <tr class="d-flex justify-content-between">
+                        <td >Sub Total ({{currency}})</td>
+                        <td class="mr-3">{{printData?.total_maount}}</td>
+                    </tr>
+                    <span class="stretch">
+                        <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span>
+                        <span>=</span> <span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span>
+                    </span>
+                    <tr class="d-flex justify-content-between">
+                        <td >NHIL(2.5) {{currency}}</td>
+                        <td class="mr-3">0</td>
+                    </tr>
+                    <tr class="d-flex justify-content-between">
+                        <td >GET FUND(2.5) {{currency}}</td>
+                        <td class="mr-3">0</td>
+                    </tr>
+                    <tr class="d-flex justify-content-between">
+                        <td >VAT(12.5)</td>
+                        <td class="mr-3">0</td>
+                    </tr>
+                    <tr class="d-flex justify-content-between">
+                        <td >FLAT RATE({{currency}})</td>
+                        <td class="mr-3">0</td>
+                    </tr>
+ <span class="stretch">
+            <span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span> <span>-</span><span>-</span>
+            <span>-</span> <span>-</span><span>-</span> <span>-</span><span>-</span><span>-</span><span>-</span> <span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span><span>-</span>
+        </span>
+                    <tr class="d-flex justify-content-between">
+                        <td >Discount ({{currency}})</td>
+                        <td class="mr-3">{{printData?.discount}}</td>
+                    </tr>
+                    <span class="stretch">
+                        <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span>
+                        <span>=</span> <span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span>
+                    </span>
+                    <tr class="d-flex justify-content-between">
+                        <td >Total({{currency}})</td>
+                        <td class="mr-3">{{printData?.total_amount}}</td>
+                    </tr>
+                    <tr class="d-flex justify-content-between">
+                        <td >Cash Tendered In({{currency}})</td>
+                        <td class="mr-3">{{printData?.cash_tendered}}</td>
+                    </tr>
+                    <tr class="d-flex justify-content-between">
+                        <td >Cash Balance({{currency}})</td>
+                        <td class="mr-3">{{printData?.cash_balance}}</td>
+                    </tr>
+                    <span class="stretch">
+                        <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span>
+                        <span>=</span> <span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span> <span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span><span>=</span>
+                    </span>
+                    <div class="mb-3">
+                        <p class="text-center mb-0">Thank you</p>
+                        <p class="mb-0">Is issued by [{{activeShop?.business_name}}]</p>
+                        <p class="mb-0 ">Powered by [KudiGo StoreFront]</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="pos-receipt-footer"></div>
+    </div>
+
+</div>

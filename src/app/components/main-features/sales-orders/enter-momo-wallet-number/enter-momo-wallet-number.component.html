@@ -1,0 +1,53 @@
+<h1 mat-dialog-title>MOBILE MONEY PAYMENT</h1>
+<div mat-dialog-content>
+  <div class="row mlr-0 mt-3">
+    <div class="col-md-4 payment-method-item-wrapper">
+
+      <input type="radio" id="momo" [value]="'MOMO'" name="momo" checked>
+      <label class="payment-method-grid-list-item" for="momo" (click)="selectPaymentMethod('MOMO', 'MTN', 'MTN MOMO')">
+
+        <img src="assets/img/icons/check.svg" class="payment-method-selected-icon" />
+        <img src="assets/img/icons/ic_mtn_money.png" alt="" class="payment-method-grid-list-item-media">
+        <p class="mb-0 payment-method-grid-list-item-description"></p>
+      </label>
+    </div>
+    <div class="col-md-4 payment-method-item-wrapper">
+      <input type="radio" id="voda" [value]="'MOMO'" name="momo">
+      <label class="payment-method-grid-list-item" for="voda"
+        (click)="selectPaymentMethod('MOMO', 'VOD', 'VODAFONE CASH')">
+        <img src="assets/img/icons/check.svg" class="payment-method-selected-icon" />
+        <img src="assets/img/icons/ic_vodafone_cash.png" alt="" class="payment-method-grid-list-item-media">
+        <p class="mb-0 payment-method-grid-list-item-description"></p>
+      </label>
+    </div>
+    <div class="col-md-4 payment-method-item-wrapper">
+      <input type="radio" id="atigo" [value]="'ATG'" name="momo">
+      <label class="payment-method-grid-list-item" for="atigo"
+        (click)="selectPaymentMethod('MOMO', 'AIR', 'AIRTELTIGO CASH')">
+        <img src="assets/img/icons/check.svg" class="payment-method-selected-icon" />
+        <img src="assets/img/icons/atigo.png" alt="" class="payment-method-grid-list-item-media">
+        <p class="mb-0 payment-method-grid-list-item-description"></p>
+      </label>
+    </div>
+
+  </div>
+  <div class="row">
+    <mat-form-field class="col-12">
+      <input type="text" matInput placeholder="Enter {{networkName}} Number" [formControl]="phone_number" numbersOnly>
+      <mat-hint class="text-danger" *ngIf="!phone_number?.valid && phone_number?.touched">Please enter valid phone
+        number</mat-hint>
+    </mat-form-field>
+    <mat-form-field class="col-12" *ngIf="paymentNetwork === 'VOD'">
+      <input type="text" matInput placeholder="Enter voucher" [formControl]="payment_voucher_code">
+      <mat-hint class="text-danger" *ngIf="!payment_voucher_code?.valid && payment_voucher_code?.touched">Please enter
+        enter voucher</mat-hint>
+    </mat-form-field>
+
+  </div>
+
+</div>
+
+<mat-dialog-actions class="text-right">
+  <button mat-raised-button (click)="onClose()">CLOSE</button>
+  <button mat-raised-button color="primary" (click)="onContinue()" type="button">CONTINUE</button>
+</mat-dialog-actions>

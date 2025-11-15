@@ -1,0 +1,14 @@
+<button type="button" class="country-codes-list-button" [matMenuTriggerFor]="menu">{{countryCode}}</button>
+<mat-menu #menu="matMenu" yPosition="below">
+  <div fxLayout="row">
+    <mat-form-field class="col-12" appearance="outline" fxLayout="column" (click)="$event.stopPropagation();">
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput type="text" placeholder="Search Country" [formControl]="searchInputControl" #searchInput>
+    </mat-form-field>
+    <ul class="country-codes-list">
+      <li *ngFor="let country of countries" mat-menu-item (click)="onCountrySelected(country)">
+        <!-- <img [src]="country?.flag" class="flag"/> -->
+         {{country?.name}} (+{{country?.callingCodes[0]}})</li>
+    </ul>
+  </div>
+</mat-menu>

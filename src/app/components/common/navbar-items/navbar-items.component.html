@@ -1,0 +1,40 @@
+<ul class="d-flex justify-content-start navb-menu">
+  <li>
+    <button type="button" class="remove-outline" mat-icon-button>
+      <mat-icon title="Backup">backup</mat-icon>
+    </button>
+  </li>
+  <li>
+    <button mat-icon-button [matMenuTriggerFor]="profileMenu" class="remove-outline">
+      <mat-icon aria-label="icon" title="Account">account_circle</mat-icon>
+    </button>
+    <mat-menu #profileMenu="matMenu">
+      <!-- <button mat-menu-item class="remove-outline" (click)="viewMyProfile()">
+        <mat-icon aria-label="icon">account_circle</mat-icon> My Profile
+      </button> -->
+      <button mat-menu-item class="remove-outline" (click)="onChangePassword()">
+        <mat-icon aria-label="icon">vpn_key</mat-icon> Change PIN
+      </button>
+      <button mat-menu-item class="remove-outline" (click)="logOut()">
+        <mat-icon aria-label="icon">exit_to_app</mat-icon> Log Out
+      </button>
+    </mat-menu>
+
+  </li>
+  <li>
+    <button type="button" class="remove-outline" aria-label="Toggle Notifications" mat-icon-button
+      (click)="onShowNotifications()">
+      <mat-icon aria-label="Side nav toggle icon" title="Notifications">notifications</mat-icon>
+    </button>
+  </li>
+  <li class="d-none">
+    <button type="button" class="remove-outline" aria-label="Toggle help" mat-icon-button>
+      <mat-icon title="Help">help_outline</mat-icon>
+    </button>
+  </li>
+  <li *ngIf="showCartIcon" >
+    <button type="button" class="remove-outline" aria-label="Toggle Cart" mat-icon-button (click)="onCartClick()">
+      <mat-icon title="Help">shopping_cart</mat-icon>
+    </button>
+  </li>
+</ul>

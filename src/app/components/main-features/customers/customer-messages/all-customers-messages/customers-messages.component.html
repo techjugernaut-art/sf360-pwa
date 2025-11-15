@@ -1,0 +1,63 @@
+<app-main-nav [isProcessing]="isProcessing">
+    <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+      (dataRefreshed)="onDataRefreshed($event)">
+      <div mainAction>
+        <button mat-raised-button color="accent" *ngIf="!isPartner" (click)="createAutomationTemplate()">
+          NEW MESSAGE
+        </button>
+      </div>
+    </app-breadcrumb-actions>
+
+    <mat-card>
+        <mat-card-content class="mx-3">
+          <app-table-header-actions [tableHeaderOptions]="tableHeaderOption" (searchTextChanged)="onSearch($event)">
+            <!-- <h3>SMS Credit Remaining: </h3> -->
+          </app-table-header-actions>
+    
+          <div class="table-responsive">
+            <table class="table dataTable no-footer table-border-bottom">
+              <thead>
+                <tr role="row">
+                  <th class="wd-15p">Title</th>
+                  <th class="wd-15p">Message Type</th>
+                  <th class="wd-15p">Template Type</th>
+                  <th class="wd-15p">Reccuring</th>
+                  <th class="wd-15p">Shop</th>
+                  <th class="wd-15p">Date Created</th>
+                  <th class="wd-25p text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="!isProcessing && customerMessages?.length <= 0">
+                  <td colspan="10" class="text-center">
+                    <app-empty-record></app-empty-record>
+                  </td>
+                </tr>
+                <tr *ngFor="let message of customerMessages">
+                  <td>
+                    <span *ngIf="message?.title !== 'null' && message?.title !== 'undefined' && message?.title !== '' ">{{message?.title}}</span>
+                    <span *ngIf="message?.title === 'null' || message?.title === 'undefined' || message?.title === '' ">N/A</span>
+                  </td>
+                  <td>{{message?.message_type}}</td>
+                  <td>{{message?.template_type | removeUnderScore | titlecase}}</td>
+                  <td><span *ngIf="message?.is_recurring === true">YES</span> <span *ngIf="message?.is_recurring === false">NO</span></td>
+                  <td>{{message?.myshop?.business_name}}</td>
+                  <td>{{message?.date_created | date: 'medium'}}</td>
+    
+                  <td class="text-center">
+                    <button mat-icon-button (click)="viewAutomationTemplate(message)">
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    
+          <app-pagination [dataSet]="customerMessages" [nextPage]="nextPage" [prevPage]="prevPage" [totalPage]="totalPage"
+            [requestPayload]="requestPayload" [requestMethod]="'POST'" (pageChanged)="onPageChanged($event)"
+            [isProcessing]="isProcessing"></app-pagination>
+        </mat-card-content>
+    
+      </mat-card>
+</app-main-nav>

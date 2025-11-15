@@ -1,0 +1,69 @@
+{
+  "MAIN_NAV": {
+    "DASHBOARD": "Tableau de bord"
+  },
+  "AGENT_PROFILE": {
+    "PERMISSION": {
+      "PROMOTE_TO_MANAGER": {
+        "HEADING": "Promouvoir un agent de vente",
+        "DESCRIPTION": "Cette option vous permet de promouvoir votre agent commercial en tant que responsable de magasin sur StoreFront. Il leur donne accès à presque toutes les fonctionnalités disponibles dans la boutique Storefront dans laquelle ils ont été créés."
+      },
+      "CONCEAL_CUSTOMER_INFO": {
+        "HEADING": "Dissimuler clientèle Info",
+        "DESCRIPTION": "Cette fonctionnalité permet à l'administrateur de la boutique de masquer les informations de contact client d'un agent commercial."
+      },
+      "PROMOTE_TO_GIVE_DISCOUNT": {
+        "HEADING": "Promouvoir pour offrir une remise",
+        "DESCRIPTION": "Cette option permet à l'administrateur de la boutique de promouvoir un agent commercial pour accorder des remises sur une transaction de vente."
+      },
+      "PROMOTE_TO_MODIFY_SALES": {
+        "HEADING": "Promouvoir pour modifier les ventes",
+        "DESCRIPTION": "Cette option permet aux agents commerciaux de modifier une ordre ventes traitée. Dans le cas où un client retourne un article précédemment acheté, l'agent de magasin peut corriger l'ordre de ventes pour refléter la modification."
+      },
+      "VIEW_PROFIT_INFO": {
+        "HEADING": "Afficher les informations sur les bénéfices",
+        "DESCRIPTION": "Cette option permet aux agents commerciaux de voir les informations de marge/profit sur les ordres ventes."
+      },
+      "BACKDATE_SALES_ORDERS": {
+        "HEADING": "Ordre de ventes antidatée",
+        "DESCRIPTION": "Cette option autorise les agents commerciaux à antidater les ordres ventes. Dans le cas où un client retourne un article déjà acheté, l'agent de magasin peut corriger l'ordre ventes pour refléter la modification."
+      }
+    }
+  },
+  "SETTINGS": {
+    "GENERAL": {
+      "CURRENCY": {
+        "HEADING": "DEVISE",
+        "DESCRIPTION": "Sélectionnez le type d'argent (Naira, Cedi) que vous acceptez."
+      },
+      "SAGEONE_ACCOUNTING": {
+        "HEADING": "SAGEONE COMPTABILITÉ",
+        "DESCRIPTION": "Connectez votre boutique actuelle à SageOne pour assurer toutes vos transactions affichées et synchronisées sur votre compte."
+      },
+      "RETURN_POLICY": {
+        "HEADING": "POLITIQUE DE RETOUR",
+        "DESCRIPTION": "Indiquez le nombre de jours où les articles vendus peuvent être retournés à la boutique."
+      },
+      "WHATSAPP_COMMUNICATIONS": {
+        "HEADING": "WHATSAPP COMMUNICATIONS",
+        "DESCRIPTION": "Activez l'option de communication WhatsApp pour recevoir toutes les informations Storefront directement sur votre ligne WhatsApp."
+      },
+      "PARTNER_CONNECT": {
+        "HEADING": "PARTENAIRE CONNECTÉ",
+        "DESCRIPTION": "Vous pouvez connecter un partenaire à votre magasin."
+      },
+      "DATA_BACKUP": {
+        "HEADING": "SAUVEGARDE DE DONNÉES",
+        "DESCRIPTION": "Indique les dernières données du temps ont été sauvegardées entre votre appareil et Storefront."
+      },
+      "ALLOW_GLOBAL_DELIVERY": {
+        "HEADING": "PERMETTRE UNE LIVRAISON GLOBALE",
+        "DESCRIPTION": "Autorisez la liste des produits de votre boutique en ligne lorsqu'un client visite votre boutique en dehors de votre pays."
+      },
+      "EMAIL_REPORTING": {
+        "HEADING": "RAPPORTS PAR COURRIEL",
+        "DESCRIPTION": "Autorisez ou interdisez les e-mails de rapport de votre boutique, les rapports peuvent être quotidiens, hebdomadaires, mensuels et annuels."
+      }
+    }
+  }
+}

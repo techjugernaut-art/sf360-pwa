@@ -1,0 +1,73 @@
+{
+  "MAIN_NAV": {
+    "DASHBOARD": "Dashboard"
+  },
+  "AGENT_PROFILE": {
+    "PERMISSION": {
+      "PROMOTE_TO_MANAGER": {
+        "HEADING": "Promote to Manager",
+        "DESCRIPTION": "This option allows you to promote your sales agent as a store manager on StoreFront. This gives them access to almost all the features available in the StoreFront store in which they were created."
+      },
+      "CONCEAL_CUSTOMER_INFO": {
+        "HEADING": "Conceal Customer Info",
+        "DESCRIPTION": "This feature enables the Shop Admin to hide customer contact information from a sales agent."
+      },
+      "PROMOTE_TO_GIVE_DISCOUNT": {
+        "HEADING": "Promote To Give Discount",
+        "DESCRIPTION": "This option enables the Shop Admin to promote a sales agent to give discounts on a sales transaction."
+      },
+      "PROMOTE_TO_MODIFY_SALES": {
+        "HEADING": "Promote To Modify Sales",
+        "DESCRIPTION": "This option allows sales agents to change a processed sales order. In the instance where a customer returns a previously purchased item, the shop agent can correct the sales order to reflect the change."
+      },
+      "VIEW_PROFIT_INFO": {
+        "HEADING": "View Profit Information",
+        "DESCRIPTION": "This option allows sales agents to see margin/profit information on sales orders."
+      },
+      "BACKDATE_SALES_ORDERS": {
+        "HEADING": "Backdate Sales Order",
+        "DESCRIPTION": "This option gives sales agents permission to backdate sales orders."
+      }
+    }
+  },
+  "SETTINGS": {
+    "GENERAL": {
+      "CURRENCY": {
+        "HEADING": "CURRENCY",
+        "DESCRIPTION": "Select the currency (Naira, Cedi) that you accept."
+      },
+      "SAGEONE_ACCOUNTING": {
+        "HEADING": "SAGEONE ACCOUNTING",
+        "DESCRIPTION": "Connect your current shop to SageOne to ensure all your transactions are posted and synced on your account."
+      },
+      "RETURN_POLICY": {
+        "HEADING": "RETURN POLICY",
+        "DESCRIPTION": "Indicate the number of days in which items sold can be returned to the shop."
+      },
+      "WHATSAPP_COMMUNICATIONS": {
+        "HEADING": "WHATSAPP COMMUNICATIONS",
+        "DESCRIPTION": "Activate the WhatsApp communications option to receive all information from Storefront directly on to your  WhatsApp line."
+      },
+      "PARTNER_CONNECT": {
+        "HEADING": "PARTNER CONNECT",
+        "DESCRIPTION": "You can connect a partner to your shop."
+      },
+      "DATA_BACKUP": {
+        "HEADING": "DATA BACKUP",
+        "DESCRIPTION": "Indicates the last time data was backed up between your device and Storefront."
+      },
+      "ALLOW_GLOBAL_DELIVERY": {
+        "HEADING": "ALLOW GLOBAL DELIVERY",
+        "DESCRIPTION": "Allow your online store's product listing when a customer visits your store outside of your country."
+      },
+      "EMAIL_REPORTING": {
+        "HEADING": "EMAIL REPORTING",
+        "DESCRIPTION": "Allow or Disallow your store's reporting emails, Reports can be Daily, Weekly, Monthly or Yearly."
+      },
+      "VERIFY_EMAIL": {
+        "HEADING": "VERIFY EMAIL",
+        "DESCRIPTION": "Verify your email (Skip this if you have already verified your email)."
+      }
+    }
+  }
+}

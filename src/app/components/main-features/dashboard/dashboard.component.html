@@ -1,0 +1,178 @@
+<app-main-nav [isProcessing]="isProcessing">
+    <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions" (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+    <div class="row ">
+      <div class="col-md-6 col-lg-3">
+          <mat-card class="dashboard-card bg-gradient-primary mb-3 cursor-pointer" (click)="viewMoreSalesOrders()" >
+              <mat-card-content>
+               <div class="dashboard-card-content">
+                 <h4 class="text-white dashboard-card-title">Sales Orders</h4>
+                 <div class="row mt-3">
+                   <div class="col-3">
+                     <div class="dashboard-card-icon">
+                        <i class="fe fe-shopping-cart text-primary"></i>
+                     </div>
+                   </div>
+                   <div class="col-9 text-right dashboard-card-text">
+                     <span class="text-white" >{{businessOverview?.currency}} {{businessOverview?.sales | number: '1.2-2'}}</span>
+                     <!-- <span class="text-white" *ngIf="businessOverview?.sales == '' || businessOverview?.sales == null">{{businessOverview?.currency}} {{0 | number: '1.2-2'}}</span> -->
+                   </div>
+                 </div>
+               </div>
+              </mat-card-content>
+            </mat-card>
+      </div>
+      <div class="col-md-6 col-lg-3">
+          <mat-card class="dashboard-card bg-gradient-warning  mb-3 cursor-pointer" (click)="viewMoreSalesMargins()">
+              <mat-card-content>
+                  <div class="dashboard-card-content">
+                      <h4 class="text-white dashboard-card-title">Sales Margin</h4>
+                      <div class="row mt-3">
+                        <div class="col-3">
+                          <div class="dashboard-card-icon">
+                             <i class="fe fe-credit-card text-warning-dark"></i>
+                          </div>
+                        </div>
+                        <div class="col-9 text-right dashboard-card-text">
+                          <span class="text-white vertical-align-middle" >{{businessOverview?.currency}} {{businessOverview?.margin | number: '1.2-2'}}
+                              <!-- <span class="text-white" *ngIf="businessOverview?.margin == '' || businessOverview?.margin == null">{{businessOverview?.currency}} {{0 | number: '1.2-2'}}</span> -->
+                            <i class="fe fe-info fs-1 vertical-align-middle"  ngbPopover="Sales Margin is calculated using the supplier price and selling price of each product." placement="bottom" triggers="mouseenter:mouseleave" popoverTitle="Sales Margin"></i></span>
+                        </div>
+                      </div>
+                    </div>
+              </mat-card-content>
+            </mat-card>
+      </div>
+      <div class="col-md-6 col-lg-3">
+          <mat-card class="dashboard-card bg-gradient-danger  mb-3 cursor-pointer" (click)="viewMoreCustomers()">
+              <mat-card-content>
+                  <div class="dashboard-card-content">
+                      <h4 class="text-white dashboard-card-title">Customers</h4>
+                      <div class="row mt-3">
+                        <div class="col-3">
+                          <div class="dashboard-card-icon">
+                             <i class="fe fe-user text-danger"></i>
+                          </div>
+                        </div>
+                        <div class="col-9 text-right dashboard-card-text">
+                          <span class="text-white">{{businessOverview?.customers | number : '1.'}}</span>
+                        </div>
+                      </div>
+                    </div>
+              </mat-card-content>
+            </mat-card>
+      </div>
+      <div class="col-md-6 col-lg-3">
+          <mat-card class="dashboard-card bg-gradient-info  mb-3 cursor-pointer" (click)="viewMoreSuppliers()">
+              <mat-card-content>
+                  <div class="dashboard-card-content">
+                      <h4 class="text-white dashboard-card-title">Suppliers</h4>
+                      <div class="row mt-3">
+                        <div class="col-3">
+                          <div class="dashboard-card-icon">
+                             <i class="fe fe-users text-info-light"></i>
+                          </div>
+                        </div>
+                        <div class="col-9 text-right dashboard-card-text">
+                          <span class="text-white">{{businessOverview?.suppliers | number : '1.' }}</span>
+                        </div>
+                      </div>
+                    </div>
+              </mat-card-content>
+            </mat-card>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-12 col-lg-9">
+        <div class="row">
+          <div class="col-md-12 col-lg-7 mb-3" >
+            <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Sales Orders in {{businessOverview?.currency}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content style="height: 400px;">
+                  <canvas id="multilineGraph" class="graph-canvas"></canvas>
+                </mat-card-content>
+
+              </mat-card>
+        </div>
+        <div class="col-md-12 col-lg-5 mb-3">
+            <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Payment Methods in {{businessOverview?.currency}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content style="height: 400px;">
+                    <app-empty-record *ngIf="!isDoughnutDataAvailable"></app-empty-record>
+                  <canvas id="reportDonunt" class="graph-canvas" [class.d-none]="!isDoughnutDataAvailable"></canvas>
+                </mat-card-content>
+
+              </mat-card>
+        </div>
+        <div class="col-md-12 col-lg-12 mb-3">
+          <mat-card>
+              <mat-card-header>
+                <mat-card-title>Top 5 Performing Products</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="table-responsive">
+                  <table class="table dataTable no-footer table-border-bottom">
+                    <thead>
+                      <tr>
+                        <th class="wd-15p">Name</th>
+              <th class="wd-15p">Quantity Sold</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="bestPerformingProducts?.length <= 0">
+                        <td colspan="10" class="text-center"><app-empty-record></app-empty-record></td>
+                      </tr>
+                      <tr *ngFor="let product of bestPerformingProducts">
+                        <td>{{product?.my_product__name}}</td>
+                        <td>
+                          <span>{{product?.mysum | number: '1.2-2'}}</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </mat-card-content>
+
+            </mat-card>
+      </div>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-3 mb-3">
+        <mat-card class="mb-3">
+          <mat-card-header >
+            <mat-card-title>Expense Overview in {{businessOverview?.currency}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content  style="height: 400px;">
+            <app-empty-record *ngIf="!isExpenseOverviewDataAvailable"></app-empty-record>
+                <canvas id="expenseOverviewGraph" class="graph-canvas" [class.d-none]="!isExpenseOverviewDataAvailable"></canvas>
+
+          </mat-card-content>
+
+        </mat-card>
+        <mat-card class="mb-3">
+            <mat-card-header >
+              <mat-card-title>Business Alerts</mat-card-title>
+            </mat-card-header>
+            <mat-card-content  >
+             <app-empty-record *ngIf="businessAlerts?.length <= 0"></app-empty-record>
+                <div class="list-items cursor-pointer" *ngFor="let alert of businessAlerts" ngbPopover="{{alert?.message_body}}"  triggers="mouseenter:mouseleave" popoverTitle="{{alert?.message_title}}">
+                    <div>
+                      <strong>{{alert?.message_body }}</strong>
+                      <div class="small text-muted"><strong class="text-primary mr-2">{{alert?.message_title | uppercase}}</strong> {{alert?.elapsed_time}}</div>
+                    </div>
+                  </div>
+
+            </mat-card-content>
+
+          </mat-card>
+
+    </div>
+    </div>
+</app-main-nav>
+
+
+

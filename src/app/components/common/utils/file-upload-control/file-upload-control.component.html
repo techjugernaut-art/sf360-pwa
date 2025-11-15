@@ -1,0 +1,5 @@
+<div class="new-product-img" style="width: 100%;">
+  <input type="file" class="inputfile" #filePrimaryPicture (change)="uploadImages($event?.target)">
+  <img class="product-img new-product-sm-img mr-0 full-width" style="width: 600px !important; height: 150px !important;" [src]="imageUrl"
+    (click)="filePrimaryPicture?.click()" />
+</div>

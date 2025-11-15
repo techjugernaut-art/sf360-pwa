@@ -1,0 +1,57 @@
+<h1 mat-dialog-title>
+  <h4>Select Customer</h4>
+  <div class="row">
+    <mat-form-field class="col-12" appearance="outline">
+      <mat-label>Search customers</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput type="text" placeholder="Search Customer " [formControl]="searchInputControl" #searchInput>
+
+    </mat-form-field>
+  </div>
+</h1>
+  <div mat-dialog-content>
+    <div class="table-responsive">
+      <mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+      <table class="table dataTable no-footer table-border-bottom">
+        <thead>
+          <tr role="row">
+            <th class="wd-15p">Name</th>
+            <th class="wd-15p">Phone Number</th>
+            <th class="wd-15p">Cust Group</th>
+            <th class="wd-25p">Amount Owing</th>
+            <th class="wd-25p text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="!isProcessing && customers?.length <= 0">
+            <td colspan="10" class="text-center">
+                <app-empty-record></app-empty-record>
+            </td>
+          </tr>
+          <tr *ngFor="let customer of customers">
+            <td>
+               {{customer?.name}}</td>
+            <td>
+              {{customer?.phone_number}}
+            </td>
+            <td>{{customer?.customer_group?.name}}</td>
+
+            <td>{{customer?.currency}} {{customer?.amount_owing  | number: '1.2-2'}}</td>
+            <td class="text-center">
+              <button mat-stroked-button color="primary" (click)="onSelectCustomer(customer)" >
+                SELECT
+              </button>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+  </div>
+
+  <mat-dialog-actions class="text-right mb-2">
+    <button mat-raised-button (click)="onClose()">CLOSE</button>
+    <button mat-raised-button (click)="addOrUpdateCustomer()" color="primary"
+      type="button">ADD NEW</button>
+  </mat-dialog-actions>

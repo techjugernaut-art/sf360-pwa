@@ -1,0 +1,487 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+
+
+  <mat-card class="mt-4">
+    <mat-card-content >
+      <mat-tab-group mat-stretch-tabs>
+        <!-- Product general information -->
+        <mat-tab active="true">
+          <ng-template mat-tab-label>
+            General Information
+          </ng-template>
+          <!-- General information -->
+          <div class="table-responsive mt-3">
+            <table class="table row table-borderless w-100 m-0 profile-edit-table">
+              <tbody class="  p-0">
+                <tr>
+                  <td><strong>Product Name :</strong> {{productDetail?.name}}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Product Category :</strong> {{productDetail?.product_group?.name}}
+
+                  </td>
+                </tr>
+
+                <tr>
+                  <td><strong>Serial Number :</strong> {{productDetail?.serial_number}}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Is Service :</strong>
+                    <mat-checkbox class="ml-2" [checked]="productDetail?.is_service" [disabled]="true"></mat-checkbox>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Currency :</strong> {{productDetail?.currency}}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td><strong>Recommended Retail Price :</strong> {{productDetail?.recommended_retail_price}}
+                  </td>
+                </tr>
+
+
+              </tbody>
+              <tbody class="  p-0">
+                <tr>
+                  <td><strong>Selling Price :</strong> {{productDetail?.selling_price}}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Supplier Price :</strong> {{productDetail?.supplier_price}}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>VAT Inclusive :</strong>
+                    <mat-checkbox class="ml-2" [checked]="productDetail?.vat_inclusive" [disabled]="true">
+                    </mat-checkbox>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>VAT Value :</strong> {{productDetail?.vat_value}}
+                  </td>
+                </tr>
+
+
+                <tr>
+                  <td><strong>Date Created :</strong> {{productDetail?.date_created | date: 'medium'}}
+                  </td>
+                </tr>
+
+
+
+              </tbody>
+            </table>
+          </div>
+
+          <!-- End of General Information -->
+        </mat-tab>
+        <!-- End Product general information -->
+        <!-- Beginning of Product Images -->
+       <mat-tab>
+        <ng-template mat-tab-label>
+          Product Images
+        </ng-template>
+
+        <div class="row product-images-list">
+          <div class="col-md-2 col-sm-3 col-xs-4 col-xxs-6 mb-3">
+            <button mat-button color="primary" class="product-images-list-item" (click)="uploadProductImage()">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <div class="col-md-2 col-sm-3 col-xs-4 col-xxs-6 mb-3" *ngFor="let item of extraImages" >
+            <div class="product-images-list-item p-2">
+              <img class="product-images-list-item-img" [src]="item?.compressed_image | imageUrl: item?.image">
+              <div class="product-images-list-item-action">
+                <mat-icon (click)="onRemoveImage(item?.id)" class="mr-2">delete</mat-icon>
+                <!-- <mat-icon>search</mat-icon> -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+       </mat-tab>
+        <!-- End of Product Images -->
+        <!-- Purchase and Restock tab -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Purchase and Restock
+          </ng-template>
+          <div class="table-responsive mt-3">
+            <table class="table row table-borderless w-100 m-0 profile-edit-table">
+              <tbody class="  p-0">
+                <tr>
+                  <td><strong>Purchases Amount :</strong> {{productDetail?.purchases_amount}}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Purchases :</strong> {{productDetail?.purchases}}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Last Restock Quantity :</strong> {{productDetail?.last_restock_quantity}}
+                  </td>
+                </tr>
+
+              </tbody>
+              <tbody class="  p-0">
+                <tr>
+                  <td><strong>Quantity :</strong> {{productDetail?.new_quantity}}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Low Stock Threshold :</strong> {{productDetail?.low_stock_threshold}}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Expiry Date :</strong> {{productDetail?.expiry_date | date: 'MMM dd, yyyy'}}
+                  </td>
+                </tr>
+
+
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
+        <!-- End of Purchase and Restock tab -->
+
+        <!-- Supplier Info tab -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Supplier Info
+          </ng-template>
+          <div class="table-responsive mt-3">
+            <table class="table row table-borderless w-100 m-0 profile-edit-table">
+              <tbody class="  p-0">
+                <tr>
+                  <td><strong>Supplier Name :</strong> {{productDetail?.my_supplier?.name}}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Phone Number :</strong> {{productDetail?.my_supplier?.phone_number}}
+                  </td>
+                </tr>
+
+
+              </tbody>
+              <tbody class="  p-0">
+                <tr>
+                  <td><strong>Physical Address :</strong> {{productDetail?.my_supplier?.physical_address}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
+        <!-- End of Supplier Info tab -->
+
+        <!-- Shop Info tab -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            Shop Info
+          </ng-template>
+          <div class="table-responsive mt-3">
+            <table class="table row table-borderless w-100 m-0 profile-edit-table">
+              <tbody class="  p-0">
+                <tr>
+                  <td><strong>Business Name :</strong> {{productDetail?.myshop?.business_name}}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Business Reg Number :</strong>
+                    {{productDetail?.myshop?.business_registration_number | uppercase}}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Business Type :</strong> {{productDetail?.myshop?.business_type | titlecase}}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Location :</strong> {{productDetail?.myshop?.location | titlecase}}
+                  </td>
+                </tr>
+
+
+              </tbody>
+              <tbody class="  p-0">
+                <tr>
+                  <td><strong>Administrator :</strong> {{productDetail?.myshop?.administration_name | titlecase}}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td><strong>VAT Number :</strong> {{productDetail?.myshop?.vat_number}}
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>TAX Number :</strong> {{productDetail?.myshop?.tax_number}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-tab>
+        <!-- End of Shop Info tab -->
+
+        <!-- Stock History Info tab -->
+        <mat-tab class="clearfix">
+          <ng-template mat-tab-label>
+            <div>
+              Stock History
+              <mat-progress-bar mode="indeterminate" *ngIf="isProcessingSalesOrders"  ></mat-progress-bar>
+            </div>
+          </ng-template>
+
+          <app-table-header-actions [tableHeaderOptions]="tableHeaderOption" (selectedDateChanged)="onSelectStockHistoryDateRange($event)" [selectedDate]="selectedDate">
+
+            <button mat-stroked-button color="primary"  [matMenuTriggerFor]="mainActionsMenu" ><i class="fe fe-download mr-1"></i> EXPORT AS</button>
+            <mat-menu #mainActionsMenu="matMenu">
+            <button mat-menu-item (click)="exportAsExcel()">EXCEL</button>
+            <button mat-menu-item (click)="exportAllAsPDF()">PDF</button>
+            </mat-menu>
+          </app-table-header-actions>
+          <div class="table-responsive mt-3">
+            <table class="table dataTable no-footer table-border-bottom">
+              <thead>
+                <tr>
+                  <th class="wd-15p">Order #</th>
+                  <th class="wd-15p">Customer</th>
+                  <th class="wd-15p">Amount</th>
+                  <th class="wd-15p">Payment Method</th>
+                  <th class="wd-10p">Agent</th>
+                  <th class="wd-25p">Date Placed</th>
+                  <th class="wd-25p">Actions</th>
+
+                </tr>
+              </thead>
+              <tbody *ngIf="salesOrders?.length <= 0">
+                <tr>
+                  <td colspan="10" class="text-center"><app-empty-record></app-empty-record></td>
+              </tr>
+              </tbody>
+              <tbody  *ngFor="let order of salesOrders" [class.bg-collapsed-table]="order?.id == orderId">
+
+                <tr>
+                  <td class="cursor-pointer text-primary" (click)="collapseOrderDetail(order)">{{order?.order_code}}</td>
+                  <td>{{order?.customer?.phone_number}} <span
+                      *ngIf="order?.customer?.phone_number !== '' && order?.customer?.phone_number !== null && order?.customer?.name !== '' && order?.customer?.name !== null">/</span>
+                    {{order?.customer?.name}}</td>
+                  <td>{{order?.currency}} {{order?.total_amount | number: '1.2-2'}}</td>
+                  <td>{{order?.payment_method}}</td>
+                  <td>{{order?.author?.first_name | titlecase}} {{order?.author?.last_name | titlecase}}</td>
+                  <td>{{order?.date_placed | date: 'medium'}}</td>
+                  <td class="text-center">
+
+                    <button class="btn btn-primary btn-sm" (click)="viewOrderDetails(order)" data-toggle="modal"
+                      data-target="#modalSalesOrdersDetail">
+                      <i class="fe fe-eye"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr [@inOutAnimation]="order?.id == orderId ? 'expanded' : 'collapsed'">
+                  <td colspan="20">
+                    <table class="table no-footer table-border-bottom" >
+                        <thead>
+                            <tr>
+                              <th class="wd-15p">Product Name</th>
+                              <th class="wd-15p">SUPPLIER PRICE</th>
+                              <th class="wd-15p">SELLING PRICE</th>
+                              <th class="wd-15p">QTY BEFORE</th>
+                              <th class="wd-15p">QTY SOLD</th>
+                              <th class="wd-15p">QTY AFTER</th>
+                              <th class="wd-15p">SUBTOTAL</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of order?.myitems"  [class.bg-warning]="item?.my_product?.id == productId">
+                              <td>{{item?.my_product?.product?.name}}</td>
+                              <td>{{item?.my_product?.supplier_price}}</td>
+                              <td>{{item?.product_price}}</td>
+                              <td>
+                                <span *ngIf="!item?.my_product?.is_service">{{item?.product_quantity_before}}</span>
+                                <span *ngIf="item?.my_product?.is_service">N/A</span>
+                              </td>
+                              <td>{{item?.new_quantity}}</td>
+                              <td>
+                                  <span *ngIf="!item?.my_product?.is_service">{{item?.product_quantity_after}}</span>
+                                  <span *ngIf="item?.my_product?.is_service">N/A</span>
+                                </td>
+                                <td>{{item?.subtotal}}</td>
+                            </tr>
+                          </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <app-pagination [dataSet]="salesOrders" [nextPage]="nextPage" [prevPage]="prevPage" [totalPage]="totalPage"
+            [requestPayload]="salesOrdersRequestPayload" [requestMethod]="'POST'" (pageChanged)="onPageChanged($event)"
+            [isProcessing]="isProcessing"></app-pagination>
+        </mat-tab>
+        <!-- End of Stock History Info tab -->
+
+         <!-- Stock Record Info tab -->
+         <mat-tab class="clearfix">
+          <ng-template mat-tab-label>
+            <div>
+              Stock Record
+              <mat-progress-bar mode="indeterminate" *ngIf="isProcessingStockRecord"  ></mat-progress-bar>
+            </div>
+          </ng-template>
+
+          <app-table-header-actions [tableHeaderOptions]="tableHeaderOption" (selectedDateChanged)="onSelectStockRecordDateRange($event)" [selectedDate]="stockRecordSelectedDate">
+            <mat-form-field moreAction class="full-width" appearance="outline" >
+              <mat-label>Choose an update activity</mat-label>
+              <mat-select (selectionChange)="onUpdateActivityChanged($event?.value)">
+                <mat-option value="" selected>ALL UPDATE ACTIVITIES</mat-option>
+                <mat-option value="DECREASED_STOCK">DECREASED STOCK</mat-option>
+                <mat-option value="INCREASED_STOCK">INCREASED STOCK</mat-option>
+                <mat-option value="SET_NEW_QUANTITY">SET NEW QUANTITY</mat-option>
+                <mat-option value="ORDER_PLACED">ORDER PLACED</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </app-table-header-actions>
+          <div class="table-responsive mt-3">
+            <table class="table dataTable no-footer table-border-bottom">
+              <thead>
+                <tr>
+                  <th class="wd-15p">Activity</th>
+                  <th class="wd-15p">Quantity Before</th>
+                  <th class="wd-15p">Quantity</th>
+                  <th class="wd-15p">Quantity After</th>
+                  <th class="wd-25p">Date Placed</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="stockRecords?.length <= 0">
+                <tr>
+                  <td colspan="10" class="text-center"><app-empty-record></app-empty-record></td>
+              </tr>
+              </tbody>
+              <tbody  *ngFor="let order of stockRecords">
+
+                <tr>
+                  <td>{{order?.reason}}</td>
+                  <td>{{order?.quantity_before}}</td>
+                  <td>{{order?.new_quantity}}</td>
+                  <td>{{order?.quantity_after}}</td>
+                  <td>{{order?.date_created | date: 'medium'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <app-pagination [dataSet]="stockRecords" [nextPage]="stockRecordNextPage" [prevPage]="stockRecordPrevPage" [totalPage]="stockRecordTotalPage"
+            [requestPayload]="stockRecordRequestPayload" [requestMethod]="'POST'" (pageChanged)="onStockRecordPageChanged($event)"
+            [isProcessing]="isProcessingStockRecord"></app-pagination>
+
+        </mat-tab>
+        <!-- End of Stock Record Info tab -->
+
+      </mat-tab-group>
+
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>
+
+
+
+
+<!-- Sales Orders Details Modal -->
+<div class="modal fade" id="modalSalesOrdersDetail" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title invoice-modal-title" id="modal-title-notification">
+          Order #: {{saleOrderDetail?.order_code}}
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" id="salesOrderModalBody">
+        <div class="logo-img text-center pb-3">
+          <img src="../assets/img/logos/dark-green.png" alt="invoice-logo-img" class="invoice-logo-img">
+        </div>
+        <div class="mb-0">
+          <div class="row">
+            <div class="col-6 invoice-detail">
+              <h4 class="title"><strong>Order #: {{saleOrderDetail?.order_code}}</strong></h4>
+              <p class="mb-0 detail"><strong>{{saleOrderDetail?.myshop?.business_name | titlecase}}</strong></p>
+              <p class="mb-0 detail">{{saleOrderDetail?.myshop?.location | titlecase}}</p>
+              <p class="mb-0 detail">Date Placed: {{saleOrderDetail?.date_placed | date: 'medium'}}</p>
+              <p class="mb-0 detail">Payment Method: {{saleOrderDetail?.payment_method}}</p>
+
+            </div>
+            <div class="col-6 text-right invoice-detail">
+              <h4 class="title"><strong>Customer Info: </strong></h4>
+              <p class="mb-0 detail"><strong>{{saleOrderDetail?.customer?.name | titlecase}}</strong></p>
+              <p class="mb-0 detail">Phone: {{saleOrderDetail?.customer?.phone_number}}</p>
+              <p class="mb-0 detail">Email: {{saleOrderDetail?.customer?.email}}</p>
+
+            </div>
+
+          </div>
+          <!-- end row -->
+
+          <div class="row mt-4">
+            <div class="col-md-12">
+              <div class="table-responsive">
+                <table class="table m-t-30 text-nowrap  table-border-bottom invoice-table">
+                  <thead class="thead-primary">
+                    <tr>
+                      <th>#</th>
+                      <th>Description</th>
+                      <th>Quantity</th>
+                      <th class="text-right">Amount({{saleOrderDetail?.currency}})</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of salesOrderItems">
+                      <td>{{item?.id}}</td>
+                      <td>{{item?.my_product?.product?.name}}</td>
+                      <td>{{item?.quantity}}</td>
+                      <td class="text-right">{{item?.subtotal | number: '1.2-2'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-4 col-12 offset-xl-8 invoice-footer">
+              <p class="text-right mt-3 font-weight-600">Sub-total: {{saleOrderDetail?.currency}}
+                {{saleOrderDetail?.gross_total | number: '1.2-2'}}</p>
+              <p class="text-right font-weight-600">Discout: {{saleOrderDetail?.discount}}</p>
+              <p class="text-right font-weight-600">VAT: {{saleOrderDetail?.vat_value}}</p>
+              <hr>
+              <h4 class="text-right grand-total">Grand Total : {{saleOrderDetail?.currency}}
+                {{saleOrderDetail?.total_amount | number: '1.2-2'}}</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 invoice-detail">
+              <h4 class="title"><strong>Agent</strong></h4>
+              <p class="mb-0 detail"><strong>{{saleOrderDetail?.author?.first_name | titlecase}},
+                  {{saleOrderDetail?.author?.last_name | titlecase}}</strong></p>
+              <p class="mb-0 detail">Phone: {{saleOrderDetail?.author?.phone_number}}</p>
+              <p class="mb-0 detail">Email: {{saleOrderDetail?.author?.email}}</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="exportAsPDF()"><i class="fa fa-file-pdf"></i> Download As PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Sales Orders Details Modal -->

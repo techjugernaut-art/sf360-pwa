@@ -1,0 +1,250 @@
+<app-main-nav [isProcessing]="isProcessing">
+    <h3 class="mt-3 ml-3">{{pageHeaderOptions?.pageTitle}}</h3>
+    <mat-card class="mt-4">
+
+      <mat-card-content class="ml-3 mr-3">
+
+        <div class="table-responsive">
+          <table class="table dataTable no-footer table-border-bottom">
+            <thead>
+              <tr role="row">
+                <th class="wd-15p">Business Name</th>
+                <th class="wd-15p">Request Type</th>
+                <!-- <th class="wd-15p">Business Reg No.</th> -->
+                <th class="wd-15p">Business Type</th>
+                <th class="wd-15p">Business Category</th>
+                <th class="wd-15p">Date Requested</th>
+                <th class="wd-15p text-center">Status</th>
+                <th class="wd-25p">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!isProcessing && paymentRequests?.length <= 0">
+                <td colspan="10" class="text-center">
+                  <app-empty-record></app-empty-record>
+                </td>
+              </tr>
+              <tr *ngFor="let paymentRequest of paymentRequests">
+                 <td>{{paymentRequest?.business_name | titlecase}}</td>
+                 <td>
+                   <span *ngIf="paymentRequest?.payment_request_type === requestTypes?.PHYSICAL_STORE" >POS Payment</span>
+                   <span *ngIf="paymentRequest?.payment_request_type !== requestTypes?.PHYSICAL_STORE" >{{paymentRequest?.payment_request_type | removeUnderScore}}</span>
+                  </td>
+                 <td>{{paymentRequest?.business_registration_number}}</td>
+                <td>{{paymentRequest?.business_type}}</td>
+                <td>{{paymentRequest?.business_category}}</td>
+                <td>{{paymentRequest?.date_created | date: 'medium'}} </td>
+                <td class="text-center">
+                  <span class="ml-2 badge badge-{{paymentRequestStatusCssClass(paymentRequest?.status)}}">{{paymentRequest?.status | uppercase}}</span>
+                </td>
+                <td>
+                  <button mat-icon-button [matMenuTriggerFor]="menu" >
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <!-- <button mat-menu-item routerLink="/settings/payment-request/{{paymentRequest?.id}}"
+                     *ngIf="!isPartner || !paymentRequest?.status === Approved">
+                      <span>Edit</span>
+                    </button> -->
+                    <button mat-menu-item (click)="onViewRequest(paymentRequest)" data-toggle="modal"
+                    data-target="#modalRequestDetail">
+                   <span>View</span>
+                    </button>
+                    <button *ngIf="paymentRequest?.status !== 'APPROVED'" mat-menu-item (click)="editPaymentRequest(paymentRequest, true)">
+                   <span>Edit</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <app-pagination [dataSet]="paymentRequests" [nextPage]="nextPage" [prevPage]="prevPage" [totalPage]="totalPage"
+          [requestPayload]="requestPayload" [requestMethod]="'POST'" (pageChanged)="onPageChanged($event)"
+          [isProcessing]="isProcessing"></app-pagination>
+      </mat-card-content>
+
+    </mat-card>
+  </app-main-nav>
+ <!-- Sales Orders Details Modal -->
+<div class="modal fade" id="modalRequestDetail" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title invoice-modal-title" id="modal-title-notification">
+        {{paymentRequestTitle}}
+      </h4>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body" id="requestModalBody">
+      <div class="logo-img text-center pb-3">
+          <span *ngIf="paymentRequestDetail?.myshop?.logo === null || paymentRequestDetail?.myshop?.logo === undefined || paymentRequestDetail?.myshop?.logo === ''">
+            <img class="w-120" src="assets/img/logos/dark-green.png" alt="">
+        </span>
+          <span *ngIf="paymentRequestDetail?.myshop?.logo !== null || paymentRequestDetail?.myshop?.logo !== undefined || paymentRequestDetail?.myshop?.logo !== ''">
+            <img class="w-120" [src]="paymentRequestDetail?.myshop?.logo">
+          </span>
+      </div>
+         <mat-tab-group mat-stretch-tabs>
+            <!-- Shop Business Information -->
+            <mat-tab active="true">
+                <ng-template mat-tab-label>
+                  Business Information
+                </ng-template>
+                  <div class="row">
+                    <div class="col-md-6">
+                        <p class="mb-2"><strong class="mr-3">Business Name :</strong> {{paymentRequestDetail?.business_name}}</p>
+                        <p class="mb-2"><strong class="mr-3">Request Type :</strong>
+                          <span *ngIf="paymentRequestDetail?.payment_request_type === requestTypes?.PHYSICAL_STORE" >POS Payment</span>
+                   <span *ngIf="paymentRequestDetail?.payment_request_type !== requestTypes?.PHYSICAL_STORE" >{{paymentRequest?.payment_request_type | removeUnderScore}}</span></p>
+                        <p class="mb-2"><strong class="mr-3">Business Reg Number :</strong>
+                          {{paymentRequestDetail?.business_registration_number | uppercase}}
+                        </p>
+                        <p class="mb-2"><strong class="mr-3">Business TIN Number :</strong>
+                          {{paymentRequestDetail?.tin | uppercase}}
+                        </p>
+                        <p class="mb-2"><strong class="mr-3">Business Type :</strong> {{paymentRequestDetail?.business_type | titlecase}}
+                        </p>
+                          <p class="mb-2"><strong class="mr-3">Date Requested :</strong> {{paymentRequestDetail?.date_created | date: 'medium'}}</p>
+                          <p class="mb-2"><strong class="mr-3">Status :</strong>
+                              <span class="ml-2 badge badge-{{paymentRequestStatusCssClass(paymentRequestDetail?.status)}}">{{paymentRequestDetail?.status | uppercase}}</span>
+                          </p>
+                        <p class="mb-2"><strong class="mr-3">Location :</strong> {{paymentRequestDetail?.business_address | titlecase}}, {{paymentRequestDetail?.business_state_of_residence | titlecase}}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-2"><strong class="mr-3">Administrator :</strong> {{paymentRequestDetail?.myshop?.administration_name | titlecase}}
+                        </p>
+
+                      <span *ngIf="paymentRequestDetail?.myshop?.vat_number !== null && paymentRequestDetail?.myshop?.vat_number !== undefined && paymentRequestDetail?.myshop?.vat_number !== ''">
+                        <p class="mb-2"><strong class="mr-3">VAT Number :</strong> {{paymentRequestDetail?.myshop?.vat_number}}
+                        </p>
+                      </span>
+                      <span *ngIf="paymentRequestDetail?.myshop?.tax_number !== null && paymentRequestDetail?.myshop?.tax_number !== undefined && paymentRequestDetail?.myshop?.tax_numbers !== ''">
+                        <p class="mb-2"><strong class="mr-3">TAX Number :</strong> {{paymentRequestDetail?.myshop?.tax_number}}
+                        </p>
+                      </span>
+                      <span *ngIf="paymentRequestDetail?.reseller_code !== null && paymentRequestDetail?.reseller_code !== undefined && paymentRequestDetail?.reseller_code !=='' ">
+                        <p class="mb-2"><strong class="mr-3">Reseller Code :</strong> {{paymentRequestDetail?.reseller_code}}
+                        </p>
+                      </span>
+                    </div>
+                  </div>
+            </mat-tab>
+              <!-- End of Business Information -->
+            <!-- General information -->
+            <mat-tab>
+              <ng-template mat-tab-label>
+                Contact Information
+              </ng-template>
+              <!-- General information -->
+              <div class="mt-3">
+                  <div class="col-md-6">
+                      <p class="mb-2"><strong class="mr-3">Personal Name :</strong> {{paymentRequestDetail?.primary_contact_name | titlecase}}</p>
+                      <p class="mb-2"><strong class="mr-3">Personal Phone :</strong> {{paymentRequestDetail?.primary_contact_phone}}</p>
+                      <p class="mb-2"><strong class="mr-3">Personal Email :</strong>{{paymentRequestDetail?.primary_contact_email }}</p>
+                  </div>
+                  <div class="col-md-6">
+                        <p class="mb-2"><strong class="mr-3">Business Phone :</strong> {{paymentRequestDetail?.secondary_contact_phone}}</p>
+                        <p class="mb-2"><strong class="mr-3">Business Email :</strong> {{paymentRequestDetail?.secondary_contact_email }} </p>
+                  </div>
+                </div>
+              <!-- End of General Information -->
+            </mat-tab>
+            <!-- End Product general information -->
+            <!-- Beginning of Business Reg Information-->
+           <mat-tab>
+            <ng-template mat-tab-label>
+                Business Documents
+            </ng-template>
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-md-6 text-center mb-3" *ngIf="paymentRequestDetail?.certificate_of_incorporation !== null && paymentRequestDetail?.certificate_of_incorporation !== undefined && paymentRequestDetail?.certificate_of_incorporation !== '' ">
+                            <span class="pb-2">Certificate of Incorporation</span>
+                            <img class="wh-260" [src]="paymentRequestDetail?.certificate_of_incorporation" alt="">
+                        </div>
+                        <div class="col-md-6 text-center mb-3" *ngIf="paymentRequestDetail?.certificate_of_commencement !== null && paymentRequestDetail?.certificate_of_commencement !== undefined && paymentRequestDetail?.certificate_of_commencement !== '' ">
+                            <span>Certificate of Commencement</span>
+                            <img class="wh-260" [src]="paymentRequestDetail?.certificate_of_commencement" alt="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 text-center mb-3" *ngIf="paymentRequestDetail?.national_id_picture !== null && paymentRequestDetail?.national_id_picture !== undefined && paymentRequestDetail?.national_id_picture !== '' ">
+                            <span>Picture of National ID</span>
+                            <img class="wh-260" [src]="paymentRequestDetail?.national_id_picture" alt="">
+                        </div>
+                        <div class="col-md-6 text-center mb-3" *ngIf="paymentRequestDetail?.recent_utility_bill !== null && paymentRequestDetail?.recent_utility_bill !== undefined && paymentRequestDetail?.recent_utility_bill !== '' ">
+                            <span>Recent Utility Bill</span>
+                            <img class="wh-260" [src]="paymentRequestDetail?.recent_utility_bill" alt="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 text-center mb-3" *ngIf="paymentRequestDetail?.certificate_of_registration !== null && paymentRequestDetail?.certificate_of_registration !== undefined && paymentRequestDetail?.certificate_of_registration !== '' ">
+                            <span>Certificate of Registration</span>
+                            <img class="wh-260" [src]="paymentRequestDetail?.certificate_of_registration" alt="">
+                        </div>
+                        <div class="col-md-6 text-center mb-3" *ngIf="paymentRequestDetail?.certified_copies_of_association_constitution !== null && paymentRequestDetail?.certified_copies_of_association_constitution !== undefined && paymentRequestDetail?.certified_copies_of_association_constitution !== '' ">
+                            <span>Certified True Copy of CAC/BN/1</span>
+                            <img class="wh-260" [src]="paymentRequestDetail?.certified_copies_of_association_constitution" alt="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 text-center mb-3" *ngIf="paymentRequestDetail?.valid_registered_proprietors_or_partnerships_id_doc !== null && paymentRequestDetail?.valid_registered_proprietors_or_partnerships_id_doc !== undefined && paymentRequestDetail?.valid_registered_proprietors_or_partnerships_id_doc !== '' ">
+                            <span >Valid Propritor/Partnership Registration Document</span>
+                            <img class="wh-260" [src]="paymentRequestDetail?.valid_registered_proprietors_or_partnerships_id_doc" alt="">
+                        </div>
+                        <div class="col-md-6 text-center mb-3" *ngIf="paymentRequestDetail?.scuml_certificate !== null && paymentRequestDetail?.scuml_certificate !== undefined && paymentRequestDetail?.scuml_certificate !== '' ">
+                            <span>SCUML Certificate</span>
+                            <img class="wh-260" [src]="paymentRequestDetail?.scuml_certificate" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+           </mat-tab>
+            <!-- End of Business Reg Information -->
+            <!-- Payment Options Information -->
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    Payment Options Information
+                </ng-template>
+                <div class="row mt-3">
+                  <div class="col-md-6">
+                    <p> Bank Information</p>
+                            <p class="mb-2"><strong class="mr-3">Bank Name :</strong> {{paymentRequestDetail?.bank_name | titlecase}} </p>
+    
+                            <p class="mb-2"><strong class="mr-3">Bank Branch :</strong> {{paymentRequestDetail?.bank_branch | titlecase}}</p>
+                       
+                        <p class="mb-2"><strong class="mr-3">Bank Account Number :</strong> {{paymentRequestDetail?.bank_account_number}}</p>
+                     
+                        <p class="mb-2"><strong class="mr-3">Bank Account Name :</strong> {{paymentRequestDetail?.bank_account_name | titlecase}}</p>
+                      
+                        <p class="mb-2"><strong class="mr-3">Account Type :</strong>{{paymentRequestDetail?.account_type | titlecase}}</p>
+                      
+                        <p class="mb-2" *ngIf="paymentRequestDetail?.bvn !== null"><strong class="mr-3">BVN :</strong> {{paymentRequestDetail?.bvn }}</p>
+                    </div>
+                    <div class="col-md-6" *ngIf="paymentRequestDetail?.myshop?.currency === 'GHS'">
+                      <p> MoMo Information</p>
+                        <p class="mb-2"><strong class="mr-3">Mobile Money Number :</strong> {{paymentRequestDetail?.mobile_money_number}}</p>
+                        <p class="mb-2"><strong class="mr-3">Mobile Money Network :</strong> {{paymentRequestDetail?.mobile_money_network | titlecase}}</p>
+                    </div>
+                </div>
+                <!-- End of Payment Options Information -->
+              </mat-tab>
+              <!-- End Product general information -->
+          </mat-tab-group>
+    </div>
+    <div class="modal-footer">
+      <!-- <button mat-raised-button color="primary" (click)="onPayClicked()"><i class="fa fa-file-pdf"></i> Pay</button>
+      <button mat-raised-button color="primary" (click)="exportAsPDF()"><i class="fa fa-file-pdf"></i> Download As PDF</button> -->
+    </div>
+  </div>
+</div>
+</div>
+<!-- End of Sales Orders Details Modal -->
+
+
+

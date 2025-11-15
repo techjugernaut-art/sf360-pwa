@@ -1,0 +1,47 @@
+<div class="d-flex bd-highlight login-page">
+  <div class="p-2 flex-fill bd-highlight login-controls">
+    <div class="mr-5 ml-5 full-width">
+      <img class="login-logo mb-4" src="assets/img/logos/logo1.png" />
+      <h3 class="login-title mb-4">Enter your business PIN</h3>
+      <div class="login-form-controls">
+        <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit(loginFormGroup?.value)">
+          <mat-form-field  class="full-width ">
+            <mat-label>6 Digit PIN</mat-label>
+            <input matInput placeholder="6 Digit PIN" NumberOnly [type]="hide ? 'password' : 'text'" maxlength="6"
+               formControlName="pin" />
+            <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+
+            <mat-hint *ngIf="pin?.invalid && pin?.touched" class="text-danger">Enter 6 Digit PIN</mat-hint>
+          </mat-form-field>
+          <a [routerLink]="['/forgot-pin']" class="py-2 forgot-pin-text text-primary cursor-pointer pull-right mt-neg-1">Forgot
+            PIN?</a>
+          <div class="full-width mt-3 mb-4">
+            <mat-checkbox formControlName="send_code_via_whatsapp" class="pb-1">
+              Receive Code via WhatsApp
+            </mat-checkbox> <br>
+            <i class="fe fe-info text-muted fs-12"><span class="ml-1">Uncheck the box to receive code via SMS</span></i> 
+          </div>
+          <mat-progress-bar class="mb-0" *ngIf="isProcessing" mode="indeterminate">
+          </mat-progress-bar>
+          <button mat-raised-button color="primary" class="full-width"
+            [disabled]="isProcessing || loginFormGroup?.invalid">LOGIN</button>
+            <div class="text-center">
+
+            </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <div class="flex-fill bd-highlight image-cover hidden-md-down">
+
+    <div class="bottom-text">
+      <h4 class="bottom-text-title">Smarter way of doing business</h4>
+      <p class="bottom-text-description">We help you run your business The New Smart way</p>
+    </div>
+  </div>
+</div>

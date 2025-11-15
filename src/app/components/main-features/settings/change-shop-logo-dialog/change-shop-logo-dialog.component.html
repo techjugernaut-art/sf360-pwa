@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>{{editStockModalTitle | uppercase}}</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup?.value)">
+  <div mat-dialog-content>
+    <app-file-upload-control formControlName="logo"></app-file-upload-control>
+        <mat-hint class="text-danger" *ngIf="!logo?.valid && logo?.touched">Please select logo image</mat-hint>
+  </div>
+
+  <mat-dialog-actions class="text-right">
+    <button type="button" mat-raised-button (click)="onClose()">Close</button>
+    <button mat-raised-button color="primary" [disabled]="formGroup?.invalid || isProcessing"
+      type="submit">Save</button>
+  </mat-dialog-actions>
+</form>

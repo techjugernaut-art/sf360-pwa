@@ -1,0 +1,196 @@
+<app-main-nav [isProcessing]="isProcessing" [showCartIcon]="true" (onCartClicked)="drawer?.toggle()">
+  <mat-sidenav-container>
+    <mat-sidenav #drawer color="accent" style="margin-top: 67px;" class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false" [position]="'end'">
+      <mat-toolbar class=" d-flex justify-content-between d-print-none">
+        <div>
+          Cart <span class="badge badge-warning">{{formArray.controls.length}}</span>
+        </div>
+
+        <div>
+          <button mat-icon-button color="error" (click)="clearCart()">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </div>
+
+      </mat-toolbar>
+      <!-- <mat-progress-bar class="mb-0" *ngIf="isProcessing" mode="indeterminate">
+      </mat-progress-bar> -->
+      <div class="p-2 cart-drawer-wrapper">
+
+        <div class="cart-wrapper" [class.d-flex-center]="formArray.controls.length <= 0">
+          <app-empty-record *ngIf="formArray.controls.length <= 0" [icon]="'./assets/img/icons/register.svg'"
+            [text]="'No product added to cart'"></app-empty-record>
+          <ul class="cart-list" *ngIf="formArray.controls.length > 0">
+
+            <li class="cart-list-item" *ngFor="let itemFormGroup of formArray?.controls; let i = index;"
+              [formGroup]="itemFormGroup">
+              <div class="cart-list-item-wrapper">
+                <!-- <img lazyLoad='itemFormGroup?.get("image")?.value' [defaultImage]="'/assets/img/icons/product-placeholder.png'" [alt]="itemFormGroup?.get("sku")?.value?.name" class="cart-list-item-img "> -->
+                <img class="cart-list-item-img"
+                  src='{{itemFormGroup?.get("image")?.value | imageUrl: "/assets/img/icons/product-placeholder.png" }}'>
+                <div class="cart-list-item-content">
+                  <p class="cart-list-item-title">{{itemFormGroup?.get("sku")?.value?.name}}</p>
+
+                  <p class="cart-list-item-sub-title">
+                    {{itemFormGroup?.get('qty')?.value | number: '1.2-2'}} * {{itemFormGroup?.get('unit_name')?.value}} [{{itemFormGroup?.get("sku")?.value?.currency}} {{itemFormGroup?.get('total_amount')?.value | number: '1.2-2'}}]
+                  </p>
+                  <div class="col-9 mt-2 mb-2">
+                    <mat-form-field class="text-center cart-list-item-title full-width remove-outline remove-mat-underline bg-whitesmoke product-list-mat-input-wrapper">
+                      <input matInput type="number" formControlName="price" placeholder="Edit Price" (input)="onPriceEdited($event, i)"
+                        class="text-center cart-list-item-title" autocomplete="off" />
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <div class="col-9">
+                      <div class="cart-list-item-quantity">
+                        <mat-form-field
+                          class="full-width remove-outline remove-mat-underline bg-whitesmoke product-list-mat-input-wrapper">
+                          <button mat-icon-button color="primary" matPrefix class="remove-outline"
+                            (click)="increaseOrDecreaseQuantity(i, '-')">
+                            <mat-icon>remove</mat-icon>
+                          </button>
+                          <input decimalOnly [maxValue]="+itemFormGroup?.get('new_quantity')?.value" readonly matInput formControlName="qty" [value]="itemFormGroup?.get('qty')?.value"
+                            (ngModelChange)="onQuantityEdited($event, i)" class="text-center" autocomplete="off"/>
+                          <button mat-icon-button color="primary" matSuffix class="remove-outline"
+                            (click)="increaseOrDecreaseQuantity(i, '+')">
+                            <mat-icon>add</mat-icon>
+                          </button>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="col-3 pl-0">
+                      <button mat-icon-button color="error" matSuffix class="remove-outline" (click)="onRemoveSKU(i)">
+                        <mat-icon>delete_outline</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+          </ul>
+
+        </div>
+        <div class="cart-list-footer">
+          <div class="row">
+            <div class="col-6">DISCOUNT</div>
+            <div class="col-6 text-right"></div>
+          </div>
+          <div class="row">
+            <div class="col-6">VAT</div>
+            <div class="col-6 text-right"></div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-6">TOTAL</div>
+            <div class="col-6 text-right">{{getTotalItemAndAmount.currency}} {{getTotalItemAndAmount.amount | number: '1.2-2'}}</div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button mat-raised-button class="full-width pl-2 pr-2" (click)="onSelectCustomer()">
+                <span class="row"><span class="col-3">CUSTOMER</span><span
+                    class="col-9 text-right footer-values">{{customerName}}</span></span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <button class="full-width mt-2" mat-raised-button color="primary"
+              [disabled]="formArray.controls.length <= 0" (click)="onPlaceOrder()">PROCESS ORDER FOR
+              {{getTotalItemAndAmount.currency}} {{getTotalItemAndAmount.amount | number: '1.2-2'}}</button>
+          </div>
+        </div>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div class="main-content">
+        <mat-card class="container mt-2 pb-4">
+          <div class="row">
+            <mat-tab-group class="col-12" (selectedIndexChange)="onProductGroupSelected($event)">
+              <mat-tab label="All"></mat-tab>
+              <mat-tab *ngFor="let item of productGroups" label="{{item?.name}}"></mat-tab>
+            </mat-tab-group>
+          </div>
+          <div class="row">
+            <mat-form-field class="col-12" appearance="outline">
+              <mat-label>Search products</mat-label>
+              <mat-icon matPrefix>search</mat-icon>
+              <input matInput type="text" placeholder="Search product" [formControl]="searchInputControl" #searchInput>
+              <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear">
+                <mat-icon>qr_code_scanner</mat-icon>
+              </button> -->
+            </mat-form-field>
+          </div>
+          <div *ngIf="!isProcessing && shopProducts?.length <= 0">
+            <app-empty-record></app-empty-record>
+            <div class="mt-4 text-center">
+              <button mat-raised-button color="primary" (click)="onAddProduct()">
+                <mat-icon>add</mat-icon> Add product
+              </button>
+            </div>
+          </div>
+          <div class="row new-sales-order-products-list-wrapper" >
+            <div class="col-md-6 mb-2 cursor-pointer" *ngFor="let item of shopProducts; let i = index;">
+
+              <div *ngIf="item?.price_list?.length <= 0" class="sales-order-product-list" [class.product-out-of-stock]="item?.new_quantity <=0 " (click)="onAddSKU(item, item?.price_list, 1, i)" title="Click to Add product to your Cart">
+                <!-- <mat-menu #matMenu="matMenu" xPosition="before">
+                  <button class="remove-outline" mat-menu-item *ngFor="let unitP of item?.price_list" (click)="onAddSKU(item, item?.price_list, 1, i, unitP?.unit_name, false)">
+                    {{unitP?.unit_name}} - {{item?.currency}} {{unitP?.selling_price}}
+                  </button>
+                </mat-menu> -->
+                <div class="sales-order-product-thumbnail" >
+                  <p *ngIf="item?.image === null || item?.image === undefined || item?.image === ''" [ngStyle]="{'background-color':item?.color !== null ? item?.color : '#026E08' }" >
+                    {{item?.name | uppercase | firstLetterOfEachWord | slice : 0:2}}
+                  </p>
+                  <img *ngIf="item?.image !== null && item?.image !== undefined && item?.image !== ''" [lazyLoad]="item?.image | imageUrl: '/assets/img/icons/product-placeholder.png'" alt=""
+                      [defaultImage]="'/assets/img/icons/product-placeholder.png'" [alt]="item?.name">
+                </div>
+                <div class="sales-order-product-detail">
+                  <h4 class="product-card-content-title">{{item?.name}}</h4>
+                  <p class="product-card-content-qty">{{item?.new_quantity}} {{item?.price_list | getBaseUnitName : item?.base_unit_name}}</p>
+                  <p class="product-card-content-price">{{item?.currency}} {{item?.selling_price | number : "1.2-2"}}</p>
+                  <!-- <p class="product-card-content-cat">{{item?.product_group?.name}}</p> -->
+                  <!-- <button class="full-width remove-outline primary-transparent-20 add-unit-of-measurement-button d-flex align-items-center justify-content-center" mat-button color="primary">ADD TO CART</button> -->
+
+                </div>
+              </div>
+
+              <div *ngIf="item?.price_list?.length > 0" class="sales-order-product-list" [class.product-out-of-stock]="item?.new_quantity <=0 " [matMenuTriggerFor]="matMenu" (click)="onAddSKU(item, item?.price_list, 1, i)" title="Click to Add product to your Cart">
+                <mat-menu #matMenu="matMenu" xPosition="before">
+                  <!--TODO *ngIf="item?.price_list?.length > 0" -->
+                  <button class="remove-outline" mat-menu-item *ngFor="let unitP of item?.price_list" (click)="onAddSKU(item, item?.price_list, 1, i, unitP?.unit_name, false)">
+                    {{unitP?.unit_name}} - {{item?.currency}} {{unitP?.selling_price}}
+                  </button>
+                </mat-menu>
+                <div class="sales-order-product-thumbnail" >
+                  <p *ngIf="item?.image === null || item?.image === undefined || item?.image === ''" [ngStyle]="{'background-color':item?.color !== null ? item?.color : '#026E08' }" >
+                    {{item?.name | uppercase | firstLetterOfEachWord | slice : 0:2}}
+                  </p>
+                  <img *ngIf="item?.image !== null && item?.image !== undefined && item?.image !== ''" [lazyLoad]="item?.image | imageUrl: '/assets/img/icons/product-placeholder.png'" alt=""
+                      [defaultImage]="'/assets/img/icons/product-placeholder.png'" [alt]="item?.name">
+                </div>
+                <div class="sales-order-product-detail">
+                  <h4 class="product-card-content-title">{{item?.name}}</h4>
+                  <p class="product-card-content-qty">{{item?.new_quantity}} {{item?.price_list | getBaseUnitName : item?.base_unit_name}}</p>
+                  <p class="product-card-content-price">{{item?.currency}} {{item?.selling_price | number : "1.2-2"}}</p>
+                  <!-- <p class="product-card-content-cat">{{item?.product_group?.name}}</p> -->
+                  <!-- <button class="full-width remove-outline primary-transparent-20 add-unit-of-measurement-button d-flex align-items-center justify-content-center" mat-button color="primary">ADD TO CART</button> -->
+
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-6"></div>
+          </div>
+        </mat-card>
+
+      </div>
+      <!-- <footer class="footer"></footer> -->
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+  <ng-keyboard-shortcuts-help [key]="'f1'" [closeKey]="'escape'" [title]="'Help'"></ng-keyboard-shortcuts-help>
+
+</app-main-nav>

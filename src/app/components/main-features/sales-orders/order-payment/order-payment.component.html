@@ -1,0 +1,120 @@
+<h1 mat-dialog-title>TOTAL CHARGE: {{data?.currency}} {{data?.order?.total_amount | number: '1.2-2'}}</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<form [formGroup]="formGroup" (ngSubmit)="placeOrder(formGroup?.value)">
+  <div mat-dialog-content>
+    <div class="row">
+      <div class="col-8">CHOOSE PAYMENT METHOD</div>
+      <div class="col-4 text-right">
+        <!-- <mat-checkbox [formControl]="splitPayCtrl">SPLIT PAY</mat-checkbox> -->
+      </div>
+    </div>
+
+    <div class="row mlr-0">
+      <div class="col-md-4 payment-method-item-wrapper">
+
+        <input type="radio" id="cash_payment_method" [value]="'CASH'" name="payment_method_input" checked>
+        <label class="payment-method-grid-list-item" for="cash_payment_method"
+          (click)="selectPaymentMethod('CASH', '', '')">
+
+          <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+          <img src="./assets/img/icons/CASH-PAYMENT-01.svg" alt="" class="payment-method-grid-list-item-media">
+          <p class="mb-0 payment-method-grid-list-item-description">CASH</p>
+        </label>
+      </div>
+      <div class="col-md-4 payment-method-item-wrapper">
+
+        <input type="radio" id="credit_payment_method" [value]="paymentMethods?.CREDIT_SALE" name="payment_method_input">
+        <label class="payment-method-grid-list-item" for="credit_payment_method"
+          (click)="selectPaymentMethod(paymentMethods?.CREDIT_SALE, '', '')">
+
+          <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+          <img src="./assets/img/icons/CREDIT PAYMENT-01.svg" alt="" class="payment-method-grid-list-item-media">
+          <p class="mb-0 payment-method-grid-list-item-description">CREDIT</p>
+        </label>
+      </div>
+      <!-- <div class="col-md-4 payment-method-item-wrapper">
+
+        <input type="radio" id="double_checkout_payment_method" [value]="paymentMethods?.DOUBLE_CHECKOUT" name="payment_method_input">
+        <label class="payment-method-grid-list-item" for="double_checkout_payment_method"
+          (click)="selectPaymentMethod(paymentMethods?.DOUBLE_CHECKOUT, '', '')">
+
+          <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+          <img src="./assets/img/icons/CREDIT PAYMENT-01.svg" alt="" class="payment-method-grid-list-item-media">
+          <p class="mb-0 payment-method-grid-list-item-description">DOUBLE CHECKOUT</p>
+        </label>
+      </div> -->
+      <div class="col-md-4 payment-method-item-wrapper">
+
+        <input type="radio" id="electronic_invoice_payment_method" [value]="paymentMethods?.PAYMENT_LINK" name="payment_method_input">
+        <label class="payment-method-grid-list-item" for="electronic_invoice_payment_method"
+          (click)="selectPaymentMethod(paymentMethods?.PAYMENT_LINK, '', '')">
+
+          <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+          <img src="./assets/img/icons/payment_options.svg" alt="" class="payment-method-grid-list-item-media">
+          <p class="mb-0 payment-method-grid-list-item-description">ELECTRONIC INVOICE</p>
+        </label>
+      </div>
+      <div class="col-md-4 payment-method-item-wrapper" *ngIf="currency === currencies.GHS">
+
+        <input type="radio" id="momo_payment_method" [value]="'MOMO'" name="payment_method_input">
+        <label class="payment-method-grid-list-item" for="momo_payment_method"
+          (click)="selectPaymentMethod('MOMO', '', '')">
+
+          <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+          <img src="./assets/img/icons/momo_icon.png" alt="" class="payment-method-grid-list-item-media">
+          <p class="mb-0 payment-method-grid-list-item-description" *ngIf="phone_number?.value !== '' && phone_number?.value !== null && phone_number?.value !== undefined" >{{phone_number?.value}}</p>
+          <p class="mb-0 payment-method-grid-list-item-description" *ngIf="phone_number?.value === '' || phone_number?.value == null || phone_number?.value === undefined" >MOBILE MONEY</p>
+        </label>
+      </div>
+
+      <!-- <div class="col-md-4 payment-method-item-wrapper" *ngIf="currency !== ''">
+        <input type="radio" id="card_payment_method" [value]="'CARD'" name="payment_method_input" (click)="selectPaymentMethod('CARD', '', '')">
+        <label class="payment-method-grid-list-item" for="card_payment_method">
+          <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+          <img src="./assets/img/icons/CARD-PAYMENT-01.svg" alt="" class="payment-method-grid-list-item-media">
+          <p class="mb-0 payment-method-grid-list-item-description">CARD</p>
+        </label>
+      </div> -->
+    </div>
+    <div class="row">
+
+        <mat-form-field class="col-12" *ngIf="paymentMethod !== paymentMethods?.CREDIT_SALE">
+          <span matPrefix>Cash Tendered In ({{data?.currency}})</span>
+          <input type="text" decimalOnly matInput placeholder="Cash Tendered In" formControlName="cash_tendered">
+          <mat-hint class="text-danger"
+            *ngIf="!cash_tendered?.valid && cash_tendered?.touched">Please  enter voucher</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="col-12" *ngIf="paymentMethod !== paymentMethods?.CREDIT_SALE">
+          <span matPrefix>Cash Balance ({{data?.currency}})</span>
+          <input type="text" decimalOnly matInput placeholder="Cash  Balance" readonly [value]="(+data?.order?.total_amount - +cash_tendered?.value) | number: '1.2-2'">
+          <!-- <mat-hint class="text-danger"
+            *ngIf="!cash_tendered?.valid && cash_tendered?.touched">Please  enter voucher</mat-hint> -->
+        </mat-form-field>
+
+        <mat-form-field class="col-12" *ngIf="paymentMethod === paymentMethods?.CREDIT_SALE" >
+          <input type="text" decimalOnly matInput placeholder="Credit Amount Paid" [maxValue]="total_amount?.value" formControlName="credit_amount_paid">
+          <mat-hint class="text-danger"
+            *ngIf="!credit_amount_paid?.valid && credit_amount_paid?.touched">Please enter credit amount paid</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-12" *ngIf="paymentMethod === paymentMethods?.CREDIT_SALE" >
+          <input type="text" decimalOnly matInput placeholder="Next Payment Date" formControlName="next_payment_date">
+          <mat-hint class="text-danger"
+            *ngIf="!next_payment_date?.valid && next_payment_date?.touched">Please enter next payment date</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="col-12" >
+          <input type="text" matInput placeholder="Order Note" formControlName="order_note" alphaNumericOnly>
+          <mat-hint class="text-danger"
+            *ngIf="!order_note?.valid && order_note?.touched">Please enter order note</mat-hint>
+        </mat-form-field>
+</div>
+
+  </div>
+
+  <mat-dialog-actions class="text-right">
+    <button type="button" mat-raised-button (click)="onClose()">CLOSE</button>
+    <button mat-raised-button color="primary" [disabled]="formGroup?.invalid"
+      type="submit">PROCESS ORDER</button>
+  </mat-dialog-actions>
+</form>

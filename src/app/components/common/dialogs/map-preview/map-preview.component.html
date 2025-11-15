@@ -1,0 +1,7 @@
+<agm-map [latitude]="location.latitude" [longitude]="location.longitude" [mapTypeId]="location.mapType" [zoom]="location.zoom" (mapClick)="addMarker($event.coords.lat, $event.coords.lng)">
+  <!-- ... -->
+  <agm-direction
+      [origin]="origin"
+      [destination]="destination"
+  ></agm-direction>
+</agm-map>

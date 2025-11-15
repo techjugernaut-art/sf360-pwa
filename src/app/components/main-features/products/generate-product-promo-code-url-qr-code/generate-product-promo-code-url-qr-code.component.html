@@ -1,0 +1,44 @@
+<h1 mat-dialog-title>Generate Promo Code URL and QR Code</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<div >
+  <div mat-dialog-content>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="row">
+        <mat-form-field class="col-12">
+          <mat-label>Select Promotion</mat-label>
+          <mat-select (selectionChange)="getPromoCodesOfAPromotion($event.value)">
+            <mat-option *ngFor="let item of promos" [value]="item?.id">{{item?.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-12">
+          <mat-label>Select Promo Code</mat-label>
+          <mat-select (selectionChange)="generateQR($event.value)">
+            <mat-option *ngFor="let item of promoCodes" [value]="item?.code">{{item?.code}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-12" appearance="outline">
+          <input type="text" matInput placeholder="URL" readonly [value]="url">
+          <button mat-icon-button matSuffix [cdkCopyToClipboard]="url" (copied)="onCopied($event)"><mat-icon color="primary">content_copy</mat-icon></button>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="col-md-4 text-center" #child>
+      <p class="text-center mb-0 text-darker">Preview QR</p>
+      <div class="text-center" id="divQR">
+        <qrcode *ngIf="url !== ''"  [level]="1" [qrvalue]="url"></qrcode>
+        <p class="text-center promo-code-with-qr mb-0">{{promoCode}}</p>
+      </div>
+      <button *ngIf="url !== ''" mat-icon-button color="primary" (click)="exportAsImage()" ><mat-icon class="mat-18">save</mat-icon></button>
+    </div>
+  </div>
+
+  </div>
+
+  <mat-dialog-actions class="text-right">
+    <button mat-raised-button mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</div>

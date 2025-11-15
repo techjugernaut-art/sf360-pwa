@@ -1,0 +1,40 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"></app-breadcrumb-actions>
+
+  <mat-card class="mt-4">
+    <mat-card-header class="card-header-full-width">
+      <mat-card-title>
+        <mat-form-field  class="full-width" appearance="outline">
+          <span matSuffix><mat-icon >search</mat-icon> &nbsp;</span>
+          <mat-label>Search FAQs</mat-label>
+        <input  matInput  placeholder="Search FAQs" [formControl]="searchFormControl" autocomplete="off">
+      </mat-form-field>
+      </mat-card-title>
+
+    </mat-card-header>
+    <mat-card-content class="ml-3 mr-3">
+      <mat-accordion  class="remove-accordion-shadow">
+        <mat-expansion-panel   *ngFor="let item of helpContents" >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <b>{{item?.title}}</b>
+            </mat-panel-title>
+            <mat-panel-description>
+
+
+            </mat-panel-description>
+
+          </mat-expansion-panel-header>
+          <p>{{item?.content}}</p>
+          <p class="faq-tips"><mat-icon class="mr-1">info</mat-icon> {{item?.tips}}</p>
+        </mat-expansion-panel>
+
+
+
+      </mat-accordion>
+
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>

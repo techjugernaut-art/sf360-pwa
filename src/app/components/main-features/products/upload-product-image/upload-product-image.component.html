@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>{{editProductModalTitle | titlecase}}</h1>
+  <mat-progress-bar mode="indeterminate" *ngIf="isProcessingEditProduct"></mat-progress-bar>
+<div class="new-product-img" mat-dialog-content>
+  <input type="file" class="inputfile" #filePrimaryPicture (change)="uploadImages($event?.target)">
+  <img class="product-img mr-0" [src]="imageUrl | imageUrl" (click)="filePrimaryPicture?.click()" /><br>
+  <a class="cursor-pointer text-primary text-sm product-image-guide" (click)="showImageRequirement()">What image can I upload?</a>
+</div>
+<div class="text-center">
+  <mat-hint class="text-danger" *ngIf="invalidImage">Please upload image with at last 270x270px</mat-hint>
+</div>
+
+<!-- <ngx-dropzone (change)="onSelect($event)" class="mb-2">
+  <ngx-dropzone-label>Drop product images here!</ngx-dropzone-label>
+  <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
+		<ngx-dropzone-label></ngx-dropzone-label>
+	</ngx-dropzone-image-preview>
+</ngx-dropzone> -->
+
+<div class="text-right mt-2">
+  <button mat-raised-button type="button" (click)="onClose()" class="mr-2">Close</button>
+  <button mat-raised-button type="button" color="primary" (click)="updateProduct(editProductFormGroup?.value)" [disabled]="imageUrlCtrl?.invalid || isProcessingEditProduct">{{btnText}}</button>
+
+</div>

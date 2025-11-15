@@ -1,0 +1,16 @@
+<h2 mat-dialog-title  class="text-center notification-heading">Let's help you upload your products
+  <button mat-icon-button [mat-dialog-close]="true" aria-label="Close" class="pull-right remove-outline">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+<mat-dialog-content>
+  <p class="text-mute notification-desc text-center">You requested for a bulk product upload template which we sent to your email.<br>We are here to help you upload your products.</p>
+  <div class="notification-dialog">
+    <img class="notification-img" src="assets/img/icons/cloud.svg"/>
+
+  </div>
+
+</mat-dialog-content>
+<div class="text-center mt-3">
+  <button mat-raised-button (click)="onNotificationAction()"  color="primary">Let's get started</button>
+</div>

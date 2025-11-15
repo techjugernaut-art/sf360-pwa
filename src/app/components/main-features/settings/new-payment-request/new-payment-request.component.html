@@ -1,0 +1,866 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)">
+  </app-breadcrumb-actions>
+  <mat-card  class="mt-4">
+    <mat-card-content>
+      <div class="table-responsive">
+        <mat-horizontal-stepper [linear]="true" #stepper color="primary">
+          <mat-step *ngIf="!isEdit">
+            <ng-template matStepLabel>Requirement Information</ng-template>
+            <p class="text-primary" style="margin-bottom: .5rem;"><b>Select the Country you can receive payment</b></p>
+
+            <div class="row">
+              <mat-button-toggle-group [formControl]="country" style="border: none !important; box-shadow: none;">
+                <div class="col-md-6 text-center">
+                  <div class="mat-button-toggle-center mb-1">
+                    <mat-button-toggle color="primary" style="border-radius: 5% !important; border: 0.5px solid #c0bebe;" [value]="'GH'">
+                      <span>
+                        <img style="width:40px; height: 58px;" src="assets/icons/ghana.svg" alt="">
+                      </span>
+                    </mat-button-toggle>
+                  </div>
+                  <h4>Ghana</h4>
+                </div>
+                <div class="col-md-6 text-center">
+                  <div class="mat-button-toggle-center mb-1">
+                    <mat-button-toggle color="primary" style="border-radius: 5% !important; border: 0.5px solid #c0bebe;" [value]="'NG'">
+                      <span>
+                        <img style="width:40px; height: 58px;" src="assets/icons/nigeria.svg" alt="">
+                      </span>
+                    </mat-button-toggle>
+                  </div>
+                  <h4>Nigeria</h4>
+                </div>
+              </mat-button-toggle-group>
+            </div>
+            <div class="row mb-3">
+              <mat-form-field class="col-md-6">
+                <p class="text-primary" style="margin-bottom: .5rem;"><b>Select Business Category</b></p>
+                <mat-select [formControl]="business">
+                  <mat-option value="SoleProprietorship">Sole Proprietorship</mat-option>
+                  <mat-option value="NonProfitOrganization">Non Profit Organization</mat-option>
+                  <mat-option value="PrivateLimitedLiability">Private Limited Liability</mat-option>
+                  <mat-option value="PublicLimitedLiability">Public Limited Liability</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+              <p class="text-mute">KudiGo will take a maximum of 1 business day to approve your request to start accepting payments on the Storefront App. This will happen after the KYC documents uploaded are verified to be compliant.
+                However, this process might take longer than the expected approval period should the KYC documents be found to be non-compliant. We advise that care be taken in the provision of all the neccessary documents, required of your business type, to minimize delays. </p>
+                <p class="text-mute">
+                  The <b>Business Type</b> selected when providing your <b>Business Information</b> will determine the KYC documents you will have to upload. Below are the Business Types and its required KYC documents.
+                </p>
+                <p class="text-mute">
+                  <b>NB: </b>The primary forms of individual identity verification include:
+                </p>
+                <ul class="">
+                  <li>Valid international passport</li>
+                  <li>Valid driver’s license</li>
+                  <li>National I.D. Card</li>
+                  <li>Permanent Voter’s Card</li>
+                </ul>
+                <div class="" *ngIf="business?.value == 'SoleProprietorship'">
+                  <h4 class="text-primary">Sole Proprietorship</h4>
+                  <p class="text-mute">
+                    Registered Business Names; e.g. (Sole Proprietorship, Partnership)
+                  </p>
+                  <ol type="i" >
+                    <li>Certificate of Registration of the business</li>
+                    <li *ngIf="country?.value == 'NG'">Certified True Copy of CAC/BN/1 (Application for Registration of Business Name)</li>
+                    <li *ngIf="country?.value == 'NG'">Certified True Copy of CAC/BN/1 (Application for Registration of Business Name)</li>
+                    <li *ngIf="country?.value == 'NG'">Valid Identification document of registered Proprietor(s) or Partnership(s)</li>
+                    <li>Utility Bill; </li>
+                    <li *ngIf="country?.value == 'NG'">Special Control Unit against Money Laundering (SCUML) certificate (where applicable)</li>
+                  </ol>
+                </div>
+
+                <div class="" *ngIf="business?.value == 'NonProfitOrganization'">
+                  <h4 class="text-primary">Non Profit Organization</h4>
+                  <p class="text-mute">
+                    Charities, Religious Associations, Clubs, Schools, NGOs, Societies & Associations
+                  </p>
+                  <ol type="i">
+                    <li>Certificate of Registration of the Charity/Society/Club/School</li>
+                    <li>Cooperative registration certificate obtained from government registration body (for cooperative societies only)</li>
+                    <li>Certified true copies of Rules/Constitution of the Association or Club or association</li>
+                    <li>Resolution (or minutes of last meeting) authorizing the establishment of business relationship with Interswitch on the letter headed paper, duly signed by at least two principal officers/Trustees and nominating signatories/authorizers</li>
+                    <li>Requisite government approval/gazette in relation to schools</li>
+                    <li>Utility bill</li>
+                    <li>Valid IDs of nominated authorizers; and</li>
+                    <li *ngIf="country?.value == 'NG'">SCUML registration certificate with the exception of Religious Organizations</li>
+                  </ol>
+                </div>
+                <div class="" *ngIf="business?.value == 'PrivateLimitedLiability'">
+                  <h4 class="text-primary">Private Limited Liability</h4>
+                  <p class="text-mute">
+                    Private Limited Liability Company
+                  </p>
+                  <ol type="i">
+                    <li>Certificate of Incorporation of the company and</li>
+                    <li>Memorandum and Articles of Association [certified as true copy by the Registrar of Companies] and</li>
+                    <li>Form CAC 7 (formerly CO7 - Particulars of Directors) certified as a true copy by the Registrar of Companies and;</li>
+                    <li>Form CAC 2. (formerly CO2-statement of return on allotment of shares) certified as a true copy by the Registrar of Companies and; OR</li>
+                    <li>Certified True Copy of Form CAC 1.1 (Application for Registration of Company) for companies registered in 2017 (Post CAC reform)</li>
+                    <li>Board resolution (signed by at least two Directors or a Director and Company Secretary) authorizing the relationship and introducing representatives/authorizers of future change</li>
+                    <li>Utility Bill;</li>
+                    <li>Valid Identification Documents of all the major shareholder with 5% holding and above;</li>
+                    <li *ngIf="country?.value == 'NG'">Operating license (where applicable) for company operating in Nigeria and regulated by the CBN (e.g. Bureau De Change, Payment Solution Service Providers (PSSPs), Mobile Money Operators (MMO), International Money Transfer Operators (IMTOs), Lottery /Gaming etc.)</li>
+                  </ol>
+                </div>
+                <div class="" *ngIf="business?.value == 'PublicLimitedLiability'">
+                  <h4 class="text-primary">Public Limited Liability</h4>
+                  <p class="text-mute">
+                    Public Limited Liability Company
+                  </p>
+                  <ol type="i">
+                    <li>Certificate of Incorporation of the company and;</li>
+                    <li>Memorandum and Articles of Association [certified as true copy by the Registrar of Companies] and;</li>
+                    <li>Certified list of major shareholder(s) with 5% holding and above;</li>
+                    <li>Board resolution (signed by at least two Directors or a Director and Company Secretary) authorizing the relationship and introducing representatives /authorizers of future change</li>
+                    <li>Evidence of listing on the stock exchange (where applicable); and</li>
+                    <li>Operating license (where applicable)</li>
+                  </ol>
+                </div>
+                <div class="text-right">
+                  <button mat-raised-button matStepperNext type="button" color="primary">Proceed</button>
+                </div>
+          </mat-step>
+          <mat-step [stepControl]="businessInformationFormGroup">
+            <form [formGroup]="businessInformationFormGroup">
+              <ng-template matStepLabel>Business Information</ng-template>
+
+              <div class="row">
+                <mat-form-field class="col-md-4">
+
+                  <mat-label >Select Shop <b class="text-danger">*</b> </mat-label>
+                  <mat-select formControlName="shop_id" (selectionChange)="getPaymentRequests($event.value)">
+                    <mat-option *ngFor="let item of myShops" [value]="item?.id">{{item?.business_name}}</mat-option>
+                  </mat-select>
+                  <mat-icon matSuffix popoverTitle="Shop" class="cursor-pointer"
+                  ngbPopover="This is the name of the shop registered on StoreFront"
+                  triggers="mouseenter:mouseleave" placement="bottom">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please select Shop
+                  </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-label >Business Name <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="business_name">
+                  <mat-icon matSuffix popoverTitle="Business Name" class="cursor-pointer"
+                  ngbPopover="This is the name of your business as stated on all legal documents"
+                  triggers="mouseenter:mouseleave" placement="bottom">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!business_name?.valid && business_name?.touched">Please provide
+                    Business Name</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix popoverTitle="Business Registration Number" class="cursor-pointer"
+                  ngbPopover="This is the number registered on your business documents"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-label >Business Registration Number <b class="text-danger">*</b> </mat-label>
+                  <input matInput
+                    formControlName="business_registration_number">
+                  <mat-hint class="text-danger"
+                    *ngIf="!business_registration_number?.valid && business_registration_number?.touched">Please
+                    provide Business Reg Number</mat-hint>
+                </mat-form-field>
+
+              </div>
+              <div class="row">
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix popoverTitle="Trade Name" class="cursor-pointer"
+                  ngbPopover="This is the how you prefer your business to be called"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <input matInput formControlName="trading_name" placeholder="Trade Name">
+                  <mat-hint class="text-danger" *ngIf="!trading_name?.valid && trading_name?.touched">Please provide
+                    Trade Name</mat-hint>
+
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix  popoverTitle="Registered Business Address"
+                  ngbPopover="Place of residence under which the business is registered"
+                  triggers="mouseenter:mouseleave" placement="left" class="cursor-pointer">help</mat-icon>
+                  <mat-label>Registered Business Address  <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="business_address">
+                  <mat-hint class="text-danger" *ngIf="!business_address?.valid && business_address?.touched">Please
+                    provide Registered Address</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix  popoverTitle="Business State of Residence"
+                  ngbPopover="This is the place where you operate your business from"
+                  triggers="mouseenter:mouseleave" placement="left" class="cursor-pointer">help</mat-icon>
+                  <mat-label >Business State of Residence <b class="text-danger">*</b> </mat-label>
+                  <input matInput
+                    formControlName="business_state_of_residence">
+                  <mat-hint class="text-danger"
+                    *ngIf="!business_state_of_residence?.valid && business_state_of_residence?.touched">Please
+                    provide Business State of Residence</mat-hint>
+                </mat-form-field>
+
+              </div>
+              <div class="row">
+                <mat-form-field class="col-md-4">
+                  <mat-label >TIN <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="tin">
+                  <mat-icon matSuffix popoverTitle="TIN" class="cursor-pointer"
+                  ngbPopover="This is your business Tax Identification Number"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!tin?.valid && tin?.touched">Please provide
+                    TIN</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-label>Select Business Type <b class="text-danger">*</b> </mat-label>
+                  <mat-select formControlName="business_type">
+                    <mat-option *ngFor="let item of businessTypes" [value]="item?.id">{{item?.name}}</mat-option>
+                  </mat-select>
+                  <mat-icon matSuffix popoverTitle="Business Type" class="cursor-pointer"
+                  ngbPopover="This is the legal business form under which you operate. This information determines the KYC documents you will need to upload."
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!business_type?.valid && business_type?.touched">Please provide
+                    Business Type</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4">
+                  <mat-label>Select Business Category  <b class="text-danger">*</b> </mat-label>
+                  <mat-select formControlName="business_category">
+                    <mat-option *ngFor="let item of businessCategories" [value]="item?.id">{{item?.name}}</mat-option>
+                  </mat-select>
+                  <mat-icon matSuffix popoverTitle="Business Category" class="cursor-pointer"
+                  ngbPopover="This is the industry in which you operate"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!business_category?.valid && business_category?.touched">Please
+                    provide Business Category</mat-hint>
+                </mat-form-field>
+
+              </div>
+              <div class="row">
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix  popoverTitle="Reseller Code"
+                  ngbPopover="This is the code of the person who helped you set up your shop on StoreFront"
+                  triggers="mouseenter:mouseleave" placement="left" class="cursor-pointer">help</mat-icon>
+                  <input matInput placeholder="Reseller Code" formControlName="reseller_code">
+                  <mat-hint class="text-danger" *ngIf="!reseller_code?.valid && reseller_code?.touched">Please
+                    provide Reseller Code</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="text-right">
+                <button mat-raised-button matStepperNext
+                  [disabled]="businessInformationFormGroup?.invalid">Next</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="primaryContactInformationFormGroup">
+            <form [formGroup]="primaryContactInformationFormGroup">
+              <ng-template matStepLabel>Contact Information</ng-template>
+
+
+              <h3 class="text-dark">Primary Information</h3>
+              <div class="row">
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix  popoverTitle="Primary Contact Name"
+                  ngbPopover="This is the name of the person (admin) who set up the shop on StoreFront"
+                  triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon>
+                  <mat-label >Primary Contact Name <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="primary_contact_name">
+                  <mat-hint class="text-danger" *ngIf="!primary_contact_name?.valid && primary_contact_name?.touched">
+                    Please provide Contact Name</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix  popoverTitle="Primary Contact Email"
+                  ngbPopover="This is the personal email address of the shop owner"
+                  triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon>
+                  <mat-label >Primary Contact Email <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="primary_contact_email">
+                  <mat-hint class="text-danger" *ngIf="!primary_contact_email?.valid && primary_contact_email?.touched">
+                    Please provide Valid Email
+                  </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+
+                  <!-- <span (click)="onPhoneCodeCliked()" style="cursor: pointer;" class="pr-1" matPrefix>{{primaryContactPhoneCode}}</span> -->
+                  <app-intl-country-codes matPrefix (countryCodeSelected)="onPhoneCodeCliked($event)">
+                  </app-intl-country-codes>
+                  <mat-label >Primary Contact Phone <b class="text-danger">*</b> </mat-label>
+                  <input type="tel" matInput formControlName="primary_contact_phone"
+                    >
+                    <mat-icon matSuffix  popoverTitle="Primary Contact Phone"
+                    ngbPopover="This is the personal phone number of the shop owner"
+                    triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon>
+
+                  <mat-hint class="text-danger" *ngIf="!primary_contact_phone?.valid && primary_contact_phone?.touched">
+                    Please provide Contact
+                    Phone</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Primary Picture <b class="text-danger">*</b>
+                   <mat-icon  popoverTitle="Primary Picture"
+                    ngbPopover="This is the original image of the shop owner"
+                    triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #filePrimaryPicture
+                  (change)="uploadDocs($event.target, primary_contact_picture, 'previewPrimaryPicture')">
+                  <img class="img-responsive" [class.img-bg-spinner]="primary_contact_picture?.value === state"
+                    id="previewPrimaryPicture" (click)="filePrimaryPicture?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!primary_contact_picture?.valid">Please upload Primary
+                    Picture</mat-hint>
+                  <input type="hidden" formControlName="primary_contact_picture">
+                </div>
+              </div>
+
+
+              <h3 class="text-dark mt-4">Secondary Information</h3>
+              <div class="row">
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix  popoverTitle="Secondary Contact Name"
+                  ngbPopover="This could be the name of a business partner, or a shop agent"
+                  triggers="mouseenter:mouseleave" placement="left" class="cursor-pointer">help</mat-icon>
+                  <mat-label >Secondary Contact Name <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="secondary_contact_name">
+                  <mat-hint class="text-danger"
+                    *ngIf="!secondary_contact_name?.valid && secondary_contact_name?.touched">Please provide Contact
+                    Name</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix  popoverTitle="Secondary Contact Email"
+                  ngbPopover="This could be the email address of the business, a partner or a shop agent"
+                  triggers="mouseenter:mouseleave" placement="left" class="cursor-pointer">help</mat-icon>
+                  <mat-label >Secondary Contact Email <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="secondary_contact_email">
+                  <mat-hint class="text-danger"
+                    *ngIf="!secondary_contact_email?.valid && secondary_contact_email?.touched">Please provide Valid
+                    Email</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <app-intl-country-codes matPrefix (countryCodeSelected)="onSecondaryPhoneCodeCliked($event)">
+                  </app-intl-country-codes>
+                  <mat-label >Secondary Contact Phone <b class="text-danger">*</b> </mat-label>
+                  <input type="tel" matInput formControlName="secondary_contact_phone"
+                    >
+                    <mat-icon matSuffix  popoverTitle="Secondary Contact Phone"
+                    ngbPopover="This could be the phone number of the business, a partner or a shop agent"
+                    triggers="mouseenter:mouseleave" placement="left" class="cursor-pointer">help</mat-icon>
+                  <mat-hint class="text-danger"
+                    *ngIf="!secondary_contact_phone?.valid && secondary_contact_phone?.touched">Please provide Contact
+                    Phone</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Secondary Picture <b class="text-danger">*</b>
+                    <mat-icon  popoverTitle="Secondary Picture"
+                     ngbPopover="This could be the image of the the partner, or shop agent"
+                     triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileSecondaryPicture
+                  (change)="uploadDocs($event.target, secondary_contact_picture, 'previewSecondaryPicture')">
+                  <img class="img-responsive" [class.img-bg-spinner]="secondary_contact_picture?.value === state"
+                    id="previewSecondaryPicture" (click)="fileSecondaryPicture?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!secondary_contact_picture?.valid">Please upload
+                    Secondary Picture</mat-hint>
+                  <input type="hidden" formControlName="secondary_contact_picture">
+                </div>
+              </div>
+              <div class="text-right">
+                <button mat-raised-button class="mr-3" matStepperPrevious>Back</button>
+                <button mat-raised-button matStepperNext
+                  [disabled]="primaryContactInformationFormGroup?.invalid">Next</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="buinessRegInformationFormGroup">
+            <form [formGroup]="buinessRegInformationFormGroup">
+              <ng-template matStepLabel>Business Reg Information</ng-template>
+
+              <div class="row">
+                <div class="col-md-6" *ngIf="country?.value === 'GH'">
+                  <label>Certificate of Incorporation <b class="text-danger">*</b>
+                    <mat-icon  popoverTitle="Certificate of Incorporation"
+                     ngbPopover="This is a copy of your legal document given to you as a limited liability company"
+                     triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #filecertificateOfIncorporation
+                  (change)="uploadDocs($event.target, certificate_of_incorporation, 'previewCertificateOfIncorporation')">
+                  <img class="img-responsive" [class.img-bg-spinner]="certificate_of_incorporation?.value === state"
+                    id="previewCertificateOfIncorporation" (click)="filecertificateOfIncorporation?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!certificate_of_incorporation?.valid">Please upload Certificate
+                    of Incorporation</mat-hint>
+                  <input type="hidden" formControlName="certificate_of_incorporation">
+                </div>
+                <div class="col-md-6" *ngIf="country?.value === 'GH'">
+                  <label>Certificate of Commencement <b class="text-danger">*</b>
+                    <mat-icon  popoverTitle="Certificate of Commencement"
+                     ngbPopover="This is the legal document of when your business started operations"
+                     triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #filecertificateOfCommencement
+                  (change)="uploadDocs($event.target, certificate_of_commencement, 'previewCertificateOfCommencement')">
+                  <img class="img-responsive" [class.img-bg-spinner]="certificate_of_commencement?.value === state"
+                    id="previewCertificateOfCommencement" (click)="filecertificateOfCommencement?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!certificate_of_commencement?.valid">Please upload Certificate of
+                    Commencement</mat-hint>
+                  <input type="hidden" formControlName="certificate_of_commencement">
+                </div>
+
+              </div>
+              <div class="row mlr-0 mt-3">
+                <div class="col-md-6">
+                  <label>Picture of National ID <b class="text-danger">*</b>
+                    <mat-icon  popoverTitle="Picture of National ID"
+                     ngbPopover="This could be a copy of your passport, voter’s ID or any other national identification card"
+                     triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileNationalIdPicture
+                  (change)="uploadDocs($event.target, national_id_picture, 'previewNationalIdPicture')">
+                  <img class="img-responsive" [class.img-bg-spinner]="national_id_picture?.value === state"
+                    id="previewNationalIdPicture" (click)="fileNationalIdPicture?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!national_id_picture?.valid">Please upload National ID</mat-hint>
+                  <input type="hidden" formControlName="national_id_picture">
+                </div>
+                <div class="col-md-6">
+                  <label>Recent Utility Bill <b class="text-danger">*</b> <mat-icon  popoverTitle="Recent Utility Bill"
+                    ngbPopover="This could be the receipt of water or an electricity bill, a copy of your tenancy agreement, or a bank statement"
+                    triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileUtilityBill
+                  (change)="uploadDocs($event.target, recent_utility_bill, 'previewUtilityBill')">
+                  <img class="img-responsive" [class.img-bg-spinner]="recent_utility_bill?.value === state" id="previewUtilityBill"
+                    (click)="fileUtilityBill?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!recent_utility_bill?.valid">Please upload Utility Bill
+                  </mat-hint>
+                  <input type="hidden" formControlName="recent_utility_bill">
+                </div>
+              </div>
+
+
+
+              <div class="text-right">
+                <button mat-raised-button class="mr-3" matStepperPrevious>Back</button>
+                <button mat-raised-button matStepperNext
+                  [disabled]="buinessRegInformationFormGroup?.invalid">Next</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="companyDocumentationFormGroup" *ngIf="country?.value === 'NG'">
+            <form [formGroup]="companyDocumentationFormGroup">
+              <ng-template matStepLabel>Company Documentation</ng-template>
+
+              <div class="row" *ngIf="business_type?.value === 'Sole Proprietorship' || business_type?.value === 'Partnership'">
+                <div class="col-md-4">
+                  <label>Certificate of Registration <b class="text-danger">*</b> <mat-icon  popoverTitle="Certificate of Registration" ngbPopover="Certificate of Registration of the business"
+                    triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon> </label><br>
+                  <input type="file" class="inputfile" #fileCertificateOfRegistration
+                    (change)="uploadDocs($event.target, certificate_of_registration, 'previewCertificateOfRegistration')">
+                  <img class="img-responsive" [class.img-bg-spinner]="certificate_of_registration?.value === state"
+                    id="previewCertificateOfRegistration" (click)="fileCertificateOfRegistration?.click()"/>
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!certificate_of_registration?.valid">Please upload Certificate
+                    of Registration</mat-hint>
+                  <input type="hidden" formControlName="certificate_of_registration">
+                </div>
+                <div class="col-md-4" *ngIf="country?.value == 'NG'">
+                  <label>Certified True Copy of CAC/BN/1 <b class="text-danger">*</b> <mat-icon  popoverTitle="Certified True Copy of CAC/BN/1"
+                    ngbPopover="Certified True Copy of CAC/BN/1 (Application for Registration of Business Name)"
+                    triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon> </label><br>
+                  <input type="file" class="inputfile" #fileCACBN
+                    (change)="uploadDocs($event.target, cac_bn, 'previewCACBN')">
+                  <img class="img-responsive" [class.img-bg-spinner]="cac_bn?.value === state" id="previewCACBN"
+                    (click)="fileCACBN?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!cac_bn?.valid">Please upload Certified True Copy of CAC/BN/1
+                  </mat-hint>
+                  <input type="hidden" formControlName="cac_bn">
+                </div>
+                <div class="col-md-4" *ngIf="business_type?.value === 'Partnership'">
+                  <label>Partnership Agreement <b class="text-danger">*</b> <mat-icon  popoverTitle="Partnership Agreement"
+                    ngbPopover="Certified true copy of Partnership Agreement/Deed certified (for Partnerships)"
+                    triggers="mouseenter:mouseleave" placement="bottom"  class="cursor-pointer">help</mat-icon> </label><br>
+                  <input type="file" class="inputfile" #filePartnershipAgreement
+                    (change)="uploadDocs($event.target, partnership_agreement, 'previewPartnershipAgreement')">
+                  <img class="img-responsive" [class.img-bg-spinner]="partnership_agreement?.value === state"
+                    id="previewPartnershipAgreement" (click)="filePartnershipAgreement?.click()"
+                    />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!partnership_agreement?.valid">Please upload Partnership
+                    Agreement</mat-hint>
+                  <input type="hidden" formControlName="partnership_agreement">
+                </div>
+              </div>
+
+              <div class="row mt-4"
+                *ngIf="country.value == 'NG' && business_type?.value === 'Sole Proprietorship' || business_type?.value === 'Partnership'">
+                <div class="col-md-4">
+                  <label>Valid Proprietor/Partnership <br/> Registration Document <b class="text-danger">*</b> <mat-icon  popoverTitle="Valid Propritor/Partnership Registration Document"
+                    ngbPopover="Valid Identification document of registered Proprietor(s) or Partnership(s)"
+                    triggers="mouseenter:mouseleave" placement="right" class="cursor-pointer">help</mat-icon> </label><br>
+                  <input type="file" class="inputfile" #fileValidRegisteredProprietorsOrPartnershipsIdDoc
+                    (change)="uploadDocs($event.target, valid_registered_proprietors_or_partnerships_id_doc, 'previewValidRegisteredProprietorsOrPartnershipsIdDoc')">
+                  <img class="img-responsive"
+                    [class.img-bg-spinner]="valid_registered_proprietors_or_partnerships_id_doc?.value === state"
+                    id="previewValidRegisteredProprietorsOrPartnershipsIdDoc"
+                    (click)="fileValidRegisteredProprietorsOrPartnershipsIdDoc?.click()"/>
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!valid_registered_proprietors_or_partnerships_id_doc?.valid">
+                    Please upload Valid Proprietor/Partnership Reg Document</mat-hint>
+                  <input type="hidden" formControlName="valid_registered_proprietors_or_partnerships_id_doc">
+                </div>
+                <div class="col-md-4">
+                  <label>SCUML Certificate <mat-icon  popoverTitle="Valid Propritor/Partnership Registration Document"
+                    ngbPopover="Valid Identification document of registered Proprietor(s) or Partnership(s)"
+                    triggers="mouseenter:mouseleave" placement="right" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileScumlCertificate
+                    (change)="uploadDocs($event.target, scuml_certificate, 'previewScumlCertificate')">
+                  <img class="img-responsive" [class.img-bg-spinner]="scuml_certificate?.value === state"
+                    id="previewScumlCertificate" (click)="fileScumlCertificate?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!scuml_certificate?.valid">Please upload SCUML Certificate
+                  </mat-hint>
+                  <input type="hidden" formControlName="scuml_certificate">
+                </div>
+              </div>
+              <div class="row" *ngIf="business_type?.value === 'Non profit organization'">
+                <div class="col-md-4" *ngIf="country?.value == 'NG'">
+                  <label>SCUML Certificate <mat-icon  popoverTitle="Valid Propritor/Partnership Registration Document"
+                    ngbPopover="SCUML registration certificate with the exception of Religious Organizations"
+                    triggers="mouseenter:mouseleave" placement="right" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileScumlCertificate
+                    (change)="uploadDocs($event.target, scuml_certificate, 'previewScumlCertificate')">
+                  <img class="img-responsive" [class.img-bg-spinner]="scuml_certificate?.value === state"
+                    id="previewScumlCertificate" (click)="fileScumlCertificate?.click()"/>
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!scuml_certificate?.valid">Please upload SCUML Certificate
+                  </mat-hint>
+                  <input type="hidden" formControlName="scuml_certificate">
+                </div>
+                <div class="col-md-4">
+                  <label>NGO Registration Certificate <b class="text-danger">*</b> <mat-icon  popoverTitle="NGO Registration Certificate"
+                    ngbPopover="Certificate of Registration of the Charity/Society/Club/School"
+                    triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileNgoRCertificate
+                    (change)="uploadDocs($event.target, ngo_reg_certificate, 'previewNgoRCertificate')">
+                  <img class="img-responsive" [class.img-bg-spinner]="ngo_reg_certificate?.value === state"
+                    id="previewNgoRCertificate" (click)="fileNgoRCertificate?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!ngo_reg_certificate?.valid">Please upload NGO Registration
+                    Certificate</mat-hint>
+                  <input type="hidden" formControlName="ngo_reg_certificate">
+                </div>
+                <div class="col-md-4">
+                  <label>Cooperative Registration Certificate <b class="text-danger">*</b> <mat-icon  popoverTitle="Cooperative Registration Certificate"
+                    ngbPopover="Cooperative registration certificate obtained from government registration body (for cooperative societies only)"
+                    triggers="mouseenter:mouseleave" placement="bottom"  class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileCooperativeRegistrationCertificate
+                    (change)="uploadDocs($event.target, cooperative_registration_certificate, 'previewCooperativeRegistrationCertificate')">
+                  <img class="img-responsive"
+                    [class.img-bg-spinner]="cooperative_registration_certificate?.value === state"
+                    id="previewCooperativeRegistrationCertificate"
+                    (click)="fileCooperativeRegistrationCertificate?.click()"/>
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!cooperative_registration_certificate?.valid">Please upload
+                    Cooperative Registration Certificate</mat-hint>
+                  <input type="hidden" formControlName="cooperative_registration_certificate">
+                </div>
+              </div>
+              <div class="row mt-4" *ngIf="business_type?.value === 'Non profit organization'">
+
+                <div class="col-md-4">
+                  <label>Certified copies of Association Constitution <b class="text-danger">*</b> <mat-icon  popoverTitle="Certified copies of Association Constitution"
+                    ngbPopover="Certified true copies of Rules/Constitution of the Association or Club or association"
+                    triggers="mouseenter:mouseleave" placement="right"  class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileCertifiedCopiesOfAssociationConstitution
+                    (change)="uploadDocs($event.target, certified_copies_of_association_constitution, 'previewCertifiedCopiesOfAssociationConstitution')">
+                  <img class="img-responsive"
+                    [class.img-bg-spinner]="certified_copies_of_association_constitution?.value === state"
+                    id="previewCertifiedCopiesOfAssociationConstitution"
+                    (click)="fileCertifiedCopiesOfAssociationConstitution?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!certified_copies_of_association_constitution?.valid">Please
+                    upload Certified copies of Association Constitution</mat-hint>
+                  <input type="hidden" formControlName="certified_copies_of_association_constitution">
+                </div>
+                <div class="col-md-4">
+                  <label>Resolution Authorizing Business Establishment <b class="text-danger">*</b> <mat-icon  popoverTitle="Resolution Authorizing Business Establishment"
+                    ngbPopover="Resolution (or minutes of last meeting) authorizing the establishment of business relationship with Interswitch on the letter headed paper, duly signed by at least two principal officers/Trustees and nominating signatories/authorizers"
+                    triggers="mouseenter:mouseleave" placement="bottom"  class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileResolutionAuthorizingBusinessEstablishment
+                    (change)="uploadDocs($event.target, resolution_authorizing_business_establishment, 'previewResolutionAuthorizingBusinessEstablishment')" />
+                  <img class="img-responsive"
+                    [class.img-bg-spinner]="resolution_authorizing_business_establishment?.value === state"
+                    id="previewResolutionAuthorizingBusinessEstablishment"
+                    (click)="fileResolutionAuthorizingBusinessEstablishment?.click()"/>
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!resolution_authorizing_business_establishment?.valid">Please
+                    upload Resolution Authorizing Business Establishment</mat-hint>
+                  <input type="hidden" formControlName="resolution_authorizing_business_establishment">
+                </div>
+                <div class="col-md-4">
+                  <label>Requisite Government Approval/Gazette <b class="text-danger">*</b> <mat-icon   popoverTitle="Requisite Government Approval/Gazette"
+                    ngbPopover="Requisite government approval/gazette in relation to schools"
+                    triggers="mouseenter:mouseleave" placement="bottom"  class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileRequisiteGovernmentApprovalOrGazette
+                    (change)="uploadDocs($event.target, requisite_government_approval_or_gazette, 'previewRequisiteGovernmentApprovalOrGazette')">
+                  <img class="img-responsive"
+                    [class.img-bg-spinner]="requisite_government_approval_or_gazette?.value === state"
+                    id="previewRequisiteGovernmentApprovalOrGazette"
+                    (click)="fileRequisiteGovernmentApprovalOrGazette?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!requisite_government_approval_or_gazette?.valid">Please upload
+                     Requisite Government Approval/Gazette</mat-hint>
+                  <input type="hidden" formControlName="requisite_government_approval_or_gazette">
+                </div>
+              </div>
+
+              <div class="row"
+                *ngIf="business_type?.value === 'Public Limited Liability' || business_type?.value === 'Private Limited Liability'">
+
+                <div class="col-md-4">
+                  <label>Memorandum and Articles of Association <b class="text-danger">*</b> <mat-icon ngbPopover="Memorandum and Articles of Association [certified as true copy by the Registrar of Companies]"
+                    triggers="mouseenter:mouseleave" popoverTitle="Memorandum and Articles of Association"
+                    placement="right"  class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileMemorandumAndArticlesOfAssociation
+                    (change)="uploadDocs($event.target, memorandum_and_articles_of_association, 'previewMemorandumAndArticlesOfAssociation')">
+                  <img class="img-responsive"
+                    [class.img-bg-spinner]="memorandum_and_articles_of_association?.value === state"
+                    id="previewMemorandumAndArticlesOfAssociation"
+                    (click)="fileMemorandumAndArticlesOfAssociation?.click()"
+                     />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!memorandum_and_articles_of_association?.valid">Please upload
+                    Memorandum and Articles of Association</mat-hint>
+                  <input type="hidden" formControlName="memorandum_and_articles_of_association">
+                </div>
+                <div class="col-md-4">
+                  <label>Board resolution (signed by at least two Directors) <b class="text-danger">*</b> <mat-icon ngbPopover="Board resolution (signed by at least two Directors or a Director and Company Secretary) authorizing the relationship and introducing representatives/authorizers of future change"
+                    triggers="mouseenter:mouseleave" popoverTitle="Board resolution (signed by at least two Directors)"
+                    placement="bottom"   class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileBoardResolution
+                    (change)="uploadDocs($event.target, board_resolution, 'previewBoardResolution')" />
+                  <img class="img-responsive" [class.img-bg-spinner]="board_resolution?.value === state"
+                    id="previewBoardResolution" (click)="fileBoardResolution?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!board_resolution?.valid">Please upload Board Resolution
+                  </mat-hint>
+                  <input type="hidden" formControlName="board_resolution">
+                </div>
+
+                <div class="col-md-4">
+                  <label>IDs of Shareholders with at least 5% holding <b class="text-danger">*</b> <mat-icon popoverTitle="IDs of Shareholders with at least 5% holding"
+                    ngbPopover="Valid Identification Documents of all the major shareholder with 5% holding and above"
+                    triggers="mouseenter:mouseleave" placement="bottom"   class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileShareholdersValidID
+                    (change)="uploadDocs($event.target, shareholders_valid_id, 'previewShareholdersValidID')" />
+                  <img class="img-responsive" [class.img-bg-spinner]="shareholders_valid_id?.value === state"
+                    id="previewShareholdersValidID" (click)="fileShareholdersValidID?.click()"
+                    />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!shareholders_valid_id?.valid">Please upload Shareholders' IDs
+                  </mat-hint>
+                  <input type="hidden" formControlName="shareholders_valid_id">
+                </div>
+
+
+              </div>
+
+              <div class="row  mt-4" *ngIf="business_type?.value === 'Private Limited Liability'">
+                <!-- private limited -->
+                <div class="col-md-4">
+                  <label>Form CAC 7  <b class="text-danger">*</b> <mat-icon popoverTitle="Form CAC 7"
+                    ngbPopover="Form CAC 7 (formerly CO7 - Particulars of Directors) certified as a true copy by the Registrar of Companies"
+                    triggers="mouseenter:mouseleave" placement="right" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileFormCAC7
+                    (change)="uploadDocs($event.target, form_cac_7, 'previewFormCAC7')" />
+                  <img class="img-responsive" [class.img-bg-spinner]="form_cac_7?.value === state" id="previewFormCAC7"
+                    (click)="fileFormCAC7?.click()"  />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!form_cac_7?.valid">Please upload Form CAC 7</mat-hint>
+                  <input type="hidden" formControlName="form_cac_7">
+                </div>
+                <div class="col-md-4">
+                  <label>Form CAC 2  <mat-icon popoverTitle="Form CAC 2"
+                    ngbPopover="Form CAC 2. (formerly CO2-statement of return on allotment of shares) certified as a true copy by the Registrar of Companies and; OR You can upload Form CAC 1.1 (Next attachement) instead"
+                    triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileFormCAC2
+                    (change)="uploadDocs($event.target, form_cac_2, 'previewFormCAC2')" />
+                  <img class="img-responsive" [class.img-bg-spinner]="form_cac_2?.value === state" id="previewFormCAC2"
+                    (click)="fileFormCAC2?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!form_cac_2?.valid">Please upload Form CAC 2</mat-hint>
+                  <input type="hidden" formControlName="form_cac_2">
+                </div>
+                <div class="col-md-4">
+                  <label>Certified True Copy of Form CAC 1.1 <mat-icon popoverTitle="Certified True Copy of Form CAC 1.1"
+                    ngbPopover="Certified True Copy of Form CAC 1.1 (Application for Registration of Company) for companies registered in 2017 (Post CAC reform)"
+                    triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileFormCAC11
+                    (change)="uploadDocs($event.target, form_cac_1_1, 'previewFormCAC11')">
+                  <img class="img-responsive" [class.img-bg-spinner]="form_cac_1_1?.value === state"
+                    id="previewFormCAC11" (click)="fileFormCAC11?.click()"/>
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!form_cac_1_1?.valid">Please upload Certified True Copy of Form
+                    CAC 1.1</mat-hint>
+                  <input type="hidden" formControlName="form_cac_1_1">
+                </div>
+                <!-- private limited -->
+
+              </div>
+
+              <div class="row  mt-4">
+
+
+                <div class="col-md-4"
+                  *ngIf="business_type?.value === 'Public Limited Liability' || business_type?.value === 'Private Limited Liability'">
+                  <label>Operating License <b class="text-danger">*</b> <mat-icon popoverTitle="Operating License"
+                    ngbPopover="Operating license (where applicable) for company operating in Nigeria and regulated by the CBN (e.g. Bureau De Change, Payment Solution Service Providers (PSSPs), Mobile Money Operators (MMO), International Money Transfer Operators (IMTOs), Lottery /Gaming etc.)."
+                    triggers="mouseenter:mouseleave" placement="right" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileOperatingLicense
+                    (change)="uploadDocs($event.target, operating_license, 'previewOperatingLicense')" />
+                  <img class="img-responsive" [class.img-bg-spinner]="operating_license?.value === state"
+                    id="previewOperatingLicense" (click)="fileOperatingLicense?.click()"
+                     />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!operating_license?.valid">Please upload Operating License
+                  </mat-hint>
+                  <input type="hidden" formControlName="operating_license">
+                </div>
+                <!-- public limited -->
+                <div class="col-md-4" *ngIf="business_type?.value === 'Public Limited Liability'">
+                  <label>Evidence of listing on the stock exchange <mat-icon popoverTitle="Evidence of listing on the stock exchange"
+                    ngbPopover="Evidence of listing on the stock exchange (where applicable)"
+                    triggers="mouseenter:mouseleave" placement="bottom"  class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileEvidenceOfListingOnTheStockExchange
+                    (change)="uploadDocs($event.target, evidence_of_listing_on_the_stock_exchange, 'previewEvidenceOfListingOnTheStockExchange')">
+                  <img class="img-responsive"
+                    [class.img-bg-spinner]="evidence_of_listing_on_the_stock_exchange?.value === state"
+                    id="previewEvidenceOfListingOnTheStockExchange"
+                    (click)="fileEvidenceOfListingOnTheStockExchange?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!evidence_of_listing_on_the_stock_exchange?.valid">Please upload
+                    Evidence of listing on the stock exchange</mat-hint>
+                  <input type="hidden" formControlName="evidence_of_listing_on_the_stock_exchange">
+                </div>
+                <!-- public limited -->
+              </div>
+
+
+              <div class="text-right">
+                <button mat-raised-button class="mr-3" matStepperPrevious>Back</button>
+                <button mat-raised-button matStepperNext
+                  [disabled]="companyDocumentationFormGroup?.invalid">Next</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="bankInformationFormGroup">
+            <form [formGroup]="bankInformationFormGroup" (ngSubmit)="onSubmitPaymetRequest()">
+              <ng-template matStepLabel>Payment Method Information</ng-template>
+              <div class="row mb-2" *ngIf="country?.value == 'GH'">
+                <mat-radio-group color="primary" class="col-md-4" formControlName="prefered_payment_method">
+                  <mat-radio-button [value]="preferedPaymentMethods?.MOMO" class="mr-3">MOMO Settlement</mat-radio-button>
+                  <mat-radio-button [value]="preferedPaymentMethods?.BANK">Bank Settlement</mat-radio-button>
+                </mat-radio-group>
+
+              </div>
+              <h3 class="text-dark" *ngIf="country?.value == 'NG' || prefered_payment_method?.value === preferedPaymentMethods?.BANK">Bank Information</h3>
+              <div class="row" *ngIf="country?.value == 'NG' || prefered_payment_method?.value === preferedPaymentMethods?.BANK">
+                <mat-form-field class="col-md-4">
+
+                  <mat-label >Bank Name <b class="text-danger">*</b> </mat-label>
+                  <mat-select formControlName="bank_name">
+                    <mat-option *ngFor="let item of banks" [value]="item?.name">{{item?.name}}</mat-option>
+                  </mat-select>
+                  <mat-icon matSuffix matSuffix popoverTitle="Bank Name" class="cursor-pointer"
+                  ngbPopover="This is the name of the bank that receives payment from your business"
+                  triggers="mouseenter:mouseleave" placement="right">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!bank_name?.valid && bank_name?.touched">Please provide
+                    Bank Name</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-label >Bank Branch <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="bank_branch">
+                  <mat-icon matSuffix popoverTitle="Bank Branch" class="cursor-pointer"
+                  ngbPopover="This should be the branch where you opened your bank account"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!bank_branch?.valid && bank_branch?.touched">Please provide
+                    Bank Branch</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-label >Bank Account Name <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="bank_account_name">
+                  <mat-icon matSuffix popoverTitle="Bank Account Name" class="cursor-pointer"
+                  ngbPopover="This is the correct name that represents your account"
+                  triggers="mouseenter:mouseleave" placement="right">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!bank_account_name?.valid && bank_account_name?.touched">
+                    Please provide Bank Account Name</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="row" *ngIf="country?.value == 'NG' || prefered_payment_method?.value === preferedPaymentMethods?.BANK">
+
+                <mat-form-field class="col-md-4">
+                  <mat-label >Bank Account Number <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="bank_account_number">
+                  <mat-icon matSuffix popoverTitle="Bank Account Number" class="cursor-pointer"
+                  ngbPopover="This is the correct number that represents your account"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!bank_account_number?.valid && bank_account_number?.touched">
+                    Please provide Bank Account Number</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-label>Select Account Type <b class="text-danger">*</b> </mat-label>
+                  <mat-select formControlName="account_type">
+                    <mat-option *ngFor="let item of accountTypes" [value]="item?.id">{{item?.name}}</mat-option>
+                  </mat-select>
+                  <mat-icon matSuffix popoverTitle="Account Type" class="cursor-pointer"
+                  ngbPopover="This is where you indicate if your account is savings or current"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!account_type?.valid && account_type?.touched">Please provide
+                    Account Type</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4" *ngIf="country?.value === 'NG'">
+                  <mat-label >BVN <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="bvn">
+                  <mat-icon matSuffix popoverTitle="BVN" class="cursor-pointer"
+                  ngbPopover="This should be your unique 11 digit Bank Verification Number"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!bvn?.valid && bvn?.touched">Please provide BVN</mat-hint>
+                </mat-form-field>
+              </div>
+
+              <h3 class="text-dark" *ngIf="country?.value == 'GH' && prefered_payment_method?.value === preferedPaymentMethods?.MOMO">Mobile Money Information</h3>
+              <div class="row" *ngIf="country?.value == 'GH' && prefered_payment_method?.value === preferedPaymentMethods?.MOMO">
+                <mat-form-field class="col-md-4">
+                  <mat-label>Mobile Money Number <b class="text-danger">*</b> </mat-label>
+                  <input matInput placeholder="Mobile Money Number" formControlName="mobile_money_number"
+                    >
+                    <mat-icon matSuffix popoverTitle="Mobile Money Number" class="cursor-pointer"
+                    ngbPopover="This is the correct number with which you receive payments"
+                    triggers="mouseenter:mouseleave" placement="right">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!mobile_money_number?.valid && mobile_money_number?.touched">
+                    Please provide
+                    Mobile Money Number</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-label>Select Mobile Network <b class="text-danger">*</b></mat-label>
+                  <mat-select formControlName="mobile_money_network">
+                    <mat-option *ngFor="let item of mobileMoneyNetworks" [value]="item?.id">{{item?.name}}</mat-option>
+                  </mat-select>
+                  <mat-icon matSuffix popoverTitle="Mobile Network" class="cursor-pointer"
+                  ngbPopover="This where you indicate your mobile network provider"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!mobile_money_network?.valid && mobile_money_network?.touched">
+                    Please provide Mobile Money Network</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="text-right">
+                <button mat-raised-button class="mr-3" matStepperPrevious>Back</button>
+                <button mat-raised-button color="primary" [disabled]="isProcessing"
+                  type="submit">Submit Request</button>
+              </div>
+            </form>
+          </mat-step>
+
+        </mat-horizontal-stepper>
+      </div>
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>

@@ -1,0 +1,84 @@
+<h1 mat-dialog-title>{{editStockModalTitle}}</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup?.value)">
+  <div mat-dialog-content>
+
+    <div class="row">
+      <mat-form-field class="col-12">
+        <mat-label>Select Shop</mat-label>
+        <mat-select formControlName="shop_id">
+          <mat-option *ngFor="let item of myShops" [value]="item?.id">{{item?.business_name}}</mat-option>
+        </mat-select>
+        <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please select Shop</mat-hint>
+      </mat-form-field>
+    </div>
+    <!-- <div class="row">
+      <div class="col-md-12 my-2">
+        <label>Promo Template Type</label><br>
+        <mat-button-toggle-group color="primary" class="mat-toggle-buttons-adjustment" formControlName="promo_template_type">
+          <mat-button-toggle color="primary" [value]="promoTemplatesTypes?.GENERAL_SHOP_CODE" >{{promoTemplatesTypes?.GENERAL_SHOP_CODE | removeUnderScore}}
+          </mat-button-toggle>
+          <mat-button-toggle color="primary" [value]="promoTemplatesTypes?.PRODUCTS_SPECIFIC_CODE">{{promoTemplatesTypes?.PRODUCTS_SPECIFIC_CODE | removeUnderScore}}
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div> -->
+    <div class="row my-2">
+      <mat-form-field class="col-12">
+        <input type="text" matInput placeholder="Promo Name" formControlName="name">
+        <mat-hint class="text-danger" *ngIf="!name?.valid && name?.touched">Please enter Promo Name</mat-hint>
+      </mat-form-field>
+    </div>
+    <!-- <div class="row" *ngIf="promo_template_type?.value === promoTemplatesTypes?.PRODUCTS_SPECIFIC_CODE">
+      <div class="col-12 mb-3 mt-2">
+        <app-multi-select-dropdown [placeholder]="'Select Products'" [data]="dropdownList"
+          [settings]="dropdownSettings" formControlName="product_ids" (onFilterChange)="onFilterChange($event)">
+        </app-multi-select-dropdown>
+      </div>
+    </div> -->
+    
+    <div class="row">
+      <mat-form-field class="col-12">
+        <mat-label>Select Promo Type</mat-label>
+        <mat-select formControlName="promo_type" >
+          <mat-option [value]="promoTypes?.DISCOUNTED_PRODUCTS">Discounted Sales</mat-option>
+        </mat-select>
+        <mat-hint class="text-danger" *ngIf="!promo_type?.valid && promo_type?.touched">Please select Promo Type</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 mb-2 mt-2">
+        <label>Promo Code Usage</label><br>
+        <mat-button-toggle-group color="primary" class="mat-toggle-buttons-adjustment" formControlName="code_usage_type">
+          <mat-button-toggle color="primary" [value]="promoCodeUsageTypes?.SINGLE" >UNIQUE CODE FOR EACH CUSTOMER
+          </mat-button-toggle>
+          <mat-button-toggle color="primary" [value]="promoCodeUsageTypes?.MULTIPLE">1 CODE FOR MULTIPLE CUSTOMERS
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+    <div class="row" >
+      <mat-form-field class="col-md-6">
+        <input type="text" matInput placeholder="Start Date" formControlName="start_date"
+          [ngxMatDatetimePicker]="startDatePicker" (focus)="startDatePicker?.open()">
+        <mat-hint class="text-danger" *ngIf="!start_date?.valid && start_date?.touched">Please enter Start
+          Date</mat-hint>
+        <ngx-mat-datetime-picker #startDatePicker [showSeconds]="true"></ngx-mat-datetime-picker>
+      </mat-form-field>
+      <mat-form-field class="col-md-6">
+        <input type="text" matInput placeholder="End Date" formControlName="end_date"
+          [ngxMatDatetimePicker]="endDatePicker" (focus)="endDatePicker?.open()">
+        <mat-hint class="text-danger" *ngIf="!end_date?.valid && end_date?.touched">Please enter End Date
+        </mat-hint>
+        <ngx-mat-datetime-picker #endDatePicker [showSeconds]="true"></ngx-mat-datetime-picker>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <mat-dialog-actions class="text-right">
+    <button mat-raised-button mat-dialog-close>Close</button>
+    <button mat-raised-button color="primary" [disabled]="formGroup?.invalid || isProcessing"
+      type="submit">Save</button>
+  </mat-dialog-actions>
+</form>

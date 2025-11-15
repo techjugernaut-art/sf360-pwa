@@ -1,0 +1,16 @@
+<div >
+  <h1 mat-dialog-title>Barcodes for {{product?.name}}</h1>
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup?.value)" class="full-width">
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <input type="text" matInput placeholder="Number of barcodes to generate" formControlName="number_of_barcodes" decimalOnly>
+      <mat-hint class="text-danger" *ngIf="!number_of_barcodes?.valid && number_of_barcodes?.touched">Please enter Number of barcodes to generate
+      </mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="text-right">
+    <button mat-raised-button type="button" (click)="onClose()" class="mr-2" >Close</button>
+    <button mat-raised-button color="primary" [disabled]="formGroup?.invalid" type="submit">Print</button>
+  </div>
+</form>
+</div>

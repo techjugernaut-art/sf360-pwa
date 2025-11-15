@@ -1,0 +1,17 @@
+<div class="sales-nav-items">
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <span class="business_name hide-shop-name-md">{{shop?.business_name}} <i class="fe fe-chevrons-down mt-2"></i>
+    </span>
+    <mat-icon class="switch-shop-icon" >store</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item class="remove-outline" (click)="onChangeActiveShop()">
+      <mat-icon aria-label="Switch Shop" title="Switch Shop">storefront</mat-icon>
+      <span>Switch Shop</span>
+    </button>
+    <button mat-menu-item class="remove-outline">
+      <mat-icon title="Refresh Product">autorenew</mat-icon>
+      <span>Refresh Products</span>
+    </button>
+  </mat-menu>
+</div>

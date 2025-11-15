@@ -1,0 +1,141 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+
+  <mat-card>
+
+    <mat-card-content class="ml-3 mr-3">
+      <div class="row mlr-0">
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup?.value)" class="col-12">
+          <div class="new-product-img" >
+            <img class="product-img new-product-sm-img mr-0" [class.img-bg-spinner]="isProcessingImageUpload" [src]="imageUrl"
+              (click)="changeLogo()" />
+            <input type="hidden" formControlName="logo">
+          </div>
+          <div class="row mlr-0">
+
+            <mat-form-field class="col-md-12">
+              <mat-label>Business Name <b class="text-danger">*</b> </mat-label>
+              <mat-icon matSuffix popoverTitle="Business Name" class="cursor-pointer"
+                ngbPopover="This is the name of your business as stated on all legal documents"
+                triggers="mouseenter:mouseleave" placement="bottom">info</mat-icon>
+              <input matInput formControlName="business_name" alphaNumericOnly >
+              <mat-hint class="text-danger" *ngIf="!business_name?.valid && business_name?.touched">Please provide
+                valid Business Name</mat-hint>
+            </mat-form-field>
+
+            
+          </div>
+          <div class="row mlr-0">
+
+
+            <mat-form-field class="col-md-6">
+              <mat-label>Business Registration Number </mat-label>
+              <mat-icon matSuffix popoverTitle="Business Registration Number" class="cursor-pointer"
+                ngbPopover="This is the number registered on your business documents" triggers="mouseenter:mouseleave"
+                placement="bottom">info</mat-icon>
+              <input matInput formControlName="business_registration_number" alphaNumericOnly>
+              <mat-hint class="text-danger"
+                *ngIf="!business_registration_number?.valid && business_registration_number?.touched">Please
+                provide Business Registration Number</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+              <mat-label>Business Owner <b class="text-danger">*</b> </mat-label>
+              <mat-icon matSuffix popoverTitle="Business Owner" class="cursor-pointer"
+                ngbPopover="This is the name of the Business Owner" triggers="mouseenter:mouseleave" placement="left">
+                info</mat-icon>
+              <input matInput formControlName="administration_name" alphabetsOnly>
+              <mat-hint class="text-danger" *ngIf="!administration_name?.valid && administration_name?.touched">Please
+                provide Business Owner</mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="row mlr-0">
+
+
+            <mat-form-field class="col-md-6">
+              <mat-label>Select Business Type</mat-label>
+              <mat-select formControlName="business_type">
+                <mat-option *ngFor="let item of allIndustries;" [value]="item?.name">{{item?.name}}</mat-option>
+              </mat-select>
+              <mat-hint class="text-danger" *ngIf="!business_type?.valid && business_type?.touched">Please
+                provide Business Type</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+              <mat-label>Referral Code </mat-label>
+              <mat-icon matSuffix popoverTitle="Referral Code" class="cursor-pointer"
+                ngbPopover="This is the Referral Code of anyone who referred you to StoreFront." triggers="mouseenter:mouseleave" placement="left">
+                info</mat-icon>
+              <input matInput formControlName="referral_code" alphaNumericOnly>
+              <mat-hint class="text-danger" *ngIf="!referral_code?.valid && referral_code?.touched">Please
+                provide Referral Code</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="row mlr-0">
+
+
+            <mat-form-field class="col-md-6">
+              <mat-label>Select Currency</mat-label>
+              <mat-select formControlName="currency">
+                <mat-option value="GHS">GHS</mat-option>
+                <mat-option value="NGN">NGN</mat-option>
+                <mat-option value="USD">USD</mat-option>
+                <mat-option value="EUR">EUR</mat-option>
+                <mat-option value="GBP">GBP</mat-option>
+                <mat-option value="ZAR">ZAR</mat-option>
+                <mat-option value="CHF">CHF</mat-option>
+                <mat-option value="KES">KES</mat-option>
+              </mat-select>
+              <mat-hint class="text-danger" *ngIf="!currency?.valid && currency?.touched">Please
+                provide Currency</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+              <mat-label>Return Policy Days </mat-label>
+              <mat-icon matSuffix popoverTitle="Return Policy Days" class="cursor-pointer"
+                ngbPopover="Indicate the number of days in which items sold
+                Can be returned to the shop" triggers="mouseenter:mouseleave" placement="left">
+                info</mat-icon>
+              <input matInput formControlName="return_policy_days">
+              <mat-hint class="text-danger" *ngIf="!return_policy_days?.valid && return_policy_days?.touched">Please
+                provide Return Policy Days</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="row mlr-0">
+
+
+            <mat-form-field class="col-md-6">
+              <mat-label>Tax Number </mat-label>
+              <mat-icon matSuffix popoverTitle="Tax Number" class="cursor-pointer"
+                ngbPopover="This is the Tax Identification Number of your business" triggers="mouseenter:mouseleave"
+                placement="bottom">info</mat-icon>
+              <input matInput formControlName="tax_number" alphaNumericOnly>
+              <mat-hint class="text-danger"
+                *ngIf="!tax_number?.valid && tax_number?.touched">Please
+                provide Tax Number</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6">
+              <mat-label>VAT Number </mat-label>
+              <mat-icon matSuffix popoverTitle="VAT Number r" class="cursor-pointer"
+                ngbPopover="This is the VAT Number of your business" triggers="mouseenter:mouseleave" placement="left">
+                info</mat-icon>
+              <input matInput formControlName="vat_number" alphaNumericOnly>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <button mat-raised-button color="primary" type="submit" class="pull-right"
+    [disabled]="formGroup?.invalid || isProcessing">SAVE</button>
+          </div>
+
+        </form>
+       </div>
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>

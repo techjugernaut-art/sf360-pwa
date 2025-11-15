@@ -1,0 +1,62 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+
+  <mat-card class="mt-4">
+
+    <mat-card-content class="ml-3 mr-3">
+      <h3>Current Premium Plan: 
+        <span *ngIf="currentPremiumPlan" class="text-primary">{{currentPremiumPlan?.name}} @ {{currentPremiumPlan?.currency}} {{currentPremiumPlan?.amount_to_show_on_app}}</span>
+        <span *ngIf="onFreeTrial === true && currentPremiumPlan === null" class="text-primary">You are on Free Trial, Choose any Subscription below</span>
+      </h3>
+      <h3 *ngIf="currentPremiumPlan" class="text-primary">Due Renewal on: {{shopInfo?.days_left | subscriptionRenewalDate}}</h3>
+    </mat-card-content>
+
+  </mat-card>
+  <div class="pricing-container">
+    <div class="row pricing-wrapper">
+      <div class="col-sm-12 col-md-6 col-xl-4" *ngFor="let item of premiumPlans">
+        <div class="pricing-item">
+          <h5 class="pricing__title"> {{item?.name}}</h5>
+          <!-- <h3 class="mb-3">{{item?.name}}</h3> -->
+          <div class="pricing__price">
+            <span class="pricing__currency">{{item?.currency}} </span><span>{{item?.amount_to_show_on_app}}</span>
+            <span class="pricing__time"> /{{item?.number_of_months}} month(s)</span>
+          </div>
+          <button class="full-width btn__secondary py-3" (click)="payPremiumNow(item)">PAY NOW</button>
+          <div class="pricing__list list-items list-items-layout2 list-unstyled" style="padding: 0.5rem">
+            <p [innerHTML]="item?.description"> </p>
+          </div>
+          <!-- <ul class="pricing__list list-items list-items-layout2 list-unstyled" style="padding: 0.5rem" *ngFor="let list of itemDescriptions">
+            <li><img class="w-22 pb-3" src="assets/img/icons/check.png"><b [innerHTML]="item?.description"></b> </li>
+          </ul> -->
+        </div>
+      </div>
+    </div> 
+  </div>
+  <!-- <div class="pricing-bg-gradient">
+    <div class="row ">
+      <div class="col-xl-4 col-lg-6 col-md-6 col-12" *ngFor="let item of premiumPlans">
+        <div class="princing-item green">
+          <div class="pricing-divider ">
+            <h3 class="text-white font-weight-600">{{item?.name}}</h3>
+            <h4 class="my-0 display-4 text-white font-weight-normal mb-3">
+              <span class="h3 font-weight-600 font-size-30">{{item?.currency}} {{item?.amount_to_show_on_app}} </span>
+            </h4>
+            <img class='pricing-divider-img' src="assets/img/icons/sms-pricing.svg" alt="">
+          </div>
+          <div class="bg-white mt-0 pb-4 shadow px-1rem">
+            <ul class="list-unstyled mb-4 position-relative">
+              <li><b [innerHTML]="item?.description"> {{item?.description}}</b> </li>
+            </ul>
+            <div class="text-center">
+              <button class="full-width"  mat-raised-button color="primary" (click)="payPremiumNow(currentPremiumPlan)">PAY
+                NOW</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+</app-main-nav>

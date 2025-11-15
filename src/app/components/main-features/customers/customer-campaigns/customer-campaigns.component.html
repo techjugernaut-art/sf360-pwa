@@ -1,0 +1,152 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)">
+    <div mainAction>
+      <button mat-raised-button *ngIf="!isPartner" [routerLink]="['/customers/new-campaign']" color="accent">NEW
+        CAMPAIGN</button>
+
+    </div>
+  </app-breadcrumb-actions>
+  <section class="content">
+    <div class="row">
+      <div class="col-xl-3 col-md-6 col-12">
+        <mat-card class="cursor-pointer" (click)="toList()">
+            <p class="text-fade mb-2">Campaigns Sent </p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h2 class="campaign-count">{{campaignOverview?.num_of_campaigns}}</h2>
+                <!-- <p class="mb-0 font-13 text-success"><i class="bx bxs-up-arrow align-middle"></i>34 Since last week</p> -->
+              </div>
+              <div class="campaigns-icons bg-light-success">
+                <img src="assets/img/icons/megaphone-primary.svg" alt="icon">
+              </div>
+            </div>
+        </mat-card>
+      </div>
+      <div class="col-xl-3 col-md-6 col-12">
+        <mat-card class="cursor-pointer" (click)="toList()">
+            <p class="text-fade mb-2">SMS Campaigns </p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h2 class="campaign-count">{{campaignOverview?.sms_campaigns}}</h2>
+                <!-- <p class="mb-0 font-13 text-success"><i class="bx bxs-up-arrow align-middle"></i>34 Since last week</p> -->
+              </div>
+              <div class="campaigns-icons bg-lighter-blue">
+                <img src="assets/img/icons/sms-speech-bubble.svg" alt="icon">
+              </div>
+            </div>
+        </mat-card>
+      </div>
+      <div class="col-xl-3 col-md-6 col-12">
+        <mat-card class="cursor-pointer" (click)="toList()">
+            <p class="text-fade mb-2">Email Campaigns </p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h2 class="campaign-count">{{campaignOverview?.email_campaigns}}</h2>
+                <!-- <p class="mb-0 font-13 text-success"><i class="bx bxs-up-arrow align-middle"></i>34 Since last week</p> -->
+              </div>
+              <div class="campaigns-icons bg-light-blue">
+                <img src="assets/img/icons/email.svg" alt="icon">
+              </div>
+            </div>
+        </mat-card>
+      </div>
+      <div class="col-xl-3 col-md-6 col-12">
+        <mat-card class="cursor-pointer" [routerLink]="['/customers/sms-credit']">
+            <div class="mb-2 d-flex justify-content-between align-items-center">
+              <div class="text-fade mb-0">
+                SMS Credit 
+              </div>
+              <div>
+                <a class="campaign-sms-topup" *ngIf="!isPartner">Top Up</a>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h2 class="campaign-count-no-primary-text">
+                  <span class="text-primary" *ngIf="campaignOverview?.sms_credit_remaining >=1">{{campaignOverview?.sms_credit_remaining}}</span>
+                  <span class="text-danger" *ngIf="campaignOverview?.sms_credit_remaining <=0">{{campaignOverview?.sms_credit_remaining}}</span>
+                </h2>                
+                <!-- <p class="mb-0 font-13 text-success"><i class="bx bxs-up-arrow align-middle"></i>34 Since last week</p> -->
+              </div>
+              <div class="campaigns-icons bg-light-warning">
+                <img src="assets/img/icons/sms.svg" alt="icon">
+              </div>
+            </div>
+        </mat-card>
+      </div>
+    </div>
+  </section>
+  <section class="content">
+    <div class="row">
+      <div class="col-12">
+        <div class="campaign-overview-heading">Customers Campaigns Graph Overview</div>
+      </div>
+    </div>
+    <div class="row" style="display: flex; justify-content: space-between;">
+      <!-- ColumnChart -->
+      <div class=" col-xl-12 col-lg-12 mb-3">
+        <div class="box-campaign overview-graph">
+          <div *ngIf="smsCampaignsGraph?.length >0 || emailCampaignsGraph?.length >0">
+            <google-chart #chart [title]="title" [type]="type" [data]="graphData" [columnNames]="columnNames"
+            [options]="options" [width]="'100%'" [height]="height">
+          </google-chart>
+          </div>
+         
+          <div class="pt-4" *ngIf="!isProcessing && smsCampaignsGraph?.length <=0 && emailCampaignsGraph?.length <=0">
+            <app-empty-record></app-empty-record>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <mat-card>
+      <app-table-header-actions [tableHeaderOptions]="tableHeaderOption" (searchTextChanged)="onSearch($event)">
+        <!-- <h3>SMS Credit Remaining: </h3> -->
+      </app-table-header-actions>
+
+      <div class="table-responsive" id="list">
+        <table class="table dataTable no-footer table-border-bottom">
+          <thead>
+            <tr role="row">
+              <th class="wd-15p">Title</th>
+              <th class="wd-15p">Campaign Type</th>
+              <th class="wd-15p">Received out of Recipient</th>
+              <th class="wd-15p">Shop</th>
+              <th class="wd-15p">DATE CREATED</th>
+              <th class="wd-25p text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!isProcessing && customerCampaigns?.length <= 0">
+              <td colspan="10" class="text-center">
+                <app-empty-record></app-empty-record>
+              </td>
+            </tr>
+            <tr *ngFor="let campaign of customerCampaigns">
+              <td>{{campaign?.title}}</td>
+              <td>{{campaign?.campaign_type}}</td>
+              <td>{{campaign?.num_of_received_recipients}} out of {{campaign?.num_of_total_recipients}}</td>
+              <td>{{campaign?.myshop?.business_name}}</td>
+              <td>{{campaign?.date_created | date: 'medium'}}</td>
+
+              <td class="text-center">
+                <button mat-icon-button (click)="viewCampaign(campaign)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <app-pagination [dataSet]="customerCampaigns" [nextPage]="nextPage" [prevPage]="prevPage" [totalPage]="totalPage"
+        [requestPayload]="requestPayload" [requestMethod]="'POST'" (pageChanged)="onPageChanged($event)"
+        [isProcessing]="isProcessing"></app-pagination>
+
+  </mat-card>
+
+</app-main-nav>

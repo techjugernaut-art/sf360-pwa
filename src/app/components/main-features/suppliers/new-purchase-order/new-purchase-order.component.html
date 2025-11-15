@@ -1,0 +1,215 @@
+<app-main-nav [isProcessing]="isProcessing">
+    <h3 class="my-4">{{modalTitle}}</h3>
+    <div class="container">
+        <div class="row " style="display: flex; justify-content: center; overflow-y: auto;">
+            <div class="col-md-10 mb-4 bg-white p-4">
+                <div class="p-3">
+                    <form [formGroup]="purchaseOrderFormGroup">
+                        <div class="row mb-2">
+                            <div class="col-md-6 invoice-detail">
+                                <div class="card mr-40">
+                                    <div class="card-body" style="padding: 0.85rem;">
+                                        <div class="empty-customer-info my-2" *ngIf="!selectedShop && !isProcessing">
+                                            <div (click)="onSelectShop()" class="cursor-pointer">
+                                                <span class="btn-primary-rounded"> <i class="fe fe-plus plus-fe-lg"></i>
+                                                </span><span>Add
+                                                    Shop</span>
+                                            </div>
+                                        </div>
+                                        <div class="purchase-order" *ngIf="selectedShop">
+                                            <h3 class="sub-heading">
+                                                Company
+                                            </h3>
+                                            <span class="customer-wrapper my-2">
+                                                <h4 class="mb-0 detail"><strong>{{selectedShop?.business_name |
+                                                        titlecase}}</strong>
+                                                    <span class="pull-right">
+                                                        <i class="fe fe-edit text-primary cursor-pointer"
+                                                            title="Change Shop" (click)="onSelectShop()"></i>
+                                                        <span class="mx-3 text-danger cursor-pointer" title="Remove Shop"
+                                                            (click)="onDeleteShop()">X</span>
+                                                    </span>
+                                                </h4>
+                                                <p class="mb-0 detail" *ngIf="selectedShop?.phone_number">Phone No:
+                                                    {{selectedShop?.contact_number}}</p>
+                                                <p class="mb-0 detail" *ngIf="selectedShop?.email">Email:
+                                                    {{selectedShop?.email}}</p>
+                                                <p class="mb-0 detail" *ngIf="selectedShop?.location">Address:
+                                                    {{selectedShop?.location}}</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="purchase-order">
+                                    <h1 class="purchase-order-heading pull-right">
+                                        Purchase order
+                                    </h1>
+                                    <span class="mr-2 mt-4 font-weight-600">Purchase Order Date: </span>{{invoiceDate | date: 'MMM dd, yyyy'}}
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6 invoice-detail ">
+                                <div class="card mr-40">
+                                    <div class="card-body" style="padding: 0.85rem;">
+                                        <div class="empty-customer-info my-2"
+                                            *ngIf="!selectedSupplier && !isProcessing">
+                                            <div (click)="onSelectSupplier()" class="cursor-pointer">
+                                                <span class="btn-primary-rounded"> <i class="fe fe-plus plus-fe-lg"></i>
+                                                </span><span>Add
+                                                    Supplier</span>
+                                            </div>
+                                        </div>
+                                        <div class="purchase-order" *ngIf="selectedSupplier">
+                                            <h3 class="sub-heading">
+                                                Supplier
+                                            </h3>
+                                            <span class="customer-wrapper my-2">
+                                                <h4 class="mb-0 detail"><strong>{{selectedSupplier?.name |
+                                                        titlecase}}</strong>
+                                                    <span class="pull-right">
+                                                        <i class="fe fe-edit text-primary cursor-pointer"
+                                                            title="Change Supplier" (click)="onSelectSupplier()"></i>
+                                                        <span class="mx-3 text-danger cursor-pointer"
+                                                            title="Remove Supplier" (click)="onDeleteSupplier()">X</span>
+                                                    </span>
+                                                </h4>
+                                                <!-- <p class="mb-0 detail">Supplier Group: {{selectedSupplier?.category?.name | titlecase}}</p> -->
+                                                <p class="mb-0 detail" *ngIf="selectedSupplier?.phone_number">Phone No:
+                                                    {{selectedSupplier?.phone_number}}</p>
+                                                <p class="mb-0 detail" *ngIf="selectedSupplier?.email">Email:
+                                                    {{selectedSupplier?.email}}</p>
+                                                <p class="mb-0 detail" *ngIf="selectedSupplier?.physical_address">Address:
+                                                    {{selectedSupplier?.physical_address}}</p>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <div class="purchase-order">
+                                    <h3 class="sub-heading">
+                                        Shiping Address
+                                    </h3>
+                                    <div class="body-text">
+                                        <!-- <mat-radio-group color="primary" class="col-md-4" formControlName="is_same_shipping_address">
+                                            <mat-radio-button value="false" class="mr-3">Use Different Location</mat-radio-button>
+                                            <mat-radio-button value="true">Same Location</mat-radio-button>
+                                          </mat-radio-group> -->
+                                        <span class="customer-wrapper my-2" *ngIf="selectedShop">
+                                            <h4 class="mb-0"><strong>{{selectedShop?.business_name |
+                                                    titlecase}}</strong>
+                                            </h4>
+                                            <p class="mb-0" *ngIf="selectedShop?.phone_number">Phone No:
+                                                {{selectedShop?.contact_number}}</p>
+                                            <!-- <p class="mb-0" *ngIf="selectedShop?.email">Email:
+                                                {{selectedShop?.email}}</p> -->
+                                            <p class="mb-0">{{selectedShop?.location}}
+                                            </p>
+                                            <!-- <mat-form-field *ngIf="is_same_shipping_address.value === false">
+                                                <mat-label>Enter Address</mat-label>
+                                                <input matInput placeholder="Eg: 123 Avenue St, Accra, Ghana">
+                                            </mat-form-field> -->
+                                        </span>
+                                        <div class="fs-13">
+                                            Order will be delivered to this address
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table m-t-30 text-nowrap table-border-bottom invoice-table">
+                                        <thead class="thead-primary">
+                                            <tr>
+                                                <th class="wd-80">Srl #</th>
+                                                <th>Name</th>
+                                                <th>Quantity</th>
+                                                <th>Price</th>
+                                                <th class="text-right">Total ({{selectedProduct?.currency}})</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody formArrayName="item_list">
+                                            <tr class="tbody-wrapper"
+                                                *ngFor="let item of item_list.controls; let i=index" [formGroup]="item">
+                                                <td class="wd-80">{{i+1}}</td>
+                                                <td>
+                                                    <mat-form-field (click)="onSelectProduct(i)">
+                                                        <mat-label>Product Name</mat-label>
+                                                        <input matInput readonly formControlName="name">
+                                                        <mat-hint class="text-danger"
+                                                            *ngIf="!item?.get('name')?.valid && item?.get('name')?.touched">
+                                                            Please enter Product Name
+                                                        </mat-hint>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field>
+                                                        <mat-label>Quantity</mat-label>
+                                                        <input matInput formControlName="quantity" decimalOnly>
+                                                        <mat-hint class="text-danger"
+                                                            *ngIf="!item?.get('quantity')?.valid && item?.get('quantity')?.touched">
+                                                            Please enter Quantity
+                                                        </mat-hint>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td>
+                                                    <mat-form-field>
+                                                        <mat-label>Unit Price </mat-label>
+                                                        <span class="mr-2"
+                                                            matPrefix>{{selectedProduct?.currency}}</span>
+                                                        <input matInput formControlName="supplier_price" readonly>
+                                                        <mat-hint class="text-danger"
+                                                            *ngIf="!item?.get('supplier_price')?.valid && item?.get('supplier_price')?.touched">
+                                                            Please enter Selling Price
+                                                        </mat-hint>
+                                                    </mat-form-field>
+                                                </td>
+                                                <td class="text-right"><b>{{item?.get('quantity')?.value *
+                                                        item?.get('supplier_price')?.value}}</b></td>
+                                                <span class="icon-hover">
+                                                    <span>
+                                                        <i class="fe fe-edit text-primary cursor-pointer mr-3"
+                                                            (click)="onSelectProduct(i)"></i>
+                                                    </span>
+                                                    <span class="text-danger cursor-pointer"
+                                                        (click)="deleteItemList(i)"><b>X</b></span>
+                                                </span>
+                                            </tr>
+                                            <tr class="full-width" style="border: none;">
+                                                <td style="border: none;">
+                                                    <span class=" cursor-pointer" (click)="addItemList()">
+                                                        <span class="btn-primary-rounded" style="padding: 4px 3px 0px">
+                                                            <i class="fe fe-plus plus-fe-lg"></i>
+                                                        </span>
+                                                        <span class="cursor-pointer">Add Item</span>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="pull-right mt-4">
+                                    <button mat-button mat-raised-button type="button" [routerLink]="['/purchase-orders']"
+                                        class="mx-2">Back</button>
+                                    <button mat-button mat-raised-button color="primary"
+                                        [disabled]="!purchaseOrderFormGroup.valid" (click)="onViewSubmitOrder()"
+                                        class="mx-2">Preview & Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-main-nav>

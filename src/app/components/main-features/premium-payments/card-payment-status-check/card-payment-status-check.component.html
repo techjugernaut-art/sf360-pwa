@@ -1,0 +1,43 @@
+<h1 mat-dialog-title *ngIf="paymentMethod == 'MOMO' && !isProcessingTransaction" >{{networkName}} PAYMENT</h1>
+<h1 mat-dialog-title *ngIf="paymentMethod == 'CARD' && !isProcessingTransaction">CARD PAYMENT</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing && !isProcessingTransaction"></mat-progress-bar>
+
+<div *ngIf="isProcessingTransaction">
+  <div mat-dialog-content>
+    <div class="text-center" *ngIf="isProcessing" ><img class="spinner-img " src="assets/img/icons/spinner.svg"></div>
+    <p class="confirm-order-payment-heading">
+      We are waiting on you
+    </p>
+    <p class="confirm-order-payment-heading-desc">Kindly follow the instructions bellow, and do note to not refresh or leave
+      this page. <br> This might take up to 2 mins</p>
+    <div>
+      <p class="" *ngIf="paymentMethod == 'MOMO' && paymentNetwork === 'VOD'">
+        Dial <b>*110#</b> and select option <b>6</b> to generate your voucher code
+      </p>
+      <p class="" *ngIf="paymentMethod == 'MOMO' && paymentNetwork === 'AIR'">
+        Check your phone for prompt to approve payment
+      </p>
+      <p class="order-payment-instruction-desc" *ngIf="paymentMethod == 'MOMO' && paymentNetwork === 'MTN'">
+        You will receive a prompt on your mobile number to enter your PIN to authorize your payment request. <br>
+        If you do not receive the prompt within 10 seconds follow the following instructions:</p>
+
+      <ol class="order-payment-instruction-desc" *ngIf="paymentMethod == 'MOMO' && paymentNetwork === 'MTN'">
+        <li>Dial *170# to see the main MTN USSD menu</li>
+        <li>If the prompt appears instead, cancel it and dial *170# again</li>
+        <li>Choose 6) My Wallet</li>
+        <li>Choose 3) My Approvals</li>
+        <li>Enter your PIN to proceed</li>
+        <li>Look for the transaction and follow the prompts to authorise it. Make sure the amount is correct</li>
+      </ol>
+    </div>
+
+    <div class="alert alert-danger" *ngIf="isTransactionStatusDelayed || isFailed">
+      We were unable to process your payment.
+    </div>
+  </div>
+<div mat-dialog-actions  *ngIf="isTransactionStatusDelayed || isFailed">
+  <button mat-raised-button [disabled]="isProcessing" class="mr-2" mat-dialog-close>CLOSE</button>
+  <button mat-raised-button color="primary" [disabled]="isProcessing" (click)="checkTransacStatus(transactionId)">TRY AGAIN</button>
+</div>
+
+</div>

@@ -1,0 +1,116 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)">
+    <div mainAction>
+      <button mat-raised-button [matMenuTriggerFor]="mainActionsMenu" color="accent" *ngIf="!isPartner">
+        ADD
+      </button>
+      <mat-menu #mainActionsMenu="matMenu">
+        <button mat-menu-item *ngIf="!isPartner" (click)="addOrUpdateCustomer()">New Customer</button>
+        <button mat-menu-item *ngIf="!isPartner" (click)="addOrUpdateCategory()">New Customer Category</button>
+        <button mat-menu-item *ngIf="!isPartner" (click)="addOrUpdateDiscount()">New Discount</button>
+        <a mat-menu-item *ngIf="!isPartner" [routerLink]="['/customers/upload']" >Bulk Excel Upload</a>
+        <!-- <button mat-menu-item *ngIf="!isPartner" (click)="onAssignCustomersToCategory()">New Campaign</button> -->
+      </mat-menu>
+
+    </div>
+    <select class="form-control form-control-sm border-color-primary" (change)="onChangeCustomerType($event?.target?.value)">
+    <option value="" selected="true">All Customers</option>
+    <option value="Owing">Owing Customers</option>
+  </select>
+  </app-breadcrumb-actions>
+  <mat-card>
+      <mat-card-header class="card-header-full-width mb-3" *ngIf="selectedCustomerType === 'Owing'" >
+          <mat-card-title>
+            <b>Total Amount Owing: {{totalAmountOwing}}</b>
+          </mat-card-title>
+
+        </mat-card-header>
+    <mat-card-content class="ml-3 mr-3">
+      <app-table-header-actions [tableHeaderOptions]="tableHeaderOption" (searchTextChanged)="searchMyCustomers($event)">
+        <button mat-stroked-button [matMenuTriggerFor]="actionsMenu" color="primary" *ngIf="!selection.isEmpty()" >
+          ACTIONS
+        </button>
+        <mat-menu #actionsMenu="matMenu">
+          <button mat-menu-item *ngIf="!isPartner" [matMenuTriggerFor]="productCategorySubmenu" >Customer Group</button>
+        </mat-menu>
+        <mat-menu #productCategorySubmenu="matMenu">
+          <button mat-menu-item *ngIf="!isPartner && isGroupProducts" [disabled]="selection.isEmpty()" (click)="removeSelectedCustomersFromCategory()">Remove {{selection?.selected?.length}} customer(s)</button>
+          <button mat-menu-item *ngIf="!isPartner" [disabled]="selection.isEmpty()" (click)="onAssignCustomersToCategory()">Assign {{selection?.selected?.length}} customer(s)</button>
+        </mat-menu>
+
+
+      </app-table-header-actions>
+      <div class="table-responsive">
+      <table class="table dataTable no-footer table-border-bottom">
+        <thead>
+          <tr role="row">
+            <th class="wd-15p">
+              <mat-checkbox class="list-checkbox" (change)="$event ? masterToggle() : null"
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()"></mat-checkbox>
+              Name</th>
+            <th class="wd-15p">Phone No.</th>
+            <th class="wd-15p">Cust Group</th>
+            <th class="wd-15p">No. of Visits</th>
+            <th class="wd-25p">Amount Owing</th>
+            <th class="wd-25p">Next Payment Date</th>
+            <th class="wd-10p">Last Purchased</th>
+            <th class="wd-25p text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="!isProcessing && shopProducts?.length <= 0">
+            <td colspan="10" class="text-center">
+                <app-empty-record></app-empty-record>
+            </td>
+          </tr>
+          <tr *ngFor="let product of shopProducts">
+            <td>
+              <mat-checkbox class="list-checkbox" (click)="$event.stopPropagation()"
+              (change)="$event ? selection.toggle(product?.id) : null"
+              [checked]="selection.isSelected(product?.id)"></mat-checkbox>
+               {{product?.name}}</td>
+            <td>
+              {{product?.phone_number}}
+            </td>
+            <td>{{product?.customer_group?.name}}</td>
+            <td>{{product?.num_of_visits}}</td>
+
+            <td>{{product?.amount_owing  | number: '1.2-2'}}</td>
+            <td>{{product?.next_payment_date | date: 'MMM dd, yyyy'}}</td>
+            <td>{{product?.last_time_purchased | date: 'medium'}}</td>
+            <td class="text-center">
+
+              <button mat-icon-button [matMenuTriggerFor]="menu" >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+
+                <button mat-menu-item (click)="addOrUpdateCustomer(true, product)"
+                 *ngIf="!isPartner">
+                  <span>Edit</span>
+                </button>
+                <button mat-menu-item (click)="viewCustomerDetail(product)">
+                 <span>View Detail</span>
+               </button>
+              </mat-menu>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <app-pagination [dataSet]="shopProducts"
+      [nextPage]="nextPage"
+      [prevPage]="prevPage"
+      [totalPage]="totalPage"
+        [requestPayload]="requestPayload"
+        [requestMethod]="'POST'"
+        (pageChanged)="onPageChanged($event)"
+        [isProcessing]="isProcessing"></app-pagination>
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>
+

@@ -1,0 +1,260 @@
+<h3>{{modalTitle}}</h3><span (click)="onCloseDialog()" class="pull-right close-dialog">X</span>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<div class="row">
+  <form [formGroup]="automationFormGroup" (ngSubmit)="onSubmit(automationFormGroup?.value)">
+    <mat-horizontal-stepper linear #stepper>
+      <mat-step label="Setup">
+        <div class="row my-4">
+          <mat-form-field class="col-md-12">
+            <mat-label>Select Shop</mat-label>
+            <mat-select formControlName="shop_id" (selectionChange)="onShopChanged($event?.value)">
+              <mat-option *ngFor="let item of myShops" [value]="item?.id">{{item?.business_name}}</mat-option>
+            </mat-select>
+            <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please select Shop</mat-hint>
+          </mat-form-field>
+        </div>
+        <mat-button-toggle-group formControlName="message_type"
+          style="display: flex; justify-content: space-between; border: none !important;">
+          <div class="mat-button-toggle-center">
+            <mat-button-toggle color="ascent" class="square-toggle-button" [value]="messageTypes?.ALL">
+              <span>
+                <img class="small-svg" src="assets/img/icons/megaphone-primary.svg" alt="">
+              </span> <br>
+              ALL
+            </mat-button-toggle>
+          </div>
+          <div class="mat-button-toggle-center">
+            <mat-button-toggle color="primary" class="square-toggle-button2" [value]="messageTypes?.EMAIL">
+              <span>
+                <img class="small-svg" src="assets/img/icons/email-primary.svg" alt="">
+              </span>
+              <br>EMAIL
+            </mat-button-toggle>
+          </div>
+          <div class="mat-button-toggle-center">
+            <mat-button-toggle class="square-toggle-button" [value]="messageTypes?.SMS">
+              <span>
+                <img class="small-svg" src="assets/img/icons/sms-primary.svg" alt="">
+              </span>
+              <br>SMS
+            </mat-button-toggle>
+          </div>
+        </mat-button-toggle-group>
+        <div class="row py-4"></div>
+        <div class="mt-4 pull-right">
+          <button mat-button mat-raised-button color="primary" [disabled]="!shop_id?.value" matStepperNext
+            type="button">Next</button>
+        </div>
+      </mat-step>
+
+      <mat-step label="Choose Template">
+        <div class="my-4">
+          <mat-form-field class="full-width">
+            <mat-label>Choose Automation Template</mat-label>
+            <mat-select formControlName="template_type">
+              <mat-option [value]="templateTypes?.THANK_YOU_MESSAGE">Thank You Message</mat-option>
+              <mat-option [value]="templateTypes?.RETURN_CUSTOMERS_MESSAGE">Return Customer Message</mat-option>
+              <mat-option [value]="templateTypes?.PRODUCT_ALERT_MESSAGE">Product Alert Message</mat-option>
+              <mat-option [value]="templateTypes?.SEASONAL_MESSAGE">Seasonal Message</mat-option>
+            </mat-select>
+            <mat-hint class="text-danger" *ngIf="!template_type?.valid && template_type?.touched">Please select Template
+              Type
+            </mat-hint>
+          </mat-form-field>
+        </div>
+        <div class="row py-4"></div>
+        <div class="mt-4 pull-right">
+          <button mat-button mat-raised-button matStepperPrevious type="button">Back</button>
+          <button class="ml-2" mat-button mat-raised-button color="primary" [disabled]="!template_type?.value"
+            matStepperNext type="button">Next</button>
+        </div>
+      </mat-step>
+
+      <mat-step label="Message Design">
+        <div class="mt-4">
+          <div class="row"
+            *ngIf="message_type?.value === messageTypes?.ALL ||  message_type?.value === messageTypes?.EMAIL">
+            <mat-form-field class="col-md-12">
+              <input matInput placeholder="Title" formControlName="title" alphaNumericOnly>
+              <mat-hint class="text-danger" *ngIf="!title?.valid && title?.touched">Please enter Message Title
+              </mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="col-md-12">
+              <textarea matInput placeholder="Message" alphaNumericOnly formControlName="message"></textarea>
+              <mat-hint *ngIf="message_type?.value === messageTypes?.SMS" align="end">{{message.value.length}} / 160</mat-hint>
+              <mat-hint class="text-danger">
+                <span *ngIf="automationFormGroup.controls['message'].touched && automationFormGroup.controls['message'].hasError('required')">Please
+                  enter Message Content</span>
+                <span *ngIf="automationFormGroup.controls['message'].touched && automationFormGroup.controls['message'].hasError('maxlength')">Message
+                  can not be more than 160 characters</span>
+              </mat-hint>
+            </mat-form-field>
+          </div>
+          <!-- <div class="row">
+            <div *ngIf="message_type?.value === messageTypes?.ALL || message_type?.value === messageTypes?.EMAIL"
+              class="col-md-12">
+              <app-file-upload-control formControlName="image"></app-file-upload-control>
+              <mat-hint class="text-danger" *ngIf="!image?.valid && image?.touched">Please enter message Message
+              </mat-hint>
+            </div>
+          </div> -->
+          <div class="" *ngIf="template_type.value === templateTypes?.SEASONAL_MESSAGE">
+            <div class="row mt-3">
+              <div class="col-md-12">
+                <mat-checkbox formControlName="is_recurring">Is Recurring</mat-checkbox>
+              </div>
+              <mat-form-field class="col-md-6">
+                <input type="text" matInput placeholder="Message Date/Time" formControlName="recurring_date"
+                  [ngxMatDatetimePicker]="recurringDatePicker" (focus)="recurringDatePicker?.open()">
+                <mat-hint class="text-danger" *ngIf="!recurring_date?.valid && recurring_date?.touched">Please enter
+                  Message Date</mat-hint>
+                <ngx-mat-datetime-picker #recurringDatePicker [showSeconds]="true"></ngx-mat-datetime-picker>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-6" *ngIf="is_recurring?.value">
+                <mat-label>How often do you want to send this message?</mat-label>
+                <mat-select formControlName="recurring_interval">
+                  <mat-option value="DAILY">DAILY</mat-option>
+                  <mat-option value="WEEKLY">WEEKLY</mat-option>
+                  <mat-option value="MONTHLY">MONTHLY</mat-option>
+                  <mat-option value="YEARLY">YEARLY</mat-option>
+                </mat-select>
+                <mat-hint class="text-danger" *ngIf="!recurring_interval?.valid && recurring_interval?.touched">Please
+                  provide Recurring Interval</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row py-4"></div>
+          <div class="mt-4 pull-right">
+            <button mat-button mat-raised-button matStepperPrevious type="button">Back</button>
+            <button class="ml-2" mat-button mat-raised-button color="primary"
+              [disabled]="!message?.value || template_type.value === templateTypes?.SEASONAL_MESSAGE && is_recurring.value === true && !recurring_date.value ||
+              message_type?.value === messageTypes?.ALL && !title.value ||  message_type?.value === messageTypes?.EMAIL && !title.value" matStepperNext type="button">Next</button>
+          </div>
+        </div>
+      </mat-step>
+
+      <mat-step label="Message Preview">
+        <div class="row mt-3" *ngIf="message_type?.value === messageTypes?.ALL">
+          <div class="col-xl-6 col-lg-6 col-12 mb-4 ">
+            <h3 class="font-weight-600 pl-4 pb-3">Messages</h3>
+            <div style="max-width: 260px;">
+              <div class="campaign-bg-iphone" >
+                <div class="account-image" style="left: 24px;">
+                  <span>{{getBusinessName() | uppercase | slice: 0:1}}</span>
+                </div
+                ><span class="px-70">
+                  <tr class="fs-11 font-weight-600">{{getBusinessName()}}</tr>
+                  <tr class="fs-11 font-weight-600">me</tr>
+                </span>
+                <br>
+                <div class="mx-4 pr-1 text-left" style="max-height: 350px; overflow-y: overlay; overflow-x: hidden;">
+                  <h4 class="text-center fs-12 my-2"><b>{{title.value}}</b></h4>
+                  <span class="fs-11">
+                    <div class="fs-12"><b>Hello,</b></div>
+                    <div class="my-2">
+                      <img [src]="imageSource" class="wh-200" *ngIf="imageSource">
+                    </div>
+                    {{message.value}}
+                  </span>
+                  <br> <br>
+                  <span class="fs-12">
+                    <p class="mb-0 fs-12">Regards,</p>
+                    <b>{{getBusinessName()}}</b>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-12 mb-4" >
+            <h3 class="font-weight-600 pl-4 pb-3">SMS Message</h3>
+            <div class="text-center" style="max-width: 260px;">
+              <div class="campaign-bg-iphone">
+                <div class="account-image text-center">
+                  <span>{{getBusinessName() | uppercase | slice: 0:1}}</span>
+                </div>
+                <br>
+                <h5 class="mt-3 fs-11 font-weight-600">{{getBusinessName()}}<i class="fe fe-chevron-right"></i></h5>
+                <div class="mx-4 pr-1 text-left" style="max-height: 350px; overflow-y: overlay; overflow-x: hidden;">
+                  <span class="fs-11">
+                    <b>Hello, </b>{{message.value}}
+                  </span>
+                  <!-- <br> <br>
+                  <span class="fs-12 mt-2">
+                    <p class="mb-0 fs-12">Regards,</p>
+                    <b>KudiGo </b>
+                  </span> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-xl-6 col-lg-6 col-12 offset-md-3 mb-4" *ngIf="message_type?.value === messageTypes?.EMAIL">
+            <h3 class="font-weight-600 pl-4 pb-3">Email Message</h3>
+            <div style="max-width: 260px;">
+              <div class="campaign-bg-iphone" >
+                <div class="account-image" style="left: 24px;">
+                  <span>{{getBusinessName() | uppercase | slice: 0:1}}</span>
+                </div
+                ><span class="px-70">
+                  <tr class="fs-11 font-weight-600">{{getBusinessName()}}</tr>
+                  <tr class="fs-11 font-weight-600">me</tr>
+                </span>
+                <br>
+                <div class="mx-4 pr-1 text-left" style="max-height: 350px; overflow-y: overlay; overflow-x: hidden;">
+                  <h4 class="text-center fs-12 my-2"><b>{{title.value}}</b></h4>
+                  <span class="fs-11">
+                    <div class="fs-12"><b>Hello,</b></div>
+                    <div class="my-2">
+                      <img [src]="imageSource" class="wh-200" *ngIf="imageSource">
+                    </div>
+                    {{message.value}}
+                  </span>
+                  <br> <br>
+                  <span class="fs-12">
+                    <p class="mb-0 fs-12">Regards,</p>
+                    <b>{{getBusinessName()}}</b>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-12 offset-md-3 mb-4" *ngIf="message_type?.value === messageTypes?.SMS">
+            <h3 class="font-weight-600 pl-4 pb-3">SMS Message</h3>
+            <div class="text-center" style="max-width: 260px;">
+              <div class="campaign-bg-iphone">
+                <div class="account-image text-center">
+                  <span>{{getBusinessName() | uppercase | slice: 0:1}}</span>
+                </div>
+                <br>
+                <h5 class="mt-3 fs-11 font-weight-600">{{getBusinessName()}}<i class="fe fe-chevron-right"></i></h5>
+                <div class="mx-4 pr-1 text-left" style="max-height: 350px; overflow-y: overlay; overflow-x: hidden;">
+                  <span class="fs-11">
+                    <b>Hello, </b>{{message.value}}
+                  </span>
+                  <br> <br>
+                  <!-- <span class="fs-12 mt-2">
+                    <p class="mb-0 fs-12">Regards,</p>
+                    <b>KudiGo </b>
+                  </span> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row pt-3 mb-4"></div>
+        <div class="pull-right">
+          <button mat-button mat-raised-button matStepperPrevious color="warn" (click)="stepper.reset()">Reset</button>
+          <button mat-button mat-raised-button matStepperPrevious type="button" class="mx-2">Back</button>
+          <button mat-raised-button color="primary" [disabled]="automationFormGroup?.invalid || isProcessing" type="submit">
+            <mat-progress-bar class="mb-0" *ngIf="isProcessing" mode="indeterminate"> </mat-progress-bar>
+            Automate Message 
+          </button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </form>
+</div>

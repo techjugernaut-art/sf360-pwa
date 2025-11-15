@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>{{editStockModalTitle}}</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<form [formGroup]="productGroupFormGroup" (ngSubmit)="onSubmit(productGroupFormGroup?.value)">
+  <div mat-dialog-content>
+    <div class="row">
+      <mat-form-field class="col-12">
+        <mat-label>Select Shop</mat-label>
+        <mat-select formControlName="shop_id">
+          <mat-option *ngFor="let item of myShops" [value]="item?.id">{{item?.business_name}}</mat-option>
+        </mat-select>
+        <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please select Shop</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="col-12">
+        <input type="text" matInput placeholder="Unit of Measurement" formControlName="name">
+        <mat-hint class="text-danger" *ngIf="!name?.valid && name?.touched">Please enter Unit of Measurement</mat-hint>
+      </mat-form-field>
+    </div>
+
+  </div>
+
+  <mat-dialog-actions class="text-right">
+    <button mat-raised-button mat-dialog-close>Close</button>
+    <button mat-raised-button color="primary" [disabled]="productGroupFormGroup?.invalid || isProcessing"
+      type="submit">Save</button>
+  </mat-dialog-actions>
+</form>

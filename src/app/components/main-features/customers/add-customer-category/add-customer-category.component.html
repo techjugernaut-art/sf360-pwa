@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>{{editStockModalTitle}}</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup?.value)">
+  <div mat-dialog-content>
+    <div class="row">
+      <mat-form-field class="col-12">
+        <mat-label>Select Shop</mat-label>
+        <mat-select formControlName="shop_id" (selectionChange)="onShopChanged($event?.value)">
+          <mat-option *ngFor="let item of myShops" [value]="item?.id">{{item?.business_name}}</mat-option>
+        </mat-select>
+        <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please select Shop</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="col-12">
+        <input type="text" matInput placeholder="Group Name" formControlName="name">
+        <mat-hint class="text-danger" *ngIf="!name?.valid && name?.touched">Please enter Group Name</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="col-12">
+        <mat-label>Select Discount</mat-label>
+        <mat-select formControlName="discount_id">
+          <mat-option *ngFor="let item of customerDiscounts" [value]="item?.id">{{item?.name}} (<span *ngIf="!item?.is_percentage">{{item?.currency}}</span> {{item?.value}} <span *ngIf="item?.is_percentage" >%</span>)</mat-option>
+        </mat-select>
+        <button type="button" mat-button matSuffix mat-icon-button aria-label="Add Customer Discount"
+        (click)="addCustomerDiscount()">
+        <mat-icon>add</mat-icon>
+      </button>
+        <mat-hint class="text-danger" *ngIf="!discount_id?.valid && discount_id?.touched">Please select Discount</mat-hint>
+      </mat-form-field>
+
+
+    </div>
+
+  </div>
+
+  <mat-dialog-actions class="text-right">
+    <button mat-raised-button mat-dialog-close>Close</button>
+    <button mat-raised-button color="primary" [disabled]="formGroup?.invalid || isProcessing"
+      type="submit">Save</button>
+  </mat-dialog-actions>
+</form>

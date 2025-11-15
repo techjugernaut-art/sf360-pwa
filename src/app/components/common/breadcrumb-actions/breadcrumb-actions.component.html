@@ -1,0 +1,106 @@
+
+
+<div class="d-flex justify-content-between mt-4">
+  <h3 class="mb-sm-0">{{pageHeaderOptions?.pageTitle}}</h3>
+  <div>
+    <ng-content select="[mainAction]"></ng-content>
+  </div>
+</div>
+<div class="page-header mt-0 shadow p-3" *ngIf="!pageHeaderOptions?.hideFilterPanel">
+  <ol class="breadcrumb-actions">
+    <li *ngIf="pageHeaderOptions?.hasShopsFilter" class="mt-sm-1">
+      <select class="form-control form-control-sm border-color-primary" (change)="onShopChanged($event?.target?.value)" [(ngModel)]="selectedShop">
+        <option *ngIf="!pageHeaderOptions?.ignoreFilterByAllShops"  value="" selected="true">All Shops</option>
+        <option *ngFor="let shop of myShops" [value]="shop?.id">
+          {{shop.business_name}}</option>
+      </select>
+    </li>
+    <li  *ngIf="pageHeaderOptions?.hasDateRangeFilter" class="mt-sm-1">
+      <input class="form-control form-control-sm border-color-primary text-center min-width-200" alwaysShowCalendars="true"
+        [ranges]="ranges" startKey="start_date" endKey="end_date" ngxDaterangepickerMd [locale]="locale"
+        [ngModel]="selectedDate" (ngModelChange)="dateChanged($event)">
+    </li>
+    <li *ngIf="pageHeaderOptions?.hasExport" class="mt-sm-1">
+
+      <button class="btn btn-outline-primary btn-sm remove-outline" [matMenuTriggerFor]="exportMenu">
+        <i class="fa fa-download mr-1"></i> Export</button>
+      <mat-menu #exportMenu="matMenu" xPosition="before">
+        <button class="remove-outline" mat-menu-item>Excel</button>
+        <button class="remove-outline" mat-menu-item>PDF</button>
+      </mat-menu>
+    </li>
+    <!-- <li>
+        <button class="btn btn-primary btn-sm"><i class="fa fa-filter mr-1"></i> Filter</button>
+      </li> -->
+      <li *ngIf="pageHeaderOptions?.hasExpenseCategoryFilter" class="mt-sm-1">
+        <select class="form-control form-control-sm border-color-primary" (change)="onOnExpenseCategoryChanged($event?.target?.value)">
+          <option value="" selected="true">All Expense Categories</option>
+          <option *ngFor="let item of expenseCategories"  [value]="item?.id">{{item?.name}}</option>
+        </select>
+      </li>
+    <li *ngIf="pageHeaderOptions?.hasPaymentMethodFilter" class="mt-sm-1">
+      <select class="form-control form-control-sm border-color-primary" (change)="onPaymentMethodChanged($event?.target?.value)">
+        <option value="" selected="true">All Payment Methods</option>
+        <option value="CASH">Cash</option>
+        <option value="CARD">Card</option>
+        <option value="MOMO">MoMo</option>
+        <option value="QR_CODE">QR Code</option>
+        <option value="USSD">USSD</option>
+        <option value="PAY_CODE">Pay Code</option>
+      </select>
+    </li>
+    <li *ngIf="pageHeaderOptions?.hasTransactionSourceFilter" class="mt-sm-1">
+      <select class="form-control form-control-sm border-color-primary" (change)="onTransactionSourceChanged($event?.target?.value)">
+        <option value="" selected="true">All Transaction Source</option>
+        <option value="CASH">Cash</option>
+        <option value="CARD">Card</option>
+        <option value="MOMO">MoMo</option>
+        <option value="CREDIT_PAYMENT">Credit Payment</option>
+        <option value="QR_CODE">QR Code</option>
+        <option value="NG_USSD">USSD</option>
+        <option value="NG_PAY_CODE">Pay Code</option>
+      </select>
+    </li>
+    <li *ngIf="pageHeaderOptions?.hasTransactionTypeFilter" class="mt-sm-1">
+      <select class="form-control form-control-sm border-color-primary" (change)="onTransactionTypeChanged($event?.target?.value)">
+        <option value="" selected="true">All Transaction Type</option>
+        <option value="OP">Order Payment</option>
+        <option value="CR">Credit Payment</option>
+      </select>
+    </li>
+    <li *ngIf="pageHeaderOptions?.hasPaymentStatusFilter" class="mt-sm-1">
+      <select class="form-control form-control-sm border-color-primary" (change)="onPaymentStatusChanged($event?.target?.value)">
+        <option value="" selected="true">All Payment Status</option>
+        <option value="SUCCESS">Success</option>
+        <option value="PENDING">Pending</option>
+        <option value="FAILED">Failed</option>
+        <option value="PENDING">Pending</option>
+      </select>
+    </li>
+    <li *ngIf="pageHeaderOptions?.hasOrderStatusFilter" class="mt-sm-1">
+      <select class="form-control form-control-sm border-color-primary" (change)="onOrderStatusChanged($event?.target?.value)">
+          <option value="">All Order Status</option>
+          <option selected="true" value="SUCCESS">Success</option>
+          <option value="PENDING">Pending</option>
+        <option value="CANCELLED">Cancelled</option>
+      </select>
+    </li>
+    <li *ngIf="pageHeaderOptions?.hasMallOrderStatusFilter" class="mt-sm-1">
+      <select class="form-control form-control-sm border-color-primary" (change)="onMallOrderStatusChanged($event?.target?.value)">
+          <option selected="true" value="">All Mall Order Status</option>
+          <option value="ORDER PLACED">ORDER PLACED</option>
+          <option value="PROCESSING">PROCESSING</option>
+          <option value="READY FOR PICKUP">READY FOR PICKUP</option>
+          <option value="CANCELLED">CANCELLED</option>
+          <option value="IN DELIVERY">IN DELIVERY</option>
+          <option value="DELIVERED">DELIVERED</option>
+      </select>
+    </li>
+    <li *ngIf="pageHeaderOptions?.hasCustomFilter" class="mt-sm-1">
+      <ng-content #action></ng-content>
+    </li>
+
+
+  </ol>
+</div>
+

@@ -1,0 +1,167 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+
+  <mat-card>
+
+    <mat-card-content class="ml-3 mr-3">
+      <mat-tab-group mat-stretch-tabs>
+        <mat-tab label="Mall Settings"  active="true">
+          <div class="row">
+            <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup?.value)" class="col-md-10 offset-md-1">
+              <div class="alert alert-info mb-3 ml-3">
+                After typing your online address, click outside and we will validate the existence of your online store address. <br>
+               This address should not contain any special character or whitespace.</div>
+              <div class="row mlr-0 mb-4">
+
+                <mat-form-field class="col-6">
+                  <mat-label>Online Store Address </mat-label>
+                  <mat-icon matSuffix popoverTitle="StoreFront Mall Name" class="cursor-pointer"
+                  ngbPopover="This Online Store Address shouldn't contain any special character or whitespace"
+                  triggers="mouseenter:mouseleave" placement="bottom">info</mat-icon>
+                  <input matInput formControlName="storefrontmall_name" (blur)="onValidateStoreFrontName()" alphabetsOnly>
+                  <mat-hint class="text-danger" *ngIf="!storefrontmall_name?.valid && storefrontmall_name?.touched">Please provide
+                    valid Online Store Address</mat-hint>
+                    <mat-hint class="text-danger" *ngIf="onlineAddressStatus === 'EXISTS' && storefrontmall_name?.touched">This Online Store Address already exists</mat-hint>
+                </mat-form-field>
+                <div class="col-6 storefrontmall-name ">
+                  <b>.{{storefrontMallDomain}}</b>
+                </div>
+
+              </div>
+
+              <div class="row mlr-0 mb-4">
+
+                <mat-form-field class="col-md-6">
+                  <mat-label>Shop short name (A 2 letter initial of your shop) </mat-label>
+                  <mat-icon matSuffix popoverTitle="Shop short name" class="cursor-pointer"
+                  ngbPopover="A two (2) letter initial of your shop that will be displayed on your Mall"
+                  triggers="mouseenter:mouseleave" placement="top">info</mat-icon>
+                  <input matInput formControlName="mall_short_name" maxlength="2" alphabetsOnly>
+                  <mat-hint class="text-danger" *ngIf="!mall_short_name?.valid && mall_short_name?.touched">Please provide
+                    valid Shop short name</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="row mlr-0 mb-4">
+                <div class="col-12">
+                  <mat-checkbox formControlName="has_slider">Display Slider Banner on my StoreFront Mall</mat-checkbox>
+                </div>
+
+              </div>
+
+              <!-- <mat-radio-group aria-label="Select delivery option" class="ml-2" formControlName="self_managed_delivery" color="primary">
+                <mat-radio-button class="d-block ml-2" [value]="true">I will do deliveries myself</mat-radio-button>
+                <mat-radio-button class="d-block ml-2" [value]="false">KudiGo should handle deliveries for me</mat-radio-button>
+              </mat-radio-group> -->
+
+              <div class="my-mall-actions ">
+
+                <button mat-raised-button color="primary" type="submit" class="mr-2 mb-2" [disabled]="formGroup?.invalid || isProcessing">SAVE</button>
+                <a href="{{protocol}}{{currentSubDomain}}.{{storefrontMallDomain}}" class="mb-2 mr-2" target="_blank" mat-raised-button color="default">Visit My Store</a>
+                <a href="{{protocol}}www.{{storefrontMallDomain}}" target="_blank" mat-raised-button color="default" class="mb-2 mr-2">Visit Marketplace</a>
+              </div>
+
+            </form>
+
+        </div> </mat-tab>
+        <mat-tab label="Branding">
+          <b>Logo</b>
+          <div class="branding-logo-img">
+            <img [src]="shopInfo?.logo" alt="">
+            <div class="branding-logo-img-upload-action" (click)="changeLogo()">
+              <p>Upload Logo</p>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Mall Banner">
+          <div class="mb-2 mt-2 text-right">
+            <button mat-raised-button type="button" class="mr-2" (click)="addBanner()"> <mat-icon>add</mat-icon> ADD</button>
+          </div>
+          <div class="banners-wrapper" *ngFor="let item of sliders" >
+            <div class="banner-img">
+              <img [src]="item?.image"/>
+            </div>
+            <div class="banner-content">
+              <h4 class="banner-heading">{{item?.main_heading}}</h4>
+              <p class="banner-sub-heading">{{item?.sub_heading}}</p>
+              <div class="banner-wrapper-footer">
+                <p class="banner-date-created">
+                  <!-- <span><b>Created on</b> May 3, 2020, <b>Published on</b> May 3, 2020</span> -->
+                </p>
+               <div class="banner-action">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu" xPosition="before">
+                  <button mat-menu-item (click)="onEditBanner(item)">
+                    <span>Edit</span>
+                  </button>
+                  <button mat-menu-item (click)="deleteBanner(item)">
+                    <span>Delete</span>
+                  </button>
+                  <!-- <button mat-menu-item>
+                    <span>Publish</span>
+                  </button>
+                  <button mat-menu-item>
+                    <span>Disable</span>
+                  </button> -->
+                </mat-menu>
+               </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </mat-tab>
+
+        <mat-tab label="Delivery Pickup Location">
+          <form [formGroup]="shopLocationFormGroup" (ngSubmit)="onUpdateShopLocaton(shopLocationFormGroup?.value)" class="col-12">
+            <div class="row mlr-0">
+              <mat-form-field class="col-md-12">
+                <mat-label>Business Location (This location will be used as the pickup location for order delivery) <b class="text-danger">*</b> </mat-label>
+                <mat-icon matSuffix popoverTitle="Business Location" class="cursor-pointer"
+                  ngbPopover="This is the physical location of your shop" triggers="mouseenter:mouseleave"
+                  placement="left">info</mat-icon>
+                <input matInput formControlName="location"  #location>
+                <mat-hint class="text-danger" *ngIf="!location?.valid && location?.touched">Please
+                  provide Business Location</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="row mlr-0">
+
+
+              <mat-form-field class="col-md-6">
+                <mat-label>Latitude </mat-label>
+
+                <input matInput formControlName="latitude" readonly>
+                <mat-hint class="text-danger"
+                  *ngIf="!latitude_ctrl?.valid && latitude_ctrl?.touched">Please
+                  provide latitude</mat-hint>
+              </mat-form-field>
+
+              <mat-form-field class="col-md-6">
+                <mat-label>Longitude </mat-label>
+
+                <input matInput formControlName="longitude" readonly>
+              </mat-form-field>
+            </div>
+
+            <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+              <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                (dragEnd)="markerDragEnd($event)"></agm-marker>
+            </agm-map>
+            <div>
+              <button mat-raised-button color="primary" type="submit" class="pull-right mt-2"
+      [disabled]="shopLocationFormGroup?.invalid || isProcessing">SAVE</button>
+            </div>
+
+          </form>
+         </mat-tab>
+      </mat-tab-group>
+
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>

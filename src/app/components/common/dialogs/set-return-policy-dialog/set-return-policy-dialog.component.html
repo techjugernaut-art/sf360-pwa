@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>{{modalTitle}}</h1>
+<mat-progress-bar *ngIf="isProcessing" mode="indeterminate"></mat-progress-bar>
+<form [formGroup]="formGroup" (ngSubmit)="omSubmit(formGroup)" >
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <input type="tel" matInput placeholder="Return Days" formControlName="return_policy_days" numbersOnly>
+      <mat-hint class="text-danger" *ngIf="!return_policy_days?.valid && return_policy_days?.touched">Please provide Phone Number
+      </mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions>
+      <button mat-raised-button type="button" (click)="cancel()">CANCEL</button>
+      <button mat-raised-button color="primary" [disabled]="formGroup?.invalid || isProcessing" type="submit" class="pull-right">ENABLE</button>
+    </div>
+</form>

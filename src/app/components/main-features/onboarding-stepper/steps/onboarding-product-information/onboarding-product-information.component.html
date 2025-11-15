@@ -1,0 +1,54 @@
+<mat-progress-bar class="mb-0" *ngIf="isProcessing" mode="indeterminate">
+</mat-progress-bar>
+
+<div class="step-content">
+
+  <div class="step-content-heading">
+    <img class="step-heading-img" src="assets/img/icons/products.svg" />
+    <p class="text-primary step-content-heading-desc">Upload some product to your store</p>
+  </div>
+  <div >
+    <div class="table-responsive">
+      <table class="table dataTable no-footer table-border-bottom">
+        <thead>
+          <tr role="row">
+            <th class="wd-15p">Product</th>
+            <th class="wd-15p">Quantity</th>
+            <th class="wd-15p">Price</th>
+            <th class="wd-10p">Description</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="!isProcessing && products?.length <= 0">
+            <td colspan="10" class="text-center">
+              <p class="mb-0 mt-3">You do not have any product uploaded. Click <b>Add Product</b> to add a product</p>
+              <button mat-button color="primary" (click)="onAddProduct()">ADD PRODUCT</button>
+            </td>
+          </tr>
+          <tr *ngFor="let product of products">
+            <td>
+              <img [src]="product?.image" class="product-icon">
+              {{product?.name}}</td>
+              <td>{{product?.new_quantity | number: '1.2-2'}}</td>
+            <td>{{product?.currency}} {{product?.selling_price}}</td>
+            <td>
+              <span>{{product?.description}}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="stepper-bottom-action">
+  <div class="step-left-action">
+    <a [routerLink]="['/onboarding/business-info']" [queryParams]="{ step: 3 }" mat-raised-button>BACK</a>
+  </div>
+  <div class="stepper-right-action">
+    <button mat-button class="mr-3" color="primary" (click)="onSkip()">SKIP</button>
+    <button mat-raised-button class="mr-3" color="primary" (click)="onAddProduct()">ADD PRODUCT</button>
+  <a [routerLink]="['/onboarding/mall-template']" [queryParams]="{ step: 5 }" [disabled]="products?.length <= 0" mat-raised-button color="primary">NEXT</a>
+  </div>
+</div>

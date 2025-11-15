@@ -1,0 +1,285 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <div class="row section-wrapper">
+    <div class="col-xl-3 col-lg-3 col-12 stretch-card">
+        <div class="row">
+          <div class="col-12">
+            <div class="box-white-bg">
+              <div class="box-white-body">
+                <div class="box-item">
+                  <div>
+                    <h4>Facebook Orders</h4>
+                    <h3>50</h3>
+                  </div>
+                  <div class="icon">
+                    <span>
+                      <img class="bg-fb-svg" src="assets/img/icons/facebook.svg" alt="">
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="box-white-bg">
+              <div class="box-white-body">
+                <div class="box-item">
+                  <div>
+                    <h4>Mall Orders</h4>
+                    <h3>250</h3>
+                  </div>
+                  <div class="icon">
+                    <span>
+                      <img class="bg-trans-svg" src="assets/img/icons/online-shopping.svg" alt="">
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="box-white-bg">
+              <div class="box-white-body">
+                <div class="box-item">
+                  <div>
+                    <h4>Shop Orders</h4>
+                    <h3>585</h3>
+                  </div>
+                  <div class="icon">
+                    <span>
+                      <img class="bg-trans-svg" src="assets/img/icons/supermarket1.svg" alt="">
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-xl-5 col-lg-4 col-12 stretch-card box-white-bg">
+      <div class=" full-width">
+          <google-chart #chart [title]="title" [type]="type" [data]="data" [columnNames]="columnNames"
+            [options]="options" [width]="width" [height]="height">
+          </google-chart>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-3 col-12">
+      <div class="box-white-bg">
+        <div class="campaign-box-body py-4">
+          <h3 class="card-title">Earnings</h3>
+          <div class="row earning-wrapper">
+            <div class="col-6 col-md-6 earning-card">
+              <div class="w-75 mx-auto">
+                <img class="w-40" src="assets/img/icons/profit.svg" alt="Profits">
+              </div>
+              <p class="mb-0 mt-2">Profits</p>
+              <h4 class="mb-0"><strong>GHS 3520</strong></h4>
+            </div>
+            <div class="col-6 col-md-6 earning-card border-left">
+              <div class="w-75 mx-auto">
+                <img class="w-40" src="assets/img/icons/goods.svg" alt="Sales">
+              </div>
+              <p class="mb-0 mt-2">Sales Orders</p>
+              <h4 class="mb-0"><strong>GHS 52020</strong></h4>
+            </div>
+          </div>
+          <div class="row earning-wrapper">
+            <div class="col-6 col-md-6 earning-card">
+              <div class="w-75 mx-auto pt-3 border-top">
+                <img class="w-40" src="assets/img/icons/order1.svg" alt="Orders">
+              </div>
+              <p class="mb-0 mt-2">Purchase Orders</p>
+              <h4 class="mb-0"><strong>GHS 43520</strong></h4>
+            </div>
+            <div class="col-6 col-md-6 earning-card border-left">
+              <div class="w-75 mx-auto pt-3 border-top">
+                <img class="w-40" src="assets/img/icons/profit.svg" alt="">
+              </div>
+              <p class="mb-0 mt-2">Credit Sales</p>
+              <h4 class="mb-0"><strong>GHS 1203</strong></h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="box-white-bg">
+        <div class="campaign-box-body">
+          <h3 class="order-header">Order Synching</h3>
+          <div class="mb-3">
+            <div class="sync-body">
+              <span class="sync-header">Sync with Facebook </span>
+              <span class="sync-text">will fetch current status of orders on your Facebook Shop </span>
+            </div>
+            <div class="sync-body">
+              <span class="sync-header">Sync with SF360 </span>
+              <span class="sync-text">will fetch current status of orders on your StoreFront 360 </span>
+            </div>
+          </div>
+          <div class="row sync-wrapper">
+            <div class="col-5 sync-fb">
+              <div class="box-item">
+                <div>
+                  <h4>Sync with Facebook</h4> 
+                </div>
+                <div class="icon">
+                  <span>
+                    <img class="sync-icon" src="assets/img/icons/sync-fb.svg" alt="">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-5 sync-sf mr-3">
+              <div class="box-item">
+                <div>
+                  <h4>Sync with SF360</h4>
+                </div>
+                <div class="icon">
+                  <span>
+                    <img class="sync-icon" src="assets/img/icons/sync-sf.svg" alt="">
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="box-white-bg">
+        <div class="campaign-box-body">
+          <h3 class="order-header">Products Synching</h3>
+          <div class="mb-3">
+            <div class="sync-body">
+              <span class="sync-header">Sync with Facebook </span>
+              <span class="sync-text">will fetch current status of products on your Facebook Shop </span>
+            </div>
+            <div class="sync-body">
+              <span class="sync-header">Sync with SF360 </span>
+              <span class="sync-text">will fetch current status of products on your StoreFront 360 </span>
+            </div>
+          </div>
+          <div class="row sync-wrapper">
+            <div class="col-5 sync-fb">
+              <div class="box-item">
+                <div>
+                  <h4>Sync with Facebook</h4>
+                </div>
+                <div class="icon">
+                  <span>
+                    <img class="sync-icon" src="assets/img/icons/sync-fb.svg" alt="">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-5 sync-sf mr-3">
+              <div class="box-item">
+                <div>
+                  <h4>Sync with SF360</h4>
+                </div>
+                <div class="icon">
+                  <span>
+                    <img class="sync-icon" src="assets/img/icons/sync-sf.svg" alt="">
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row section-wrapper">
+    <div class="col-md-8">
+          <div class="card">
+            <div class="my-3 ml-3">
+              <h3>Order History</h3>
+            </div>
+            <div class="table-responsive full-width">
+              <table class="table dataTable no-footer table-border-bottom full-width">
+                <thead>
+                  <tr role="row">
+                    <th class="wd-15p">Order #</th>
+                    <th class="wd-15p">Customer </th>
+                    <th class="wd-15p">No. Items</th>
+                    <th class="wd-15p">Amount</th>
+                    <th class="wd-15p text-center">Status</th>
+                    <th class="wd-25p">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- <tr *ngIf="!isProcessing && orders?.length <= 0">
+                    <td colspan="10" class="text-center">
+                      <app-empty-record></app-empty-record>
+                    </td>
+                  </tr> -->
+                  <!-- <tr *ngFor="let invoice of invoices">
+                    <td>{{invoice?.invoice_number}}</td>
+                    <td>{{invoice?.name}}</td>
+                    <td>{{invoice?.num_of_items}}</td>
+                    <td>{{invoice?.myshop?.currency}} {{invoice?.total_amount | number: '1.2-2'}}
+                    </td>
+                    <td class="text-center">
+                      <span class="ml-2 badge badge-{{invoiceStatusCssClass(invoice?.status)}}">{{invoice?.status | uppercase}}</span>
+                    </td>
+                    <td>{{invoice?.date_issued | date: 'MM/dd/yyyy, HH:mm:ss'}}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" (click)="onViewInvoice(invoice)" data-toggle="modal"
+                            data-target="#modalSalesOrdersDetail">
+                            <i class="fe fe-eye"></i>
+                          </button>
+                    </td>
+                  </tr> -->
+                </tbody>
+              </table>
+            </div>
+            <!-- <app-pagination [dataSet]="orders" [nextPage]="nextPage" [prevPage]="prevPage" [totalPage]="totalPage"
+              [requestPayload]="requestPayload" [requestMethod]="'POST'" (pageChanged)="onPageChanged($event)"
+              [isProcessing]="isProcessing"></app-pagination> -->
+          </div>
+    </div>
+    <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">Recent Activities</h3>
+              <div class="wrapper d-flex align-items-center py-2 border-bottom">
+                <img class="img-sm rounded-circle w-50" src="assets/img/xs-max.jpg" alt="profile">
+                <div class="wrapper ml-3">
+                  <h6 class="mb-0 text-warning"><strong>Pending - 14/05/2021, 12:02:23 PM</strong></h6>
+                  <small class="text-muted mb-0">iPhone XS Mas</small>
+                </div>
+                <div class="badge badge-pill badge-primary ml-auto px-1 py-1"><i class="mdi mdi-dna font-weight-bold text-warning"></i></div>
+              </div>
+              <div class="wrapper d-flex align-items-center py-2 border-bottom">
+                <img class="img-sm rounded-circle w-50" src="assets/img/xs-max.jpg" alt="profile">
+                <div class="wrapper ml-3">
+                  <h6 class="mb-0 text-primary"><strong>Delivered - 12/05/2021, 12:02:23 PM</strong></h6>
+                  <small class="text-muted mb-0">AirPods Pro</small>
+                </div>
+                <div class="badge badge-pill badge-success ml-auto px-1 py-1"><i class="mdi mdi-check font-weight-bold"></i></div>
+              </div>
+              <div class="wrapper d-flex align-items-center py-2 border-bottom">
+                <img class="img-sm rounded-circle w-50" src="assets/img/mac-book.jpg" alt="profile">
+                <div class="wrapper ml-3">
+                  <h6 class="mb-0 text-danger"><strong>Cancelled - 13/05/2021, 12:02:23 PM</strong></h6>
+                  <small class="text-muted mb-0">Mac-Book Pro</small>
+                </div>
+                <div class="badge badge-pill badge-danger ml-auto px-1 py-1"><i class="mdi mdi-close font-weight-bold"></i></div>
+              </div>
+              <div class="wrapper d-flex align-items-center py-2 border-bottom">
+                <img class="img-sm rounded-circle w-50" src="assets/img/xs-max.jpg" alt="profile">
+                <div class="wrapper ml-3">
+                  <h6 class="mb-0 text-primary"><strong>Delivered - 12/05/2021, 12:02:23 PM</strong></h6>
+                  <small class="text-muted mb-0">AirPods Pro</small>
+                </div>
+                <div class="badge badge-pill badge-success ml-auto px-1 py-1"><i class="mdi mdi-check font-weight-bold"></i></div>
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+
+</app-main-nav>

@@ -1,0 +1,364 @@
+<div>
+
+  <div>
+    <mat-sidenav-container class="sidenav-container bg-white">
+      <mat-sidenav #drawer color="accent" class="sidenav" fixedInViewport
+        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+        [opened]="(isHandset$ | async) === false">
+        <div class="sidenav-logo">
+          <a [routerLink]="['/dashboard']">
+            <img src="../assets/img/logos/logo1.png" alt="logo-img" class="sidenav-logo-img"></a>
+        </div>
+        <ul class="home-dasbhoard-drawer-main-menu">
+          <li>
+            <a class="main-menu-item" style="padding:10px 8px;" [routerLink]="['/dashboard']" title="Home" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="main-menu-icon" src="assets/icons/app-svg/DASHBOARD-01.svg">
+              </div>
+              <span class="main-menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li >
+            <a class="main-menu-item" style="padding:10px 15px;" [routerLink]="['/sales']" title="Sales" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="pulse" src="assets/icons/app-svg//SALES ORDER-01.svg">
+              </div>
+              <span class="main-menu-title">Sales</span>
+            </a>
+          </li>
+          <li>
+            <a class="main-menu-item" style="padding:10px 14px;" [routerLink]="['/reports']" title="Reports" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="main-menu-icon" src="assets/icons/app-svg/REPORTS-01.svg">
+              </div>
+              <span class="main-menu-title">Reports</span>
+            </a>
+          </li>
+          <li>
+            <a class="main-menu-item" style="padding:10px 13px;" [routerLink]="['/products']" title="Products" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="main-menu-icon" src="assets/icons/app-svg/PRODUCTS-01.svg">
+              </div>
+              <span class="main-menu-title">Products</span>
+            </a>
+          </li>
+          <li>
+            <a class="main-menu-item" style="padding:10px 8px;" [routerLink]="['/customers']" title="Customers" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="main-menu-icon" src="assets/icons/app-svg/CUSTOMERS-01.svg">
+              </div>
+              <span class="main-menu-title">Customers</span>
+            </a>
+          </li>
+          <!-- <li >
+            <a class="main-menu-item" [routerLink]="['/reports']" title="Transactions" draggable="false">
+              <div class="main-menu-icon-wrapper bg-brown">
+                <img class="main-menu-icon" src="assets/img/icons/transaction.svg">
+              </div>
+              <span class="main-menu-title">Transactions</span>
+            </a>
+          </li> -->
+
+          <!-- <li >
+            <a class="main-menu-item" href="/dashboard" title="Suppliers" draggable="false">
+              <div class="main-menu-icon-wrapper bg-indigo">
+                <img class="main-menu-icon" src="assets/img/icons/shipment.svg">
+              </div>
+              <span class="main-menu-title">Suppliers</span>
+            </a>
+          </li> -->
+          <li>
+            <a class="main-menu-item" style="padding:10px 14px;" [routerLink]="['/agents']" title="Agents" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="main-menu-icon" src="assets/icons/app-svg/AGENTS-01.svg">
+              </div>
+              <span class="main-menu-title">Agents</span>
+            </a>
+          </li>
+          <li>
+            <a class="main-menu-item" style="padding:10px 12px;" [routerLink]="['/expenses']" title="Expenses" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="main-menu-icon" src="assets/icons/app-svg/EXPENSES-02.svg">
+              </div>
+              <span class="main-menu-title">Expenses</span>
+            </a>
+          </li>
+          <li>
+            <a class="main-menu-item" style="padding:10px 12px;" [routerLink]="['/settings']" title="Settings" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="main-menu-icon" src="assets/icons/app-svg/SETTINGS-02.svg">
+              </div>
+              <span class="main-menu-title">Settings</span>
+            </a>
+          </li>
+          <!-- <li>
+            <a class="main-menu-item" style="padding:3px 14px 0px;" [routerLink]="['/settings/online-store']" title="Online Settings" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="main-menu-icon" src="assets/icons/app-svg/SETTINGS_03.svg">
+              </div>
+              <span class="main-menu-title">Online Shop</span>
+            </a>
+          </li> -->
+          <!-- <li>
+            <a class="main-menu-item" style="padding:3px 14px 0px;" [routerLink]="['/settings']" title="Offline Settings" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="main-menu-icon" src="assets/icons/app-svg/SETTINGS-02.svg">
+              </div>
+              <span class="main-menu-title">Offline Settings</span>
+            </a>
+          </li> -->
+          <li>
+            <a class="main-menu-item" style="padding:3px 14px 0px; margin-top: 0px;" [routerLink]="['/settings/payment-request']" title="Payment Setup" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="main-menu-icon" src="assets/icons/app-svg/ACCEPT-PAYMENT-01.svg">
+              </div>
+              <span class="main-menu-title">Payment Setup</span>
+            </a>
+          </li>
+          <li>
+            <a class="main-menu-item" style="padding:10px 2px" [routerLink]="['/premium-subscriptions/storefront-plans']"
+              title="Premium Subcriptions" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="main-menu-icon" src="assets/icons/app-svg/SUBSCRIPTION-01.svg">
+              </div>
+              <span class="main-menu-title">Subscriptions</span>
+            </a>
+          </li>
+          <!-- <li>
+            <a class="main-menu-item" style="padding:3px 14px 0px;" [routerLink]="['/settings']" title="Settings" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="main-menu-icon" src="assets/icons/app-svg/SETTINGS-02.svg">
+              </div>
+              <span class="main-menu-title">Settings</span>
+            </a>
+          </li> -->
+          <li>
+            <a class="main-menu-item" style="padding: 2px 7px 0px;" [routerLink]="['/settings/online-store']" draggable="false">
+              <div class="main-menu-icon-wrapper">
+                <img class="main-menu-icon" src="assets/icons/app-svg/HELP-01.svg">
+              </div>
+              <span class="main-menu-title">Online Store</span>
+            </a>
+          </li>
+        </ul>
+        <div class="free-trial" *ngIf="onFreeTrial === true">
+          <p class="free-trial-text">Days Left <b class="text-primary"> {{this.shopInfo?.days_left}}</b></p>
+          <button class="ml-3" [routerLink]="['/service-payment']" mat-raised-button color="primary">Upgrade Now</button>
+        </div>
+      </mat-sidenav>
+
+      <mat-sidenav #rightDrawer class="sidenav" fixedInViewport [attr.role]="'dialog'" [mode]="'over'" [opened]="false"
+        [position]="'end'">
+        <app-notifications [businessAlerts]="businessAlerts" [isProcessingBusinessAlerts]="isProcessingBusinessAlerts">
+        </app-notifications>
+      </mat-sidenav>
+
+      <mat-sidenav-content>
+        <mat-toolbar  class="main-nav z-depth-2 d-flex justify-content-between fixed-top d-print-none">
+          <div>
+            <button class="remove-outline" type="button" mat-icon-button (click)="drawer?.toggle()">
+              <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+            </button>
+
+          </div>
+
+          <div>
+          <app-navbar-items (showNotificationDrawer)="onShowNotifications()"></app-navbar-items>
+          </div>
+
+        </mat-toolbar>
+        <div class="main-content home-main-content">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h2>{{greet}}</h2>
+                <h2 class="mb-3">Today, {{todayDate | date: 'EEEE, MMMM d'}}</h2>
+              </div>
+              <div class="col-md-12 home-dashboard-content">
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <mat-card class="dashboard-card mb-3 cursor-pointer" (click)="viewMoreSalesOrders()">
+                      <mat-card-content>
+                        <div class="dashboard-card-content">
+                          <h4 class=" dashboard-card-title">Items Sold</h4>
+                          <div class="row mt-3">
+                            <div class="col-3">
+                              <div class="dashboard-card-icon">
+                                <img class="w-45" src="assets/icons/app-svg/ITEMS-SOLD-01.svg" alt="">
+                                <!-- <i class="fe fe-shopping-cart text-white"></i> -->
+                              </div>
+                            </div>
+                            <div class="col-9 text-right dashboard-card-default-text">
+                              <span class="">{{businessOverview?.currency}}
+                                {{businessOverview?.sales | number: '1.2-2'}}
+                                <i class="fe fe-info fs-1 vertical-align-middle"
+                                ngbPopover="Items Sold is calculated based on selling price of each product."
+                                placement="bottom" triggers="mouseenter:mouseleave" popoverTitle="Items Sold"></i>
+                              </span>
+                              <!-- <span class="text-white" *ngIf="businessOverview?.sales == '' || businessOverview?.sales == null">{{businessOverview?.currency}} {{0 | number: '1.2-2'}}</span> -->
+                            </div>
+                          </div>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-card class="dashboard-card mb-3 cursor-pointer" (click)="viewMoreSalesMargins()">
+                      <mat-card-content>
+                        <div class="dashboard-card-content">
+                          <h4 class=" dashboard-card-title">Profit</h4>
+                          <div class="row mt-3">
+                            <div class="col-3">
+                              <div class="dashboard-card-icon">
+                                <img class="w-45" src="assets/icons/app-svg/PROFIT-01.svg" alt="">
+                                <!-- <i class="fe fe-dollar-sign text-white"></i> -->
+                              </div>
+                            </div>
+                            <div class="col-9 text-right dashboard-card-default-text">
+                              <span class="">{{businessOverview?.currency}}
+                                {{businessOverview?.margin | number: '1.2-2'}}
+                                <i class="fe fe-info fs-1 vertical-align-middle"
+                                  ngbPopover="Sales Margin is calculated using the supplier price and selling price of each product."
+                                  placement="bottom" triggers="mouseenter:mouseleave" popoverTitle="Profit"></i>
+                              </span>
+                              <!-- <span class="text-white" *ngIf="businessOverview?.sales == '' || businessOverview?.sales == null">{{businessOverview?.currency}} {{0 | number: '1.2-2'}}</span> -->
+                            </div>
+                          </div>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-card class="dashboard-card mb-3 cursor-pointer" (click)="viewMoreSalesOrders()">
+                      <mat-card-content>
+                        <div class="dashboard-card-content">
+                          <h4 class=" dashboard-card-title">Items Sold (In-Store)</h4>
+                          <div class="row mt-3">
+                            <div class="col-3">
+                              <div class="dashboard-card-icon">
+                                <img class="w-45" src="assets/icons/app-svg/STORE-SOLD-01.svg" alt="">
+                                <!-- <i class="fe fe-shopping-cart text-white"></i> -->
+                              </div>
+                            </div>
+                            <div class="col-9 text-right dashboard-card-default-text">
+                              <span class="mr-1">
+                                {{businessOverview?.total_physical_store_orders | number: '1.2-2'}}</span>
+                              <!-- <span class="text-white" *ngIf="businessOverview?.sales == '' || businessOverview?.sales == null">{{businessOverview?.currency}} {{0 | number: '1.2-2'}}</span> -->
+                              <i class="fe fe-info fs-1 vertical-align-middle"
+                                  ngbPopover="Items in the physical store."
+                                  placement="bottom" triggers="mouseenter:mouseleave" popoverTitle="Item In-Store"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-card class="dashboard-card mb-3 cursor-pointer" (click)="viewMoreMallOrders()">
+                      <mat-card-content>
+                        <div class="dashboard-card-content">
+                          <h4 class=" dashboard-card-title">Items Sold (WhatsApp)</h4>
+                          <div class="row mt-3">
+                            <div class="col-3">
+                              <div class="dashboard-card-icon">
+                                <img class="w-45" src="assets/icons/app-svg/WHATSAPP-SOLD-01.svg" alt="">
+                                <!-- <i class="fe fe-shopping-cart text-white"></i> -->
+                              </div>
+                            </div>
+                            <div class="col-9 text-right dashboard-card-default-text">
+                              <span class="">{{businessOverview?.currency}}
+                                {{businessOverview?.total_whatsapp_orders | number: '1.2-2'}}
+
+                              </span>
+                              <!-- <span class="text-white" *ngIf="businessOverview?.sales == '' || businessOverview?.sales == null">{{businessOverview?.currency}} {{0 | number: '1.2-2'}}</span> -->
+                              <i class="fe fe-info fs-1 vertical-align-middle"
+                                  ngbPopover="Items sold via WhatsApp bot."
+                                  placement="bottom" triggers="mouseenter:mouseleave" popoverTitle="Items Sold (WhatsApp)"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+
+
+                </div>
+
+                <!-- <div class="row">
+
+                </div> -->
+
+              </div>
+
+              <!-- <div class="col-md-4">
+                <div class="row">
+                  <div class="col-md-12 mb-3">
+                    <mat-card>
+                      <mat-card-content>
+                        <div class="dashboard-card-row my-3">
+
+                          <div class="card-content-right">
+                            <h3 class="dashboard-card-text-default mb-0">{{businessOverview?.currency}} {{ totalSupplierValue | number: '1.2-2' }}
+                            </h3>
+                            <p class="dashboard-card-title mb-0">Total Supplier Value
+
+                            </p>
+                          </div>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                  <div class="col-md-12">
+                    <mat-card>
+                      <mat-card-content>
+                        <div class="dashboard-card-row my-3">
+
+                          <div class="card-content-right">
+                            <h3 class="dashboard-card-text-default mb-0">
+                              {{businessOverview?.currency}} {{ totalUnitPriceValue | number: '1.2-2' }}</h3>
+                            <p class="dashboard-card-title mb-0">Total Unit Price Value</p>
+                          </div>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                </div>
+
+              </div> -->
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-12 col-lg-7 mb-3" >
+                <mat-card>
+                    <mat-card-header>
+                      <mat-card-title>Sales Orders in {{businessOverview?.currency}}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content style="height: 400px;">
+                      <canvas id="multilineGraph" class="graph-canvas"></canvas>
+                    </mat-card-content>
+
+                  </mat-card>
+            </div>
+            <div class="col-md-12 col-lg-5 mb-3">
+              <mat-card class="mb-3">
+                <mat-card-header >
+                  <mat-card-title>Expense Overview in {{businessOverview?.currency}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content  style="height: 400px;">
+                  <app-empty-record *ngIf="!isExpenseOverviewDataAvailable"></app-empty-record>
+                      <canvas id="expenseOverviewGraph" class="graph-canvas" [class.d-none]="!isExpenseOverviewDataAvailable"></canvas>
+
+                </mat-card-content>
+
+              </mat-card>
+            </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- <footer class="footer"></footer> -->
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+
+</div>

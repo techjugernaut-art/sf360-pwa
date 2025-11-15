@@ -1,0 +1,25 @@
+<app-main-nav>
+        <div select="[breadcrumb]"  class="breadcrumb">
+
+           <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"></app-breadcrumb-actions>
+        </div>
+        <div select="[content]"  class="main-content">
+
+          <div class="row mt-3">
+            <div class="col-md-12 mb-3" >
+
+                <mat-card>
+                    <nav mat-tab-nav-bar mat-stretch-tabs class="mb-3">
+                        <a mat-tab-link [routerLink]="['/reports/sales-summary']" routerLinkActive="active">Summary </a>
+                        <a mat-tab-link [routerLink]="['/reports/sales-margin']" routerLinkActive="active"> Sales Margin </a>
+                        <a mat-tab-link [routerLink]="['/reports/sales-orders']" routerLinkActive="active"> Sales Orders </a>
+                        <a mat-tab-link [routerLink]="['/reports/inventory']" routerLinkActive="active"> Inventry </a>
+                      </nav>
+                      <router-outlet></router-outlet>
+
+                  </mat-card>
+            </div>
+
+          </div>
+       </div>
+      </app-main-nav>

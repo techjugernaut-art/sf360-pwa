@@ -1,0 +1,32 @@
+<h1 mat-dialog-title  >{{editStockAction | removeUnderScore }}</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<form  [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup?.value)">
+ <div mat-dialog-content>
+  <div class="row">
+
+    <mat-form-field class="col-md-12">
+      <mat-label>Select Unit of Measurement</mat-label>
+      <mat-select formControlName="price_list_id">
+        <mat-option *ngFor="let item of unitsOfMeasurements" [value]="item?.id">{{item?.unit_name}}
+        </mat-option>
+      </mat-select>
+
+      <mat-hint class="text-danger"
+        *ngIf="!price_list_id?.valid && price_list_id?.touched">Please
+        provide Unit of Measurement</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-12">
+      <input type="text" matInput placeholder="Enter quantity" formControlName="new_quantity" decimalOnly>
+      <mat-hint class="text-danger" *ngIf="!new_quantity?.valid && new_quantity?.touched">Please enter Quantity</mat-hint>
+    </mat-form-field>
+  </div>
+ </div>
+
+  <mat-dialog-actions class="text-right">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-raised-button color="primary" [disabled]="formGroup?.invalid || isProcessing"
+      type="submit">Save</button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>{{data?.action | removeUnderScore}}</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessingEditStock"></mat-progress-bar>
+<form [formGroup]="increaseOrDecreaseStockFormGroup" (ngSubmit)="increaseOrDereaseStockForAProduct(increaseOrDecreaseStockFormGroup?.value)" >
+      <div class="row">
+
+            <mat-form-field class="col-12">
+                <input type="tel" matInput placeholder="Quantity" formControlName="quantity"
+                numbersOnly>
+                <mat-hint class="text-danger"
+                  *ngIf="!quantity?.valid && quantity?.touched">Please enter Quantity</mat-hint>
+              </mat-form-field>
+      </div>
+
+      <mat-dialog-actions class="text-right">
+          <button mat-button mat-dialog-close>Close</button>
+          <button mat-raised-button color="primary" [disabled]="increaseOrDecreaseStockFormGroup?.invalid || isProcessingEditStock" type="submit">Save</button>
+        </mat-dialog-actions>
+</form>

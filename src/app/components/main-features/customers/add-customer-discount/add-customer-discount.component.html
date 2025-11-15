@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>{{editStockModalTitle}}</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup?.value)">
+  <div mat-dialog-content>
+    <div class="text-center mb-2 mt-2">
+      <mat-button-toggle-group color="primary" class="mat-toggle-buttons-adjustment"
+      formControlName="is_percentage">
+        <mat-button-toggle color="primary" [value]="false">VALUE</mat-button-toggle>
+        <mat-button-toggle color="primary" [value]="true">PERCENTAGE</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-12">
+        <mat-label>Select Shop</mat-label>
+        <mat-select formControlName="shop_id" (selectionChange)="onShopChanged($event?.value)">
+          <mat-option *ngFor="let item of myShops" [value]="item?.id">{{item?.business_name}}</mat-option>
+        </mat-select>
+        <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please select Shop</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="col-12">
+        <input type="text" matInput placeholder="Discount Name" formControlName="name">
+        <mat-hint class="text-danger" *ngIf="!name?.valid && name?.touched">Please enter Discount Name</mat-hint>
+      </mat-form-field>
+      <mat-form-field class="col-12">
+        <mat-label>Discount Value (<small *ngIf="!is_percentage?.value" >{{shopInfo?.currency}}</small>  <small *ngIf="is_percentage?.value" matSuffix>%</small>)</mat-label>
+
+        <input type="text" matInput decimalOnly formControlName="value">
+
+        <mat-hint class="text-danger" *ngIf="!value?.valid && value?.touched">Please enter Discount Value</mat-hint>
+      </mat-form-field>
+
+
+
+    </div>
+
+  </div>
+
+  <mat-dialog-actions class="text-right">
+    <button mat-raised-button mat-dialog-close>Close</button>
+    <button mat-raised-button color="primary" [disabled]="formGroup?.invalid || isProcessing"
+      type="submit">Save</button>
+  </mat-dialog-actions>
+</form>

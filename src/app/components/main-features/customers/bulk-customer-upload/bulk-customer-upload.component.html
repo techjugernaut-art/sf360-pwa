@@ -1,0 +1,107 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+  <mat-card class="my-4">
+    <mat-card-header class="full-width mat-card-header-text-full-width text-center">
+      <mat-card-title>Import file and validate data</mat-card-title>
+      <mat-card-subtitle>Download product upload template from <a
+          href="/assets/STOREFRONT CUSTOMER BULK UPLOAD TEMPLATE.xlsx" download><strong>here</strong></a>, populate and
+        upload </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="text-center">
+
+        <input type="file" id="file" class="inputfile" (change)="onFileUploadChange($event)"
+          accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        <label  for="file">Choose a file</label><br>
+        <span class="text-info font-weight-lighter">{{fileName}}</span>
+      </div>
+      <form [formGroup]="columnDefinitionFormGroup" (ngSubmit)="validateData()" class="mt-5"
+        *ngIf="headers?.length > 0">
+        <div class="row" formArrayName="columns">
+          <div class="col-lg-6 row">
+            <div class="col-6">
+              <h3>Excel Sheet Columns</h3>
+            </div>
+            <div class="col-6">
+              <h3>System Columns</h3>
+            </div>
+          </div>
+          <div class="col-lg-6 row hidden-md-down">
+            <div class="col-6">
+              <h3>Excel Sheet Columns</h3>
+            </div>
+            <div class="col-6">
+              <h3>System Columns</h3>
+            </div>
+          </div>
+          <div *ngFor="let columnFormGroup of clientColumnDefinitions?.controls; let i=index"
+            [formGroup]="columnFormGroup" class="col-lg-6 row">
+            <div class="col-6">
+
+              <input type="hidden" formControlName="client_column_index">
+              <mat-form-field class="remove-mat-form-field-underline">
+                <input matInput readonly="true" formControlName="client_column">
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field>
+                <mat-label>Select System Column</mat-label>
+                <mat-select formControlName="server_column">
+                  <mat-option *ngFor="let column of serverClientColumnNames" [value]="column?.server_name">
+                    {{column?.client_name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <mat-card-actions class="text-right">
+          <button type="submit" [disabled]="!columnDefinitionFormGroup?.valid" mat-raised-button color="accent" >Validate
+            Data</button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+
+  </mat-card>
+  <mat-card *ngIf="myCustomers?.length > 0">
+    <mat-card-header class="full-width mat-card-header-text-full-width">
+      <mat-card-title>{{myCustomersToUpload?.length}} customer(s) will be uploaded
+        <button type="button" [disabled]="myCustomersToUpload?.length <= 0" mat-raised-button color="primary"
+          class="pull-right" (click)="uploadProducts()">Upload customer(s)</button>
+      </mat-card-title>
+
+    </mat-card-header>
+    <mat-card-content>
+      <app-table-header-actions [tableHeaderOptions]="tableHeaderOption">
+      </app-table-header-actions>
+      <div class="table-responsive">
+        <table class="table dataTable no-footer table-border-bottom">
+          <thead>
+            <tr role="row">
+              <th class="wd-15p">Name</th>
+              <th class="wd-15p">Phone Number</th>
+              <th class="wd-15p">Email</th>
+              <th class="wd-15p">Address</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!isProcessing && myCustomers?.length <= 0">
+              <td colspan="30" class="text-center">No record(s) found</td>
+            </tr>
+            <tr *ngFor="let customer of myCustomers">
+              <td>{{customer?.name}}</td>
+              <td>{{customer?.phone_number}}</td>
+              <td>{{customer?.email}}</td>
+              <td>{{customer?.address}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>

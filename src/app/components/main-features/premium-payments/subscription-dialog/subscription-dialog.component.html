@@ -1,0 +1,35 @@
+<h3>{{dialogTitle}}</h3>
+<div class="sms-top-up-close-button">
+    <button mat-dialog-close>X</button>
+</div>
+<mat-progress-bar mode="indeterminate" *ngIf="premiumPlans?.length <= 0 && isProcessing"></mat-progress-bar>
+<div class="row" *ngIf="premiumPlans?.length <= 0 && isProcessing">
+    <div class="col-12 mt-4">
+        <app-empty-record></app-empty-record>
+    </div>
+</div>
+<div class="pricing-container">
+    <div class="row pricing-wrapper">
+        <div class="col-sm-12 col-md-6 col-xl-4" *ngFor="let item of premiumPlans">
+            <div class="pricing-item">
+                <h5 class="pricing__title"> {{item?.name}}</h5>
+                <!-- <h3 class="mb-3">{{item?.name}}</h3> -->
+                <div class="pricing__price" style="font-size: 20px;">
+                    <span class="pricing__currency">{{item?.currency}}
+                    </span><span>{{item?.amount_to_show_on_app}}</span>
+                    <span class="pricing__time"> /{{item?.number_of_months}} month(s)</span>
+                </div>
+                <button class="full-width btn__secondary py-3" (click)="payPremiumNow(item)">PAY NOW</button>
+                <div class="pricing__list list-items list-items-layout2 list-unstyled" style="padding: 0.5rem">
+                    <p [innerHTML]="item?.description"> </p>
+                </div>
+                <!-- <ul class="pricing__list list-items list-items-layout2 list-unstyled" style="padding: 0.5rem" *ngFor="let list of itemDescriptions">
+            <li><img class="w-22 pb-3" src="assets/img/icons/check.png"><b [innerHTML]="item?.description"></b> </li>
+          </ul> -->
+            </div>
+        </div>
+    </div>
+</div>
+<mat-dialog-actions class="text-right">
+    <button mat-raised-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

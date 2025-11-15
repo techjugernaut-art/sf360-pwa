@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>{{modalTitle}}</h1>
+<mat-progress-bar *ngIf="isProcessing" mode="indeterminate"></mat-progress-bar>
+<form [formGroup]="formGroup" (ngSubmit)="omSubmit(formGroup)" *ngIf="!isConfirmWhatsAppNumber && action !== whatsComAction?.DISABLE" >
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <app-intl-country-codes matPrefix (countryCodeSelected)="onPhoneCodeCliked($event)"></app-intl-country-codes>
+      <input type="tel" matInput placeholder="WhatsApp Number" formControlName="whatsapp_number" >
+      <mat-hint class="text-danger" *ngIf="!whatsapp_number?.valid && whatsapp_number?.touched">Please provide WhatsApp Number
+      </mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions>
+      <button mat-raised-button type="button" (click)="cancel()">CANCEL</button>
+      <button mat-raised-button color="primary" [disabled]="formGroup?.invalid || isProcessing" type="submit" class="pull-right">ENABLE</button>
+    </div>
+</form>
+<form [formGroup]="confirmWhatsAppNumberformGroup" (ngSubmit)="verifyPhoneNumber(confirmWhatsAppNumberformGroup)" *ngIf="isConfirmWhatsAppNumber && action !== whatsComAction?.DISABLE" >
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <input type="text" matInput placeholder="Verification Code" formControlName="verification_code" >
+      <mat-hint class="text-danger" *ngIf="!verification_code?.valid && verification_code?.touched">Please provide Verification Code
+      </mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions>
+      <button mat-raised-button type="button" (click)="cancel()">CANCEL</button>
+      <button mat-raised-button color="primary" [disabled]="confirmWhatsAppNumberformGroup?.invalid || isProcessing" type="submit" class="pull-right">VERIFY</button>
+    </div>
+</form>
+
+<div *ngIf="!isConfirmWhatsAppNumber && action === whatsComAction?.DISABLE" >
+  <p class="">
+    This action will Disable this shop from receiving communication via WhatsApp. Click <b>DISABLE</b> to continue.
+  </p>
+
+  <div mat-dialog-actions>
+      <button mat-raised-button type="button" (click)="cancel()">CANCEL</button>
+      <button mat-raised-button color="primary" type="button" class="pull-right" (click)="disableWhatsApp()">DISABLE</button>
+    </div>
+</div>

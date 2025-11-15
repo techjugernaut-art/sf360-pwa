@@ -1,0 +1,167 @@
+<app-main-nav [isProcessing]="isProcessing">
+    <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)">
+    <div mainAction>
+      <button mat-raised-button *ngIf="!isPartner" color="accent" (click)="newRequest()">
+        NEW INVOICE
+      </button>
+    </div>
+  </app-breadcrumb-actions>
+    <mat-card class="mt-4">
+  
+      <mat-card-content class="ml-3 mr-3">
+  
+        <div class="table-responsive">
+          <table class="table dataTable no-footer table-border-bottom">
+            <thead>
+              <tr role="row">
+                <th class="wd-15p">Invoice #</th>
+                <th class="wd-15p">Name</th>
+                <th class="wd-15p">No. Items</th>
+                <th class="wd-15p">Amount</th>
+                <th class="wd-15p text-center">Status</th>
+                <th class="wd-25p">Date Issued</th>
+                <th class="wd-25p">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!isProcessing && invoices?.length <= 0">
+                <td colspan="10" class="text-center">
+                  <app-empty-record></app-empty-record>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="10" class="text-center">
+                <a (click)="newRequest()" class="btn btn-sm btn-primary"><i class="fe fe-plus plus-fe-lg"></i><span class=" plus-fe-lg">Add Invoice</span></a>
+                </td>
+              </tr>
+              <tr *ngFor="let invoice of invoices">
+                <td>{{invoice?.invoice_number}}</td>
+                <td>{{invoice?.name}}</td>
+                <td>{{invoice?.num_of_items}}</td>
+                <td>{{invoice?.myshop?.currency}} {{invoice?.total_amount | number: '1.2-2'}}
+                </td>
+                <td class="text-center">
+                  <span class="ml-2 badge badge-{{invoiceStatusCssClass(invoice?.status)}}">{{invoice?.status | uppercase}}</span>
+                </td>
+                <td>{{invoice?.date_issued | date: 'MM/dd/yyyy, HH:mm:ss'}}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" (click)="onViewInvoice(invoice)" data-toggle="modal"
+                        data-target="#modalSalesOrdersDetail">
+                        <i class="fe fe-eye"></i>
+                      </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <app-pagination [dataSet]="invoices" [nextPage]="nextPage" [prevPage]="prevPage" [totalPage]="totalPage"
+          [requestPayload]="requestPayload" [requestMethod]="'POST'" (pageChanged)="onPageChanged($event)"
+          [isProcessing]="isProcessing"></app-pagination>
+      </mat-card-content>
+      
+  
+    </mat-card>
+  
+
+  </app-main-nav>
+  
+  
+  <!-- Sales Orders Details Modal 
+  <div class="modal fade" id="modalSalesOrdersDetail" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title invoice-modal-title" id="modal-title-notification">
+            Bill #: {{invoiceDetail?.invoice_number}}
+          </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body" id="salesOrderModalBody">
+          <div class="logo-img text-center pb-3">
+            <img src="../assets/img/logos/dark-green.png" alt="invoice-logo-img" class="invoice-logo-img">
+          </div>
+          <div class="mb-0">
+            <div class="row">
+              <div class="col-6 invoice-detail">
+                <p class="mb-1 detail"><strong>Bill #: {{invoiceDetail?.invoice_number}}</strong></p>
+                <p class="title"><strong>Bill Type: <span class="bill-type-tag">{{invoiceDetail?.invoice_type | removeUnderScore}}</span></strong></p>
+                <h4 class="title"><strong>Bill To:</strong></h4>
+                <p class="mb-0 detail"><strong>{{invoiceDetail?.myshop?.business_name | titlecase}}</strong></p>
+                <p class="mb-0 detail">{{invoiceDetail?.myshop?.location | titlecase}}</p>
+                <p class="mb-0 detail">Date Issued: {{invoiceDetail?.date_issued | date: 'MM/dd/yyyy, HH:mm:ss'}}</p>
+                <p class="mb-0 detail">Due Date: {{invoiceDetail?.due_date | date: 'MM/dd/yyyy, HH:mm:ss'}}</p>
+                <p class="mb-0 detail">Status:  <span class="ml-2 badge badge-{{invoiceStatusCssClass(invoiceDetail?.status)}}">{{invoiceDetail?.status | uppercase}}</span></p>
+                <p class="mb-0 detail">Payment Method: {{invoiceDetail?.payment_method}}</p>
+                <p class="mb-0 detail" *ngIf="invoiceDetail?.payment_method === 'BANK_TRANSFER'" >Reference: {{invoiceDetail?.bank_reference_code}}</p>
+  
+              </div>
+              <div class="col-6 text-right invoice-detail">
+                <h4 class="title"><strong>Bill From: </strong></h4>
+                <p class="mb-0 detail"><strong>KudiGo Inc.</strong></p>
+                <p class="mb-1 detail">Block A, Accra Digital Center, <br>
+                  Ring Road West,Accra-Ghana.</p>
+                <p class="mb-0 detail">Southgate, Osbore Estates, <br>
+                  Victoria Island, Lagos</p>
+  
+              </div>
+  
+            </div>
+  
+            <div class="row mt-4">
+              <div class="col-md-12">
+                <div class="table-responsive">
+                  <table class="table m-t-30 text-nowrap  table-border-bottom invoice-table">
+                    <thead class="thead-primary">
+                      <tr>
+                        <th>Description</th>
+                        <th class="text-right">Amount ({{invoiceDetail?.currency}})</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{invoiceDetail?.invoice_item}}</td>
+                        <td class="text-right">{{ invoiceDetail?.amount_due | number: '1.2-2'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xl-4 col-12 offset-xl-8 invoice-footer">
+                <p class="text-right mt-3 font-weight-600 m-0">Sub-total: {{invoiceDetail?.currency}}
+                  {{invoiceDetail?.amount_due | number: '1.2-2'}}</p>
+                <p class="text-right font-weight-600 m-0">Discout: <span *ngIf="invoiceDetail?.discount !== '' && invoiceDetail?.discount !== null && invoiceDetail?.discount !== undefined" >{{invoiceDetail?.discount | number: '1.2-2'}}</span> <span *ngIf="invoiceDetail?.discount === '' || invoiceDetail?.discount === null || invoiceDetail?.discount === undefined" >0.00</span></p>
+                <p class="text-right font-weight-600 m-0">VAT: <span *ngIf="invoiceDetail?.vat_value !== '' && invoiceDetail?.vat_value !== null && invoiceDetail?.vat_value !== undefined" >{{invoiceDetail?.vat_value | number: '1.2-2'}}</span> <span *ngIf="invoiceDetail?.vat_value === '' || invoiceDetail?.vat_value === null || invoiceDetail?.vat_value === undefined" >0.00</span></p>
+                <p class="text-right font-weight-600 m-0">Amount Paid: ({{invoiceDetail?.currency}} <span *ngIf="invoiceDetail?.amount_paid !== '' && invoiceDetail?.amount_paid !== null && invoiceDetail?.amount_paid !== undefined" >{{invoiceDetail?.amount_paid | number: '1.2-2'}}</span> <span *ngIf="invoiceDetail?.amount_paid === '' || invoiceDetail?.amount_paid === null || invoiceDetail?.amount_paid === undefined" >0.00</span>)</p>
+                <hr>
+                <h4 class="text-right grand-total m-0">Amount Due : {{invoiceDetail?.currency}}
+                  {{invoiceDetail?.amount_due | number: '1.2-2'}}</h4>
+              </div>
+            </div>
+            <div class="row" *ngIf="invoiceDetail?.status === 'CANCELLED'">
+  
+              <div class="col-12" >
+                <div class="alert alert-danger" role="alert">
+                  CANCELLATION REASON: {{invoiceDetail?.message}}
+                </div>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button mat-raised-button color="primary" (click)="onPayClicked()"><i class="fa fa-file-pdf"></i> Pay</button>
+          <button mat-raised-button color="primary" (click)="exportAsPDF()"><i class="fa fa-file-pdf"></i> Download As PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  End of Sales Orders Details Modal -->
+  
+  <!-- <app-iframe-dialog [src]="redirectUrl" *ngIf="redirectUrl !== ''"></app-iframe-dialog> -->
+  

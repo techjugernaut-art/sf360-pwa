@@ -1,0 +1,54 @@
+<h1 mat-dialog-title>
+    <h4>Select Supplier</h4>
+    <div class="row">
+      <mat-form-field class="col-12" appearance="outline">
+        <mat-label>Search Supplier</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput type="text" placeholder="Search Supplier" [formControl]="searchInputControl" #searchInput>
+      </mat-form-field>
+    </div>
+  </h1>
+    <div mat-dialog-content>
+      <div class="table-responsive">
+        <mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+        <table class="table dataTable no-footer table-border-bottom">
+          <thead>
+            <tr role="row">
+              <th class="wd-15p">Name</th>
+              <th class="wd-15p">Phone Number</th>
+              <th class="wd-15p">Category</th>
+              <th class="wd-25p text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!isProcessing && suppliers?.length <= 0">
+              <td colspan="10" class="text-center">
+                  <app-empty-record></app-empty-record>
+              </td>
+            </tr>
+            <tr *ngFor="let supplier of suppliers">
+              <td>
+                 {{supplier?.name}}</td>
+              <td>
+                {{supplier?.phone_number}}
+              </td>
+              <td>{{supplier?.category?.name}}</td>
+              <td class="text-center">
+                <button mat-stroked-button color="primary" (click)="onSelectSupplier(supplier)" >
+                  SELECT
+                </button>
+  
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+  
+    </div>
+  
+    <mat-dialog-actions class="text-right mb-2">
+      <button mat-raised-button (click)="onClose()">CLOSE</button>
+      <button mat-raised-button (click)="addSupplier()" color="primary"
+        type="button">ADD NEW</button>
+    </mat-dialog-actions>
+  

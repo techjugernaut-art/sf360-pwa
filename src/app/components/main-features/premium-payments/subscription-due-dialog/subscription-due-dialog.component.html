@@ -1,0 +1,46 @@
+<div class="">
+    <mat-card-content class="ml-2 mr-2 mb-0">
+        <div class="" *ngIf="!shopInfo">
+            Loading...
+        </div>
+        <app-breadcrumb-actions class="full-width subscription-message"
+            [pageHeaderOptions]="pageHeaderOptions" (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+            <div class="subscription-close-button">
+                <button mat-dialog-close>X</button>
+            </div>
+        <p>Hi <b>{{shopInfo?.administration_name}},</b></p>
+        <p>Your subscription for <b>{{currentPremiumPlan?.name}}</b> package for your shop is
+            due expiring.
+            <br>
+            Please continue to enjoy amazing offers from <b>KudiGo</b> by renewing your subscriptions before a specified due date.
+        </p>
+        <p>Thank you.</p>
+        <h3 class="mt-0 text-center">Current Premium Plan</h3>
+        <div class="row my-2">
+            <div class="col-md-6 text-primary text-left">
+                Subscription Expiring Date: {{shopInfo?.days_left | subscriptionRenewalDate}}
+            </div> 
+            <div class="col-md-6 text-right">
+                <span class="bg-warning subscription-days-left">{{shopInfo?.days_left}} Days Left</span>
+            </div>
+        </div> 
+        <div class="row mlr-0 ">
+            <div class="row premium-plan-list-item mlr-0"
+                *ngIf="currentPremiumPlan !== null && currentPremiumPlan !== undefined">
+                <div class="col-md-6 price-and-premium-plan-name">
+                    <p class="premium-plan-name">{{currentPremiumPlan?.name}}</p>
+                    <h4 class="subscription-plan-price">{{currentPremiumPlan?.currency}}
+                        {{currentPremiumPlan?.amount_to_show_on_app}}</h4>
+                </div>
+                <div class="col-md-6 premium-plan-desc">
+                    {{currentPremiumPlan?.description}}
+                </div>
+            </div>
+        </div>
+        <mat-dialog-actions class="text-right">
+            <!-- <button mat-raised-button mat-dialog-close>Close</button> -->
+            <button mat-raised-button color="primary" type="button" (click)="payPremiumNow(currentPremiumPlan)">RENEW
+                NOW</button>
+        </mat-dialog-actions>
+    </mat-card-content>
+</div>

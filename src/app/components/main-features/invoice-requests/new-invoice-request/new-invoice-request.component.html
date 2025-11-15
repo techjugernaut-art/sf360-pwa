@@ -1,0 +1,153 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <h3 class="my-4">{{modalTitle}}</h3>
+  <div class="container">
+    <div class="row " style="display: flex; justify-content: center; overflow-y: auto;">
+      <div class="col-md-10 mb-4 bg-white p-4">
+        <div class="p-3">
+          <form [formGroup]="invoiceFormGroup">
+            <div class="row mb-4">
+              <div class="col-md-6 invoice-detail">
+                <div class="card mr-40">
+                    <div class="card-body" style="padding: 0.85rem;">
+                        <div class="empty-customer-info my-2" *ngIf="!selectedShop && !isProcessing">
+                            <div (click)="onSelectShop()" class="cursor-pointer">
+                                <span class="btn-primary-rounded"> <i class="fe fe-plus plus-fe-lg"></i>
+                                </span><span>Add
+                                    Shop</span>
+                            </div>
+                        </div>
+                        <span class="customer-wrapper my-2" *ngIf="selectedShop">
+                            <h4 class="mb-0 detail"><strong>{{selectedShop?.business_name |
+                                    titlecase}}</strong>
+                                <span class="pull-right">
+                                    <i class="fe fe-edit text-primary cursor-pointer"
+                                        title="Change Shop" (click)="onSelectShop()"></i>
+                                    <span class="mx-3 text-danger cursor-pointer" title="Remove Shop"
+                                        (click)="onDeleteShop()">X</span>
+                                </span>
+                            </h4>
+                            <p class="mb-0 detail" *ngIf="selectedShop?.phone_number">Phone No:
+                                {{selectedShop?.contact_number}}</p>
+                            <p class="mb-0 detail" *ngIf="selectedShop?.email">Email:
+                                {{selectedShop?.email}}</p>
+                            <p class="mb-0 detail" *ngIf="selectedShop?.location">Address:
+                                {{selectedShop?.location}}</p>
+                        </span>
+                    </div>
+                </div>
+            </div>
+              <div class="col-md-6 invoice-detail ">
+                <div class="card ml-40">
+                  <div class="card-body" style="padding: 0.85rem;">
+                    <div class="empty-customer-info my-2" *ngIf="!selectedCustomer && !isProcessing">
+                      <div (click)="onSelectCustomer()" class="cursor-pointer">
+                        <span class="btn-primary-rounded"> <i class="fe fe-plus plus-fe-lg"></i> </span><span>Add
+                          Customer</span>
+                      </div>
+                    </div>
+                    <span class="customer-wrapper my-2" *ngIf="selectedCustomer">
+                      <h4 class="mb-0 detail"><strong>{{selectedCustomer?.name | titlecase}}</strong>
+                        <span class="pull-right"> 
+                          <i class="fe fe-edit text-primary cursor-pointer" title="Change Customer" (click)="onSelectCustomer()"></i> 
+                          <span class="mx-3 text-danger cursor-pointer" title="Remove Customer" (click)="onDeleteCustomer()">X</span>
+                        </span>
+                      </h4>
+                      <!-- <p class="mb-0 detail">Customer Group: {{selectedCustomer?.customer_group?.name | titlecase}}</p> -->
+                      <p class="mb-0 detail" *ngIf="selectedCustomer?.phone_number">Phone No:
+                        {{selectedCustomer?.phone_number}}</p>
+                      <p class="mb-0 detail" *ngIf="selectedCustomer?.email">Email:
+                        {{selectedCustomer?.email}}</p>
+                      <p class="mb-0 detail" *ngIf="selectedCustomer?.address">Address:
+                        {{selectedCustomer?.address}}</p>
+                    </span>    
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 mb-2">
+                <span class="mr-2 mt-4 font-weight-600">Invoice Date: </span>{{invoiceDate | date: 'MMM dd, yyyy'}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="table-responsive">
+                  <table class="table m-t-30 text-nowrap table-border-bottom invoice-table">
+                    <thead class="thead-primary">
+                      <tr>
+                        <th class="wd-80">Srl #</th>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Selling Price</th>
+                        <th class="text-right">Total ({{selectedProduct?.currency}})</th>
+                      </tr>
+                    </thead>
+                    <tbody formArrayName="item_list">
+                      <tr class="tbody-wrapper" *ngFor="let item of item_list.controls; let i=index" [formGroup]="item">
+                        <td class="wd-80">{{i+1}}</td>
+                        <td>
+                          <mat-form-field (click)="onSelectProduct(i)">
+                            <mat-label>Product Name</mat-label>
+                            <input matInput readonly formControlName="name">
+                            <mat-hint class="text-danger" *ngIf="!item?.get('name')?.valid && item?.get('name')?.touched">
+                              Please enter Product Name
+                            </mat-hint>
+                          </mat-form-field>
+                        </td>
+                        <td>
+                          <mat-form-field>
+                            <mat-label>Quantity</mat-label>
+                            <input matInput formControlName="quantity" decimalOnly>
+                            <mat-hint class="text-danger" *ngIf="!item?.get('quantity')?.valid && item?.get('quantity')?.touched">
+                              Please enter Quantity
+                            </mat-hint>
+                          </mat-form-field>
+                        </td>
+                        <td>
+                          <mat-form-field>
+                            <mat-label>Unit Price </mat-label>
+                            <span class="mr-2" matPrefix>{{selectedProduct?.currency}}</span>
+                            <input matInput formControlName="selling_price" readonly>
+                            <mat-hint class="text-danger"
+                              *ngIf="!item?.get('selling_price')?.valid && item?.get('selling_price')?.touched">
+                              Please enter Selling Price
+                            </mat-hint>
+                          </mat-form-field>
+                        </td>
+                        <td class="text-right"><b>{{item?.get('quantity')?.value * item?.get('selling_price')?.value}}</b></td>
+                        <span class="icon-hover">
+                          <span>
+                            <i class="fe fe-edit text-primary cursor-pointer mr-3" (click)="onSelectProduct(i)"></i>
+                          </span>
+                          <span class="text-danger cursor-pointer" (click)="deleteItemList(i)"><b>X</b></span>
+                        </span>
+                      </tr>
+                      <tr class="full-width" style="border: none;">
+                        <td style="border: none;">
+                          <span class=" cursor-pointer" (click)="addItemList()">
+                            <span class="btn-primary-rounded" style="padding: 4px 3px 0px">
+                              <i class="fe fe-plus plus-fe-lg"></i>
+                            </span>
+                            <span class="cursor-pointer">Add Item</span>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="pull-right mt-4">
+                  <button mat-button mat-raised-button type="button" [routerLink]="['/invoices']" class="mx-2">Back</button>
+                  <button mat-button mat-raised-button color="primary" [disabled]="!invoiceFormGroup.valid" (click)="onViewSubmitInvoice()" class="mx-2">Preview & Send</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-main-nav>

@@ -1,0 +1,35 @@
+# This script depends on two environment variables to be set in Bitbucket Pipelines
+# 1. $HEROKU_API_KEY - Local environment var that contains your Heroku account's API key
+# 2. $HEROKU_STAGING - Local environment var that contains your staging app name in Heroku
+# 3. $HEROKU_PRODUCTION - Local environment var that contains your production app name in Heroku
+
+ image: node:10.14.1
+
+ # Doing a full clone to be able to push back to Heroku.
+ clone:
+   depth: full
+
+ pipelines:
+   branches:
+     # When code is pushed to the test branch it is deployed automatically to the staging environment.
+     test-env-deploy:
+       - step:
+           name: Test Environment
+           deployment: Test
+           caches:
+             - node
+           script:
+             - npm install
+             - npm run build
+             - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_TEST.git test-env-deploy:master
+     # When code is pushed to the production branch it is deployed automatically to the production environment.
+     master-deploy:
+       - step:
+           name: Production Environment
+           deployment: Production
+           caches:
+             - node
+           script:
+             - npm install
+             - npm run build
+             - git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_PRODUCTION.git master-deploy:master

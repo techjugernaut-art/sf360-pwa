@@ -1,0 +1,52 @@
+<h1 mat-dialog-title>
+    <h4>Select Product</h4>
+    <div class="row">
+      <mat-form-field class="col-12" appearance="outline">
+        <mat-label>Search Product</mat-label>
+        <mat-icon matPrefix class="mr-2">search</mat-icon>
+        <input matInput type="text" placeholder="Search product" [formControl]="searchInputControl" #searchInput>
+      </mat-form-field>
+    </div>
+  </h1>
+    <div mat-dialog-content>
+      <div class="table-responsive">
+        <mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+        <table class="table dataTable no-footer table-border-bottom">
+          <thead>
+            <tr role="row">
+              <th class="wd-15p">Name</th>
+              <th class="wd-15p">Stock Quantity</th>
+              <th class="wd-25p">Selling Price</th>
+              <th class="wd-25p text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!isProcessing && products?.length <= 0">
+              <td colspan="10" class="text-center">
+                  <app-empty-record></app-empty-record>
+              </td>
+            </tr>
+            <tr *ngFor="let product of products">
+              <td>
+                 {{product?.name}}</td>
+              <td>{{product?.quantity}}</td>  
+              <td>{{product?.currency}} {{product?.selling_price  | number: '1.2-2'}}</td>
+              <td class="text-center">
+                <button mat-stroked-button color="primary" (click)="onSelectProduct(product)" >
+                  SELECT
+                </button>
+  
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+  
+    </div>
+  
+    <mat-dialog-actions class="text-right mb-2">
+      <button mat-raised-button (click)="onClose()">CLOSE</button>
+      <!-- <button mat-raised-button (click)="addOrUpdateCustomer()" color="primary"
+        type="button">ADD NEW</button> -->
+    </mat-dialog-actions>
+  

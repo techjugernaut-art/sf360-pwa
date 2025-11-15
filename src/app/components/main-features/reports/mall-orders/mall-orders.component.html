@@ -1,0 +1,219 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width d-print-none" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+
+  <mat-card class="d-print-none">
+    <mat-card-header class="card-header-full-width  mb-3">
+
+
+    </mat-card-header>
+    <mat-card-content class="ml-3 mr-3">
+      <app-table-header-actions [tableHeaderOptions]="tableHeaderOption" (searchTextChanged)="onSearchOrder($event)">
+        <button mat-button mat-stroked-button color="primary" type="button" (click)="exportAsExcel()"><i class="fe fe-download mr-1"></i> DOWNLOAD</button>
+      </app-table-header-actions>
+      <div class="table-responsive">
+        <table class="table dataTable no-footer table-border-bottom">
+          <thead>
+            <tr>
+              <th class="wd-15p">Order #</th>
+              <th class="wd-15p">Amount</th>
+              <th class="wd-15p">Payment Method</th>
+              <th class="wd-15p">Payment Status</th>
+              <th class="wd-25p">Status</th>
+              <th class="wd-10p">Shop</th>
+              <th class="wd-25p">Date Placed</th>
+              <th class="wd-25p">Actions</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="10" class="text-center" *ngIf="mallOrders?.length <= 0">
+                <app-empty-record></app-empty-record>
+              </td>
+            </tr>
+
+            <tr *ngFor="let order of mallOrders">
+              <td>{{order?.order_code}}</td>
+              <td>{{order?.currency}} {{order?.total_amount | number: '1.2-2'}}</td>
+              <td>{{order?.payment_method}}</td>
+              <td><span class="ml-2 badge"
+                  [ngClass]="{'badge-pending': toLowerCase(order?.payment_status) === 'pending', 'badge-approved': toLowerCase(order?.payment_status) === 'success', 'badge-blocked': toLowerCase(order?.payment_status) === 'failed', 'badge-cancelled': toLowerCase(order?.payment_status) === 'cancelled', 'badge-retry': toLowerCase(order?.payment_status) === 'retry'}">{{order?.payment_status | uppercase}}</span>
+              </td>
+              <td>{{order?.status | uppercase}}</td>
+              <td>{{order?.myshop?.business_name | titlecase}}</td>
+              <td>{{order?.date_placed | date: 'medium'}}</td>
+              <td class="text-center">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item data-toggle="modal" (click)="viewOrderDetails(order)" data-toggle="modal"
+                    data-target="#modalSalesOrdersDetail"><span>View Detail</span></button>
+                  <button mat-menu-item (click)="updateStatus(order)" *ngIf="!isPartner"><span> Update Status</span></button>
+                  <button mat-menu-item (click)="updateStatus(order)" *ngIf="!isPartner"><span> Mark as Processed</span></button>
+                  <button mat-menu-item data-toggle="modal" (click)="printOrder(order)"><span>Print</span></button>
+                </mat-menu>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <app-pagination [dataSet]="mallOrders" [nextPage]="nextPage" [prevPage]="prevPage" [totalPage]="totalPage"
+        [requestPayload]="requestPayload" [requestMethod]="'POST'" (pageChanged)="onPageChanged($event)"
+        [isProcessing]="isProcessing"></app-pagination>
+
+    </mat-card-content>
+  </mat-card>
+
+
+
+
+</app-main-nav>
+
+
+<!-- Sales Orders Details Modal -->
+<div class="modal fade d-print-none" id="modalSalesOrdersDetail" tabindex="-1" role="dialog"
+  aria-labelledby="modal-notification" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title invoice-modal-title" id="modal-title-notification">
+          Order #: {{saleOrderDetail?.order_code}}
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" id="salesOrderModalBody">
+        <div class="logo-img text-center pb-3">
+          <img src="../assets/img/logos/dark-green.png" alt="invoice-logo-img" class="invoice-logo-img">
+        </div>
+        <div class="mb-0">
+          <div class="row">
+            <div class="col-12 invoice-detail">
+              <h4 class="title"><strong>Order #: {{saleOrderDetail?.order_code}}</strong></h4>
+              <p class="mb-0 detail"><strong>{{saleOrderDetail?.myshop?.business_name | titlecase}}</strong></p>
+              <p class="mb-0 detail">{{saleOrderDetail?.myshop?.location | titlecase}}</p>
+              <p class="mb-0 detail">Date Placed: {{saleOrderDetail?.date_placed | date: 'MM/dd/yyyy, HH:mm:ss'}}</p>
+              <p class="mb-0 detail">Payment Method: {{saleOrderDetail?.payment_method}}</p>
+              <p class="mb-0 detail">Status: {{saleOrderDetail?.status}}</p>
+
+            </div>
+
+
+          </div>
+          <!-- end row -->
+
+          <div class="row mt-4">
+            <div class="col-md-12">
+              <div class="table-responsive">
+                <table class="table m-t-30 text-nowrap  table-border-bottom invoice-table">
+                  <thead class="thead-primary">
+                    <tr>
+                      <th>#</th>
+                      <th>Description</th>
+                      <th>Quantity</th>
+                      <th class="text-right">Selling Price ({{saleOrderDetail?.currency}})</th>
+                      <th class="text-right">Amount ({{saleOrderDetail?.currency}})</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of salesOrderItems">
+                      <td>{{item?.id}}</td>
+                      <td>{{item?.my_product?.product?.name}}</td>
+                      <td>{{item?.quantity}}</td>
+                      <td class="text-right">{{item?.my_product?.selling_price | number: '1.2-2'}}</td>
+                      <td class="text-right">{{item?.subtotal | number: '1.2-2'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-4 col-12 offset-xl-8 invoice-footer">
+              <p class="text-right mt-3 mb-0 font-weight-600">Sub-total: {{saleOrderDetail?.currency}}
+                {{saleOrderDetail?.gross_total | number: '1.2-2'}}</p>
+              <p class="text-right mb-0 font-weight-600">Discout: {{saleOrderDetail?.discount}}</p>
+              <p class="text-right mb-0 font-weight-600">VAT: {{saleOrderDetail?.vat_value}}</p>
+              <hr class="mt-0">
+              <h4 class="text-right mt-0 grand-total">Grand Total : {{saleOrderDetail?.currency}}
+                {{saleOrderDetail?.total_amount | number: '1.2-2'}}</h4>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button mat-raised-button color="primary" (click)="exportAsPDF()"><i class="fa fa-file-pdf"></i> Download As
+          PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Sales Orders Details Modal -->
+
+
+
+<div class="modal-body d-none d-print-block" id="salesOrderModalBody">
+  <div class="logo-img text-center pb-3">
+    <img src="../assets/img/logos/dark-green.png" alt="invoice-logo-img" class="invoice-logo-img">
+  </div>
+  <div class="mb-0">
+    <div class="row">
+      <div class="col-12 invoice-detail">
+        <h4 class="title"><strong>Order #: {{saleOrderDetail?.order_code}}</strong></h4>
+        <p class="mb-0 detail"><strong>{{saleOrderDetail?.myshop?.business_name | titlecase}}</strong></p>
+        <p class="mb-0 detail">{{saleOrderDetail?.myshop?.location | titlecase}}</p>
+        <p class="mb-0 detail">Date Placed: {{saleOrderDetail?.date_placed | date: 'MM/dd/yyyy, HH:mm:ss'}}</p>
+        <p class="mb-0 detail">Payment Method: {{saleOrderDetail?.payment_method}}</p>
+        <p class="mb-0 detail">Status: {{saleOrderDetail?.status}}</p>
+
+      </div>
+
+
+    </div>
+    <!-- end row -->
+
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table m-t-30 text-nowrap  table-border-bottom invoice-table">
+            <thead class="thead-primary">
+              <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th class="text-right">Selling Price ({{saleOrderDetail?.currency}})</th>
+                <th class="text-right">Amount ({{saleOrderDetail?.currency}})</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of salesOrderItems">
+                <td>{{item?.id}}</td>
+                <td>{{item?.my_product?.name}}</td>
+                <td>{{item?.quantity}}</td>
+                <td class="text-right">{{item?.my_product?.selling_price | number: '1.2-2'}}</td>
+                <td class="text-right">{{item?.subtotal | number: '1.2-2'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-4 col-12 offset-xl-8 invoice-footer">
+        <p class="text-right mt-3 mb-0 font-weight-600">Sub-total: {{saleOrderDetail?.currency}}
+          {{saleOrderDetail?.gross_total | number: '1.2-2'}}</p>
+        <p class="text-right mb-0 font-weight-600">Discout: {{saleOrderDetail?.discount}}</p>
+        <p class="text-right mb-0 font-weight-600">VAT: {{saleOrderDetail?.vat_value}}</p>
+        <hr class="mt-0">
+        <h4 class="text-right mt-0 grand-total">Grand Total : {{saleOrderDetail?.currency}}
+          {{saleOrderDetail?.total_amount | number: '1.2-2'}}</h4>
+      </div>
+    </div>
+
+  </div>
+</div>

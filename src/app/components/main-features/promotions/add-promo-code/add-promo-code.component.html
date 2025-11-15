@@ -1,0 +1,50 @@
+<h1 mat-dialog-title>{{editStockModalTitle}}</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup?.value)">
+  <div mat-dialog-content>
+
+    <div class="row">
+      <div class="col-md-12 mb-2 mt-2">
+        <label>Promo Code Rate Type</label><br>
+        <mat-button-toggle-group color="primary" class="mat-toggle-buttons-adjustment" formControlName="rate_type">
+          <mat-button-toggle color="primary" [value]="promoCodeRateTypes?.FLAT" >AMOUNT VALUE
+          </mat-button-toggle>
+          <mat-button-toggle color="primary" [value]="promoCodeRateTypes?.PERCENTAGE">PERCENTAGE VALUE
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <mat-form-field class="col-12">
+        <input type="text" matInput placeholder="Promo Code" formControlName="code" alphaNumericOnly>
+        <mat-hint class="text-danger" *ngIf="!code?.valid && code?.touched">Please enter Promo Code</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-12">
+        <mat-label>Promo Code Rate Value (<small *ngIf="rate_type?.value === promoCodeRateTypes?.FLAT" >{{shopInfo?.currency}}</small>  <small *ngIf="rate_type?.value === promoCodeRateTypes?.PERCENTAGE" matSuffix>%</small>)</mat-label>
+
+        <input type="text" matInput decimalOnly formControlName="rate_value">
+
+        <mat-hint class="text-danger" *ngIf="!rate_value?.valid && rate_value?.touched && rate_type?.value !== promoCodeRateTypes.PERCENTAGE">Please enter Rate Value</mat-hint>
+        <mat-hint class="text-danger" *ngIf="!rate_value?.valid && rate_value?.touched && rate_type?.value === promoCodeRateTypes.PERCENTAGE">Please enter Rate Value not more than 90%</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="row mlr-0 mb-4">
+      <div class="col-12">
+        <mat-checkbox formControlName="is_public">Display Promo Code on my StoreFront Mall</mat-checkbox>
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <mat-dialog-actions class="text-right">
+    <button mat-raised-button mat-dialog-close>Close</button>
+    <button mat-raised-button color="primary" [disabled]="formGroup?.invalid || isProcessing"
+      type="submit">Save</button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,67 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)">
+    <div mainAction>
+      <button mat-raised-button *ngIf="!isPartner" color="accent" (click)="addOrUpdateProductGroup()">
+        ADD
+      </button>
+    </div>
+  </app-breadcrumb-actions>
+
+
+  <mat-card>
+
+    <mat-card-content class="ml-3 mr-3">
+      <app-table-header-actions [tableHeaderOptions]="tableHeaderOption" (searchTextChanged)="onSearch($event)">
+
+
+
+      </app-table-header-actions>
+      <div class="table-responsive">
+        <table class="table dataTable no-footer table-border-bottom">
+          <thead>
+            <tr role="row">
+              <th class="wd-15p">Name</th>
+              <th class="wd-15p">Number of Products</th>
+              <th class="wd-15p">Shop</th>
+              <th class="wd-25p text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="!isProcessing && shopProducts?.length <= 0">
+              <td colspan="10" class="text-center">
+                <app-empty-record></app-empty-record>
+              </td>
+            </tr>
+            <tr *ngFor="let product of shopProducts">
+              <td>{{product?.name}}</td>
+
+              <td>{{product?.num_of_products}}</td>
+              <td>{{product?.myshop?.business_name}}</td>
+              <td class="text-center">
+
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+
+                  <a [routerLink]="['/products']" [queryParams]="{gId: product?.id, gName: product?.name, s: product?.myshop?.id}" mat-menu-item *ngIf="!isPartner" >
+                    <span>View Products</span>
+                  </a>
+                  <button mat-menu-item (click)="addOrUpdateProductGroup(true, product)" >Edit Category</button>
+                </mat-menu>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <app-pagination [dataSet]="shopProducts" [nextPage]="nextPage" [prevPage]="prevPage" [totalPage]="totalPage"
+        [requestPayload]="requestPayload" [requestMethod]="'POST'" (pageChanged)="onPageChanged($event)"
+        [isProcessing]="isProcessing"></app-pagination>
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>
+

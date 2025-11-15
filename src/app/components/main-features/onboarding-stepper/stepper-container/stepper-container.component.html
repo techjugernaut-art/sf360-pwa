@@ -1,0 +1,20 @@
+<div class="onboarding-wrapper">
+  <div class="onboarding-step-content">
+    <img class="stepper-logo" src="assets/img/logos/logo1.png" />
+    <div class="step-content-wrapper" >
+      <router-outlet ></router-outlet>
+    </div>
+  </div>
+  <div class="onboarding-step-nav">
+    <ul class="step-list">
+      <li class="step-list-item" *ngFor="let item of steps" >
+        <div class="step-indicator {{item?.state}}">{{item?.step}}</div>
+        <div class="step-detail {{item?.detail_state}}">
+          <p class="step-heading">{{item?.heading}}</p>
+          <p class="step-desc">{{item?.desc}}</p>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</div>

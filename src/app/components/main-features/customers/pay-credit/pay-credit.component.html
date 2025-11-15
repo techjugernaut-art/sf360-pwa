@@ -1,0 +1,120 @@
+<!-- <h3 mat-dialog-title>TOTAL : {{orderInfo?.currency}} {{orderInfo?.customer?.amount_owing | number: '1.2-2'}}</h3> -->
+<h3 mat-dialog-title>Credit Amount: {{orderInfo?.currency}} {{orderInfo?.amount_owing | number: '1.2-2'}}</h3>
+<hr class="my-2">
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<form [formGroup]="formGroup" (ngSubmit)="payCredit(formGroup?.value)">
+    <div mat-dialog-content>
+        <div class="row">
+            <div class="col-8 mb-3">CHOOSE PAYMENT METHOD</div>
+            <div class="col-4 text-right">
+                <!-- <mat-checkbox [formControl]="splitPayCtrl">SPLIT PAY</mat-checkbox> -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 payment-method-item-wrapper">
+                <input type="radio" id="cash_payment_method" [value]="'CASH'" name="payment_method_input" checked>
+                <label class="payment-method-grid-list-item" for="cash_payment_method"
+                    (click)="selectPaymentMethod('CASH', '', '')">
+                    <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+                    <img src="./assets/img/icons/CASH-PAYMENT-01.svg" alt=""
+                        class="payment-method-grid-list-item-media">
+                    <p class="mb-0 payment-method-grid-list-item-description">CASH</p>
+                </label>
+            </div>
+            <!-- <div class="col-md-4 payment-method-item-wrapper">
+                <input type="radio" id="electronic_invoice_payment_method" [value]="paymentMethods?.PAYMENT_LINK"
+                    name="payment_method_input">
+                <label class="payment-method-grid-list-item" for="electronic_invoice_payment_method"
+                    (click)="selectPaymentMethod(paymentMethods?.PAYMENT_LINK, '', '')">
+                    <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+                    <img src="./assets/img/icons/payment_options.svg" alt=""
+                        class="payment-method-grid-list-item-media">
+                    <p class="mb-0 payment-method-grid-list-item-description">ELECTRONIC INVOICE</p>
+                </label>
+            </div>
+            <div class="col-md-4 payment-method-item-wrapper" *ngIf="orderInfo?.currency === currencyEnums.GHS">
+                <input type="radio" id="momo_payment_method" [value]="paymentMethods?.MOMO" name="payment_method_input">
+                <label class="payment-method-grid-list-item" for="momo_payment_method"
+                    (click)="selectPaymentMethod(paymentMethods?.MOMO, '', '')">
+                    <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+                    <img src="./assets/img/icons/momo_icon.png" alt="" class="payment-method-grid-list-item-media">
+                    <p class="mb-0 payment-method-grid-list-item-description"> MOBILE MONEY</p>
+                </label>
+            </div> -->
+        </div>
+        <div class="row">
+            <mat-form-field class="col-12">
+                <span matPrefix class="mr-3"> {{orderInfo?.currency}} </span>
+                <input type="text" decimalOnly matInput placeholder="Credit Amount Paid" formControlName="credit_amount_paid" value="orderInfo?.amount_owing">
+                <mat-hint class="text-danger" *ngIf="!credit_amount_paid?.valid && credit_amount_paid?.touched">Please
+                    enter credit amount paid</mat-hint>
+            </mat-form-field>
+        </div>
+        <!-- <div *ngIf="payment_method?.value === paymentMethods?.MOMO">
+
+            <div class="row">
+                <div class="col-12 mt-3">CHOOSE PAYMENT NETWORK</div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-4 payment-method-item-wrapper">
+                    <input type="radio" id="momo" [value]="'MTN'" name="momo">
+                    <label class="payment-method-grid-list-item" for="momo"
+                        (click)="selectPaymentMethod('MOMO', 'MTN', 'MTN MOMO')">
+                        <img src="assets/img/icons/check.svg" class="payment-method-selected-icon" />
+                        <img src="assets/img/icons/ic_mtn_money.png" alt="" class="payment-method-grid-list-item-media">
+                        <p class="mb-0 payment-method-grid-list-item-description"></p>
+                    </label>
+                </div>
+                <div class="col-md-4 payment-method-item-wrapper">
+                    <input type="radio" id="voda" [value]="'VOD'" name="momo">
+                    <label class="payment-method-grid-list-item" for="voda"
+                        (click)="selectPaymentMethod('MOMO', 'VOD', 'VODAFONE CASH')">
+                        <img src="assets/img/icons/check.svg" class="payment-method-selected-icon" />
+                        <img src="assets/img/icons/ic_vodafone_cash.png" alt=""
+                            class="payment-method-grid-list-item-media">
+                        <p class="mb-0 payment-method-grid-list-item-description"></p>
+                    </label>
+                </div>
+                <div class="col-md-4 payment-method-item-wrapper">
+                    <input type="radio" id="atigo" [value]="'AIR'" name="momo">
+                    <label class="payment-method-grid-list-item" for="atigo"
+                        (click)="selectPaymentMethod('MOMO', 'AIR', 'AIRTELTIGO CASH')">
+                        <img src="assets/img/icons/check.svg" class="payment-method-selected-icon" />
+                        <img src="assets/img/icons/atigo.png" alt="" class="payment-method-grid-list-item-media">
+                        <p class="mb-0 payment-method-grid-list-item-description"></p>
+                    </label>
+                </div>
+
+            </div>
+            <div class="row">
+                <mat-form-field class="col-12">
+                    <input type="text" matInput placeholder="Enter {{networkName}} Number"
+                        formControlName="phone_number" numbersOnly>
+                    <mat-hint class="text-danger" *ngIf="!phone_number?.valid && phone_number?.touched">]
+                        Please enter valid phone number</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-12" *ngIf="paymentNetwork === 'VOD'">
+                    <input type="text" matInput placeholder="Enter voucher" formControlName="payment_voucher_code">
+                    <mat-hint class="text-danger" *ngIf="!payment_voucher_code?.valid && payment_voucher_code?.touched">
+                        Please enter enter voucher</mat-hint>
+                </mat-form-field>
+            </div>
+        </div> -->
+        <div class="row">
+            <mat-form-field class="col-md-12">
+                <input matInput formControlName="frontend_payment_date" placeholder="Payment Date" [matDatepicker]="dateRangePicker" [max]="maxDate"
+                    (click)="dateRangePicker?.open()" autocomplete="off">
+                <mat-hint class="text-danger" *ngIf="!frontend_payment_date?.valid && frontend_payment_date?.touched">
+                    Please provide a valid date of payment
+                </mat-hint>
+                <mat-datepicker #dateRangePicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <mat-dialog-actions class="text-right">
+        <button type="button" mat-raised-button (click)="onClose()">CLOSE</button>
+        <button mat-raised-button color="primary" [disabled]="formGroup?.invalid" type="submit">PAY CREDIT</button>
+    </mat-dialog-actions>
+</form>

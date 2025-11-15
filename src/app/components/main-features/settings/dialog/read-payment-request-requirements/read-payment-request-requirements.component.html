@@ -1,0 +1,197 @@
+<div class="row">
+    <div class="col-11">Requirement Information</div>
+    <div class="col-1">
+        <span class="text-right mr-2">
+            <button mat-raised-button color="warn" (click)="onCloseRead()"> <b>X</b></button>
+        </span>
+    </div>
+    
+</div>
+<mat-tab-group mat-stretch-tabs>
+    <mat-tab active="true" label="Ghana Merchant KYC">
+        <div>
+            <p class="text-mute">KudiGo will take a maximum of 1 business day to approve your request to start accepting
+                payments on the Storefront App. This will happen after the KYC documents uploaded are verified to be
+                compliant.
+                However, this process might take longer than the expected approval period should the KYC documents be
+                found to
+                be non-compliant. We advise that care be taken in the provision of all the neccessary documents,
+                required of
+                your business type, to minimize delays. </p>
+            <p class="text-mute">
+                The <b>Business Type</b> selected when providing your <b>Business Information</b> will determine the KYC
+                documents you will have to upload. Below are the Business Types and its required KYC documents.
+            </p>
+            <h4 class="text-primary">KYC For In-Store Card POS Payment</h4>
+            <ol type="i">
+                <li>Full Name</li>
+                <li>Valid Government Issued ID</li>
+                <li>Phone Number (To be validated via OTP and must bare same name as merchant name on ID)</li>
+                <li>Business Name</li>
+                <li>Business Address Location (GPS & Physical Address)</li>
+                <li>Date Of Birth</li>
+                <li>Description and nature of business</li>
+                <li>Business Registration Document </li>
+                <ul>
+                    <li>Certificate Of Incorporation</li>
+                    <li>Certificate Of Commencement</li>
+                </ul>
+                <li>Business TIN (Tax Identification Number)</li>
+            </ol>
+
+            <h4 class="text-primary">Settlement (Either bank or mobile Money)</h4>
+            <ol type="i">
+                <li>Bank Name</li>
+                <li>Bank Account Name</li>
+                <li>Bank Account Number</li>
+                <li>Mobile Money Wallet Name</li>
+                <li>Mobile Money Network</li>
+                <li>Mobile Money Number</li>
+            </ol>
+
+            <h4 class="text-primary">KYC For In-Store MobileMoney Payment</h4>
+            <ol type="i">
+                <li>Full Name</li>
+                <li>Valid Government Issued ID</li>
+                <li>Phone Number</li>
+                <li>Business Name</li>
+                <li>Business Address Location (GPS & Physical Address)</li>
+                <li>Date Of Birth</li>
+                <li>Description and nature of business</li>
+            </ol>
+
+            <h4 class="text-primary">KYC For Online-Store Card & Mobile Money Payment</h4>
+            <ol type="i">
+                <li>Full Name</li>
+                <li>Valid Government Issued ID</li>
+                <li>Phone Number (To be validated via OTP and must bare same name as merchant name on ID)</li>
+                <li>Business Name</li>
+                <li>Business Address Location</li>
+                <li>Date Of Birth</li>
+                <li>Description and nature of business</li>
+                <li>Tax Identification Number (Individual)</li>
+                <li>Mobile Money Number (Where Applicable)</li>
+            </ol>
+
+        </div>
+        <div class="text-right">
+            <button mat-raised-button color="primary" (click)="onCloseRead()">Close</button>
+        </div>
+    </mat-tab>
+
+    <mat-tab label="Nigeria Merchant KYC">
+        <div>
+            <p class="text-mute">KudiGo will take a maximum of 1 business day to approve your request to start accepting
+                payments on the Storefront App. This will happen after the KYC documents uploaded are verified to be
+                compliant.
+                However, this process might take longer than the expected approval period should the KYC documents be
+                found to
+                be non-compliant. We advise that care be taken in the provision of all the neccessary documents,
+                required of
+                your business type, to minimize delays. </p>
+            <p class="text-mute">
+                The <b>Business Type</b> selected when providing your <b>Business Information</b> will determine the KYC
+                documents you will have to upload. Below are the Business Types and its required KYC documents.
+            </p>
+            <p class="text-mute">
+                <b>NB: </b>The primary forms of individual identity verification include:
+            </p>
+            <ul class="">
+                <li>Valid international passport</li>
+                <li>Valid driver’s license</li>
+                <li>National I.D. Card</li>
+                <li>Permanent Voter’s Card</li>
+            </ul>
+            <div class="">
+                <h4 class="text-primary">Sole Proprietorship</h4>
+                <p class="text-mute">
+                    Registered Business Names; e.g. (Sole Proprietorship, Partnership)
+                </p>
+                <ol type="i">
+                    <li>Certificate of Registration of the business</li>
+                    <li>Certified True Copy of CAC/BN/1 (Application for Registration of Business
+                        Name)</li>
+                    <li>Certified True Copy of CAC/BN/1 (Application for Registration of Business
+                        Name)</li>
+                    <li>Valid Identification document of registered Proprietor(s) or
+                        Partnership(s)</li>
+                    <li>Utility Bill; </li>
+                    <li>Special Control Unit against Money Laundering (SCUML) certificate (where
+                        applicable)</li>
+                </ol>
+            </div>
+
+            <div class="">
+                <h4 class="text-primary">Non Profit Organization</h4>
+                <p class="text-mute">
+                    Charities, Religious Associations, Clubs, Schools, NGOs, Societies & Associations
+                </p>
+                <ol type="i">
+                    <li>Certificate of Registration of the Charity/Society/Club/School</li>
+                    <li>Cooperative registration certificate obtained from government registration body (for cooperative
+                        societies only)</li>
+                    <li>Certified true copies of Rules/Constitution of the Association or Club or association</li>
+                    <li>Resolution (or minutes of last meeting) authorizing the establishment of business relationship
+                        with
+                        Interswitch on the letter headed paper, duly signed by at least two principal officers/Trustees
+                        and
+                        nominating signatories/authorizers</li>
+                    <li>Requisite government approval/gazette in relation to schools</li>
+                    <li>Utility bill</li>
+                    <li>Valid IDs of nominated authorizers; and</li>
+                    <li>SCUML registration certificate with the exception of Religious
+                        Organizations</li>
+                </ol>
+            </div>
+            <div class="">
+                <h4 class="text-primary">Private Limited Liability</h4>
+                <p class="text-mute">
+                    Private Limited Liability Company
+                </p>
+                <ol type="i">
+                    <li>Certificate of Incorporation of the company and</li>
+                    <li>Memorandum and Articles of Association [certified as true copy by the Registrar of Companies]
+                        and</li>
+                    <li>Form CAC 7 (formerly CO7 - Particulars of Directors) certified as a true copy by the Registrar
+                        of
+                        Companies and;</li>
+                    <li>Form CAC 2. (formerly CO2-statement of return on allotment of shares) certified as a true copy
+                        by the
+                        Registrar of Companies and; OR</li>
+                    <li>Certified True Copy of Form CAC 1.1 (Application for Registration of Company) for companies
+                        registered
+                        in 2017 (Post CAC reform)</li>
+                    <li>Board resolution (signed by at least two Directors or a Director and Company Secretary)
+                        authorizing the
+                        relationship and introducing representatives/authorizers of future change</li>
+                    <li>Utility Bill;</li>
+                    <li>Valid Identification Documents of all the major shareholder with 5% holding and above;</li>
+                    <li>Operating license (where applicable) for company operating in Nigeria and
+                        regulated by the CBN (e.g. Bureau De Change, Payment Solution Service Providers (PSSPs), Mobile
+                        Money
+                        Operators (MMO), International Money Transfer Operators (IMTOs), Lottery /Gaming etc.)</li>
+                </ol>
+            </div>
+            <div>
+                <h4 class="text-primary">Public Limited Liability</h4>
+                <p class="text-mute">
+                    Public Limited Liability Company
+                </p>
+                <ol type="i">
+                    <li>Certificate of Incorporation of the company and;</li>
+                    <li>Memorandum and Articles of Association [certified as true copy by the Registrar of Companies]
+                        and;</li>
+                    <li>Certified list of major shareholder(s) with 5% holding and above;</li>
+                    <li>Board resolution (signed by at least two Directors or a Director and Company Secretary)
+                        authorizing the
+                        relationship and introducing representatives /authorizers of future change</li>
+                    <li>Evidence of listing on the stock exchange (where applicable); and</li>
+                    <li>Operating license (where applicable)</li>
+                </ol>
+            </div>
+            <div class="text-right">
+                <button mat-raised-button color="primary" (click)="onCloseRead()">Close</button>
+            </div>
+        </div>
+    </mat-tab>
+</mat-tab-group>

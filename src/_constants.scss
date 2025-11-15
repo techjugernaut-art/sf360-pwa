@@ -1,0 +1,19 @@
+$primary-color: #026E08;
+$accent-color: #3D1C00;
+$secondary-color: #00BE0A;
+$primary-color-progress: rgb(182, 240, 185);
+$primary-color-light: rgb(77, 236, 85);
+$active-nav-bg: #ECFAED;
+$small-text-size: .9375rem;
+$stepper-text-color: #E4E4E4;
+$stepper-visited-color: #AC5D19;
+$stepper-active-color: #231F20;
+$transparent-grey: rgba(230, 230, 230, 0.5);
+$small-text-size: .9375rem;
+$bezier: cubic-bezier(.17,.67,.83,.67);
+$disable-background-color: #eceeef;
+$facebook-color: #3568d3;
+@mixin material-shadow() {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.23), 0 10px 40px rgba(0, 0, 0, 0.19);
+}
+

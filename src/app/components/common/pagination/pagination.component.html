@@ -1,0 +1,4 @@
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessingMoreData"></mat-progress-bar>
+<mat-paginator [length]="totalPage" *ngIf="dataSet?.length > 0" [disabled]="isProcessingMoreData" [hidePageSize]="true"
+              [pageSize]="dataSet?.length" (page)="changePage($event)" #paginator>
+</mat-paginator>

@@ -1,0 +1,213 @@
+<div class="d-flex bd-highlight login-page">
+  <!-- Left Side - Login Form -->
+  <div class="p-2 flex-fill bd-highlight login-controls">
+    <div class="mr-5 ml-5 full-width">
+      <!-- Logo -->
+      <img class="login-logo mb-4" src="assets/img/logos/logo1.png" alt="StoreFront360" />
+
+      <!-- Welcome Title -->
+      <h3 class="login-title mb-2">Welcome back</h3>
+      <p class="login-subtitle mb-4">Enter your details to log in</p>
+
+      <!-- Phone Login Form -->
+      <form [formGroup]="phoneLoginForm" (ngSubmit)="onPhoneLogin()"
+            *ngIf="selectedAuthMethod === authMethods.PHONE_SMS || selectedAuthMethod === authMethods.FIREBASE_PHONE">
+
+        <!-- Phone Number Field -->
+        <div class="mb-3">
+          <label class="form-label">Phone number</label>
+          <mat-form-field class="full-width" appearance="outline">
+            <app-intl-country-codes matPrefix (onCountry)="onCountry($event)"></app-intl-country-codes>
+            <input matInput
+                   placeholder="Enter your phone number"
+                   formControlName="phone_number"
+                   numbersOnly>
+            <mat-hint *ngIf="phone?.invalid && phone?.touched" class="text-danger">
+              Please provide valid Phone Number
+            </mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- PIN Field (if user exists) -->
+        <div class="mb-3" *ngIf="showPinField">
+          <label class="form-label">PIN</label>
+          <mat-form-field class="full-width" appearance="outline">
+            <input matInput
+                   placeholder="Enter 4-digit PIN"
+                   formControlName="pin"
+                   type="password"
+                   maxlength="4"
+                   numbersOnly>
+            <button mat-icon-button matSuffix type="button" (click)="hide = !hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          <a (click)="onPasswordReset()" class="forgot-pin-link">Forgot PIN?</a>
+        </div>
+
+        <!-- Progress Bar -->
+        <mat-progress-bar class="mb-3" *ngIf="isProcessing" mode="indeterminate"></mat-progress-bar>
+
+        <!-- Action Buttons -->
+        <div class="button-group">
+          <button mat-stroked-button
+                  type="button"
+                  class="back-button"
+                  (click)="navigateToOnboarding()"
+                  [disabled]="isProcessing">
+            Back
+          </button>
+          <button mat-raised-button
+                  color="primary"
+                  type="submit"
+                  class="login-button"
+                  [disabled]="isProcessing || phoneLoginForm?.invalid || countryCode === ''">
+            Login
+          </button>
+        </div>
+      </form>
+
+      <!-- Email Login Form -->
+      <form [formGroup]="emailLoginForm" (ngSubmit)="onEmailLogin()"
+            *ngIf="selectedAuthMethod === authMethods.EMAIL_PASSWORD || selectedAuthMethod === authMethods.COGNITO">
+
+        <!-- Email Field -->
+        <div class="mb-3">
+          <label class="form-label">Email address</label>
+          <mat-form-field class="full-width" appearance="outline">
+            <input matInput
+                   placeholder="Enter your email"
+                   formControlName="email"
+                   type="email">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-hint *ngIf="email?.invalid && email?.touched" class="text-danger">
+              Please provide valid Email address
+            </mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Password Field -->
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <mat-form-field class="full-width" appearance="outline">
+            <input matInput
+                   placeholder="Enter your password"
+                   [type]="hide ? 'password' : 'text'"
+                   formControlName="password">
+            <button mat-icon-button matSuffix type="button" (click)="hide = !hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          <a (click)="onPasswordReset()" class="forgot-pin-link">Forgot Password?</a>
+        </div>
+
+        <!-- Progress Bar -->
+        <mat-progress-bar class="mb-3" *ngIf="isProcessing" mode="indeterminate"></mat-progress-bar>
+
+        <!-- Action Buttons -->
+        <div class="button-group">
+          <button mat-stroked-button
+                  type="button"
+                  class="back-button"
+                  (click)="selectedAuthMethod = authMethods.PHONE_SMS"
+                  [disabled]="isProcessing">
+            Back
+          </button>
+          <button mat-raised-button
+                  color="primary"
+                  type="submit"
+                  class="login-button"
+                  [disabled]="isProcessing || emailLoginForm?.invalid">
+            Login
+          </button>
+        </div>
+      </form>
+
+      <!-- Verification Code Form -->
+      <form [formGroup]="verificationForm" (ngSubmit)="onVerifyCode()"
+            *ngIf="showVerificationInput">
+
+        <div class="mb-3">
+          <label class="form-label">Verification Code</label>
+          <p class="verification-hint">Enter the 6-digit code sent to {{phoneNumber}}</p>
+          <mat-form-field class="full-width" appearance="outline">
+            <input matInput
+                   placeholder="000000"
+                   formControlName="code"
+                   maxlength="6"
+                   class="verification-input"
+                   numbersOnly>
+          </mat-form-field>
+        </div>
+
+        <!-- Progress Bar -->
+        <mat-progress-bar class="mb-3" *ngIf="isProcessing" mode="indeterminate"></mat-progress-bar>
+
+        <!-- Action Buttons -->
+        <div class="button-group">
+          <button mat-stroked-button
+                  type="button"
+                  class="back-button"
+                  (click)="showVerificationInput = false"
+                  [disabled]="isProcessing">
+            Back
+          </button>
+          <button mat-raised-button
+                  color="primary"
+                  type="submit"
+                  class="login-button"
+                  [disabled]="isProcessing || verificationForm?.invalid">
+            Verify
+          </button>
+        </div>
+
+        <div class="text-center mt-3">
+          <a (click)="onPhoneLogin()" class="resend-link">Didn't receive code? Resend</a>
+        </div>
+      </form>
+
+      <!-- Auth Method Switch -->
+      <div class="auth-switch mt-4" *ngIf="!showVerificationInput">
+        <p *ngIf="selectedAuthMethod === authMethods.PHONE_SMS">
+          <a (click)="setAuthMethod(authMethods.EMAIL_PASSWORD)" class="switch-link">
+            Login with Email instead
+          </a>
+        </p>
+        <p *ngIf="selectedAuthMethod === authMethods.EMAIL_PASSWORD">
+          <a (click)="setAuthMethod(authMethods.PHONE_SMS)" class="switch-link">
+            Login with Phone instead
+          </a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Right Side - Background Image with Features -->
+  <div class="flex-fill bd-highlight image-cover hidden-md-down">
+    <!-- Feature Tags -->
+    <div class="feature-tags">
+      <div class="feature-tag">
+        <mat-icon>trending_up</mat-icon>
+        <span>Business Growth</span>
+      </div>
+      <div class="feature-tag">
+        <mat-icon>add_shopping_cart</mat-icon>
+        <span>Product Addition</span>
+      </div>
+      <div class="feature-tag">
+        <mat-icon>inventory_2</mat-icon>
+        <span>Inventory Tracking</span>
+      </div>
+    </div>
+
+    <!-- Bottom Text -->
+    <div class="bottom-text">
+      <h4 class="bottom-text-title">Smarter way of doing business</h4>
+      <p class="bottom-text-description">We help you run your business The New Smart way</p>
+    </div>
+  </div>
+
+  <!-- reCAPTCHA Container (Hidden) -->
+  <div id="recaptcha-container"></div>
+</div>

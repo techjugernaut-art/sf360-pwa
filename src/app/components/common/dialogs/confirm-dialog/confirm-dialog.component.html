@@ -1,0 +1,6 @@
+<h1 mat-dialog-title>{{modalData?.title}}</h1>
+<div mat-dialog-content>{{modalData?.message}}</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onClose()">Close</button>
+  <button mat-button color="primary" (click)="onAccept()">{{modalData?.btnText}}</button>
+</div>

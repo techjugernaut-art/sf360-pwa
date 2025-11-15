@@ -1,0 +1,50 @@
+<mat-dialog-content [formGroup]="invoiceFormGroup">
+    <div class="row">
+      <div class="col-12 pull-right" (click)="onClose()">
+        <span class="close-btn-dialog pull-right">X</span>
+      </div>
+    </div>
+    <div class="send-verification-code-dialog">
+        <div class="text-center text-primary send-verification-code-dialog-text">
+          How would you like to send this Invoice ?
+        </div>
+        <div class="row">
+          <mat-button-toggle-group formControlName="invoice_type" class="my-4" style="border: none !important; box-shadow: none;">
+            <div class="col-md-4 text-center">
+              <div class="mat-button-toggle-center mb-1">
+                <mat-button-toggle color="ascent" class="square-toggle-button" [value]="invoiceType?.WHATSAPP">
+                  <span>
+                    <img style="width:70px; height: 80px; margin-top: 10px; margin-bottom: 10px;" src="assets/icons/setup/whatsapp.svg" alt="WHATSAPP">
+                  </span>
+                </mat-button-toggle>
+              </div>
+              <h4>WHATSAPP</h4>
+            </div>
+            <div class="col-md-4 text-center">
+              <div class="mat-button-toggle-center mb-1">
+                <mat-button-toggle color="primary" class="square-toggle-button" [value]="invoiceType?.EMAIL">
+                  <span>
+                    <img style="width:70px; height: 80px; margin-top: 10px; margin-bottom: 10px;" src="assets/img/icons/email-primary.svg" alt="EMAIL">
+                  </span>
+                </mat-button-toggle>
+              </div>
+              <h4>EMAIL</h4>
+            </div>
+            <div class="col-md-4 text-center">
+              <div class="mat-button-toggle-center mb-1">
+                <mat-button-toggle color="primary" class="square-toggle-button" [value]="invoiceType?.SMS">
+                  <span>
+                    <img style="width:70px; height: 80px; margin-top: 10px; margin-bottom: 10px;" src="assets/icons/setup/smartphone.svg" alt="SMS">
+                  </span>
+                </mat-button-toggle>
+              </div>
+              <h4>SMS</h4>
+            </div>
+          </mat-button-toggle-group>
+        </div>
+        <mat-progress-bar class="mb-0" *ngIf="isProcessing" mode="indeterminate">
+        </mat-progress-bar>
+        <button mat-raised-button color="primary" (click)="onSubmit()" class="px-40" type="submit" [disabled]="!invoiceFormGroup.value || isProcessing"
+         color="primary">SEND INVOICE</button>
+    </div>
+</mat-dialog-content>

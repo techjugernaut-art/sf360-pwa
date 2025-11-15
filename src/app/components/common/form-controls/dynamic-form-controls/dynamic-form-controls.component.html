@@ -1,0 +1,30 @@
+<div [formGroup]="form">
+
+  <div [ngSwitch]="control.controlType">
+    <div class="row" *ngSwitchCase="controlTypes?.textbox">
+      <mat-form-field class="col-md-12">
+        <input [id]="control.key" [type]="control.type" matInput placeholder="{{control.label}}" [formControlName]="control.key" [value]="control.value">
+        <mat-hint class="text-danger" *ngIf="!isValid">Please provide {{control.label}}</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="row" *ngSwitchCase="controlTypes?.dropdown" >
+      <mat-form-field class="col-md-12">
+        <mat-label>{{control.label}}</mat-label>
+        <mat-select [id]="control.key" [formControlName]="control.key" [value]="control.value">
+          <mat-option *ngFor="let item of control.options" [value]="item?.key">{{item?.value}}</mat-option>
+        </mat-select>
+        <mat-hint class="text-danger" *ngIf="!isValid">Please provide {{control.label}}</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="row" *ngSwitchCase="controlTypes?.toggle" >
+      <div class="col-md-12">
+        <mat-slide-toggle color="primary" [id]="control.key" [formControlName]="control.key" [checked]="control.value">{{control.label}}</mat-slide-toggle>
+        <mat-hint class="text-danger" *ngIf="!isValid">Please provide {{control.label}}</mat-hint>
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>

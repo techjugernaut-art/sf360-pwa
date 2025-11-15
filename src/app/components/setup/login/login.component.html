@@ -1,0 +1,94 @@
+<div class="d-flex bd-highlight login-page">
+  <div class="p-2 flex-fill bd-highlight login-controls">
+    <div class="mr-5 ml-5 full-width">
+      <img class="login-logo mb-4" src="assets/img/logos/logo1.png" />
+      <h3 class="login-title">Welcome back</h3>
+      <p class="login-subtitle mb-4">Enter your details to log in</p>
+      <div class="login-form-controls">
+        <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit(loginFormGroup?.value)" *ngIf="!isPartner" [@inAnimation]>
+            <label class="form-label">Phone number</label>
+            <mat-form-field class="full-width mb-3" appearance="outline">
+                <app-intl-country-codes matPrefix (countryCodeSelected)="onCountry($event)"></app-intl-country-codes>
+                <input matInput placeholder="Enter your phone number" formControlName="phone_number" numbersOnly>
+                <mat-hint *ngIf="phone_number?.invalid && phone_number?.touched" class="text-danger">Please provide valid
+                  Phone Number</mat-hint>
+              </mat-form-field>
+
+            <label class="form-label">PIN</label>
+            <mat-form-field class="full-width mb-2" appearance="outline">
+                <input matInput placeholder="Enter 4-digit PIN" [type]="hide ? 'password' : 'text'" maxlength="4" formControlName="pin" numbersOnly>
+                <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                <mat-hint *ngIf="pin?.invalid && pin?.touched" class="text-danger">Enter 4 Digit PIN</mat-hint>
+              </mat-form-field>
+
+            <a (click)="passwordResetMessage()" class="forgot-pin-link">Forgot PIN?</a>
+
+          <mat-progress-bar class="mt-3 mb-0" *ngIf="isProcessing" mode="indeterminate">
+          </mat-progress-bar>
+
+          <div class="button-group">
+            <button mat-stroked-button type="button" class="back-button" [disabled]="isProcessing">
+              Back
+            </button>
+            <button mat-raised-button color="primary" type="submit" class="login-button"
+              [disabled]="isProcessing || loginFormGroup?.invalid || countryCode === ''">Login</button>
+          </div>
+        </form>
+        <form [formGroup]="partnerLoginFormGroup" (ngSubmit)="onLoginAsPartner(partnerLoginFormGroup?.value)" *ngIf="isPartner" [@inAnimation]>
+          <mat-form-field  class="full-width">
+            <mat-label>Email address</mat-label>
+            <input matInput placeholder="Email address" formControlName="email">
+
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-hint *ngIf="email?.invalid && email?.touched" class="text-danger">Please provide valid
+              Email address</mat-hint>
+          </mat-form-field>
+          <mat-form-field  class="full-width mb-4">
+            <mat-label>Enter password</mat-label>
+            <input matInput placeholder="Enter password" [type]="partnerHide ? 'password' : 'text'"  formControlName="password" />
+            <button mat-icon-button matSuffix type="button" (click)="partnerHide = !partnerHide" [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="partnerHide">
+              <mat-icon>{{partnerHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-hint *ngIf="password?.invalid && password?.touched" class="text-danger">Enter password</mat-hint>
+          </mat-form-field>
+          <mat-progress-bar class="mb-0" *ngIf="isProcessing" mode="indeterminate">
+          </mat-progress-bar>
+          <button mat-raised-button color="primary" class="full-width"
+            [disabled]="isProcessing || partnerLoginFormGroup?.invalid">LOGIN</button>
+            <div class="text-center">
+                <a (click)="passwordResetMessage()" class="py-2 forgot-pin-text mt-1 text-primary cursor-pointer mt-2">Forgot
+                    PIN?</a>
+            </div>
+            <div class="text-center">
+              <a mat-raised-button (click)="isPartner = false" class="mt-4"> Login as Store Owners</a>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <div class="flex-fill bd-highlight image-cover hidden-md-down">
+    <div class="feature-tags">
+      <div class="feature-tag">
+        <mat-icon>trending_up</mat-icon>
+        <span>Business Growth</span>
+      </div>
+      <div class="feature-tag">
+        <mat-icon>add_shopping_cart</mat-icon>
+        <span>Product Addition</span>
+      </div>
+      <div class="feature-tag">
+        <mat-icon>inventory_2</mat-icon>
+        <span>Inventory Tracking</span>
+      </div>
+    </div>
+
+    <div class="bottom-text">
+      <h4 class="bottom-text-title">Smarter way of doing business</h4>
+      <p class="bottom-text-description">We help you run your business The New Smart way</p>
+    </div>
+  </div>
+</div>

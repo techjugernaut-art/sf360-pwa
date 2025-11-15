@@ -1,0 +1,376 @@
+<div class="page">
+  <div class="page-main">
+    <!-- app-content-->
+    <div class="app-content ">
+      <div class="side-app">
+        <div class="main-content">
+          <mat-sidenav-container class="sidenav-container">
+            <mat-sidenav #drawer color="accent" class="main-sidenav d-print-none" fixedInViewport
+              [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+              [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+              <div class="sidenav-logo">
+                <a [routerLink]="['/dashboard']" routerLinkActive #rlaDashboard="routerLinkActive"></a>
+                <a [routerLink]="['/intellisights']" routerLinkActive #rlaIntellisights="routerLinkActive"></a>
+                <a [routerLink]="['/products']" routerLinkActive #rlaProducts="routerLinkActive"></a>
+                <a [routerLink]="['/suppliers']" routerLinkActive #rlaSuppliers="routerLinkActive"></a>
+                <!-- <a [routerLink]="['/invoices']" routerLinkActive #rlaInvoices="routerLinkActive"></a> -->
+                <a [routerLink]="['/purchase-orders']" routerLinkActive #rlaPurchaseOrders="routerLinkActive"></a>
+                <a [routerLink]="['/customers']" routerLinkActive #rlaCustomers="routerLinkActive"></a>
+                <a [routerLink]="['/reports']" routerLinkActive #rlaReports="routerLinkActive"></a>
+                <a [routerLink]="['/sales']" routerLinkActive #rlaSales="routerLinkActive"></a>
+                <a [routerLink]="['/agents']" routerLinkActive #rlaAgents="routerLinkActive"></a>
+                <a [routerLink]="['/expenses']" routerLinkActive #rlaExpenses="routerLinkActive"></a>
+                <a [routerLink]="['/settings']" routerLinkActive #rlaSettings="routerLinkActive"
+                  [routerLinkActiveOptions]="{ exact: true }"></a>
+                <a [routerLink]="['/settings/general']" routerLinkActive #rlaGeneralSettings="routerLinkActive"></a>
+                <a [routerLink]="['/settings/online-store']" routerLinkActive #rlaOnlineSettings="routerLinkActive"></a>
+                <a [routerLink]="['/settings/online-store/delivery-options']" routerLinkActive
+                  #rlaOnlineDeliveryOptions="routerLinkActive"></a>
+                <a [routerLink]="['/settings/online-store/promotions']" routerLinkActive
+                  #rlaOnlinePromotions="routerLinkActive"></a>
+
+                <a [routerLink]="['/settings/payment-request']" routerLinkActive #rlaPaymentRequest="routerLinkActive" [routerLinkActiveOptions]="{ exact: true }"></a>
+                <a [routerLink]="['/settings/payments-accounts']" routerLinkActive #rlaPaymentAccounts="routerLinkActive"></a>
+                <a [routerLink]="['/settings/payment-transactions']" routerLinkActive #rlaPaymentTransactions="routerLinkActive"></a>
+                <a [routerLink]="['/settings/settlements']" routerLinkActive #rlaPaymentSettlements="routerLinkActive"></a>
+                <a [routerLink]="['/settings/my-payment-requests']" routerLinkActive #rlaMyPaymentRequests="routerLinkActive"></a>
+                <a [routerLink]="['/settings/non-cash-transactions']" routerLinkActive #rlaPaymentsDashboard="routerLinkActive"></a>
+                <a [routerLink]="['/settings/create-paga-account']" routerLinkActive #rlaCreatePagaAcount="routerLinkActive"></a>
+                <a [routerLink]="['/settings/paga-transactions']" routerLinkActive #rlaPaagaTransaction="routerLinkActive"></a>
+
+                <!-- <a [routerLink]="['/premium-subscriptions/offline-store']" routerLinkActive
+                  #rlaOfflineSubscription="routerLinkActive"></a>
+                <a [routerLink]="['/premium-subscriptions/online-store']" routerLinkActive
+                  #rlaOnlineSubscription="routerLinkActive"></a> -->
+                <a [routerLink]="['/premium-subscriptions/storefront-plans']" routerLinkActive
+                  #rlaOnlineSubscription="routerLinkActive"></a>
+                  <a [routerLink]="['/premium-subscriptions/billing']" routerLinkActive
+                  #rlaInvoiceHistory="routerLinkActive"></a>
+                <!-- <a [routerLink]="['/help']" routerLinkActive #rlaHelp="routerLinkActive"></a> -->
+                <a [routerLink]="['/knowledge-base']" routerLinkActive #rlaKnowledgeBase="routerLinkActive"></a>
+                <a [routerLink]="['/help/product-releases']" routerLinkActive
+                  #rlaProductReleases="routerLinkActive"></a>
+                <a [routerLink]="['/facebook-shop']" routerLinkActive #rlaFacebook="routerLinkActive"></a>
+                <a [routerLink]="['/dashboard']">
+                  <img src="assets/img/logos/logo1.png" alt="logo-img" class="sidenav-logo-img"></a>
+              </div>
+              <ul class="sidenav-menu-list">
+
+                <li class="sidenav-menu-list-item" *ngIf="rlaDashboard?.isActive || rlaIntellisights?.isActive">
+                  <h3 class="sidenav-menu-list-title">Your Dashboard: </h3>
+                  <ul class="sidenav-menu-list-sub-item">
+                    <li aria-haspopup="true"><a [routerLink]="['/dashboard']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-home mr-2"></i> Dashboard</a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/intellisights']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-sun mr-2"></i> Intellisights</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="sidenav-menu-list-item" *ngIf="rlaProducts?.isActive || rlaSuppliers?.isActive || rlaPurchaseOrders.isActive">
+                  <h3 class="sidenav-menu-list-title">Your Products:</h3>
+                  <ul class="sidenav-menu-list-sub-item">
+                    <li aria-haspopup="true"><a [routerLink]="['/products']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-layers mr-2"></i> Products</a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/products/categories']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"> <i class="fe fe-home mr-2"></i> Product
+                        Categories</a>
+                    </li>
+                    <li aria-haspopup="true"><a [routerLink]="['/products/units-of-measurements']"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i
+                          class="fe fe-home mr-2"></i> Unit of
+                        Measurements</a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/suppliers']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-users mr-2"></i> Suppliers</a></li>
+
+                  </ul>
+                </li>
+                <li class="sidenav-menu-list-item" *ngIf="rlaReports?.isActive">
+                  <h3 class="sidenav-menu-list-title">Your Reports:</h3>
+                  <ul class="sidenav-menu-list-sub-item">
+                    <li aria-haspopup="true"><a [routerLink]="['/reports']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-home mr-2"></i> Summary</a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/reports/sales-orders']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-shopping-cart mr-2"></i> Sales Orders</a>
+                    </li>
+                    <li aria-haspopup="true"><a [routerLink]="['/reports/mall-orders']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-book mr-2"></i> Mall Orders</a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/reports/sales-margin']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-home mr-2"></i> Sales Margin</a>
+                    </li>
+                    <li aria-haspopup="true"><a [routerLink]="['/reports/transactions']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-bar-chart mr-2"></i>
+                        Transactions</a></li>
+                  </ul>
+                </li>
+                <li class="sidenav-menu-list-item" *ngIf="rlaSales?.isActive">
+                  <h3 class="sidenav-menu-list-title">Your Sales:</h3>
+                  <ul class="sidenav-menu-list-sub-item">
+                    <li aria-haspopup="true"><a [routerLink]="['/sales']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-home mr-2"></i> Sales</a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/sales/new-order']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-shopping-cart mr-2"></i> New Sales Order</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="sidenav-menu-list-item" *ngIf="rlaPaymentsDashboard?.isActive || rlaMyPaymentRequests?.isActive ||
+                     rlaPaymentRequest?.isActive || rlaCreatePagaAcount?.isActive || rlaPaagaTransaction?.isActive">
+                  <h3 class="sidenav-menu-list-title">Payments Setup:</h3>
+                  <ul class="sidenav-menu-list-sub-item">
+
+                    <li aria-haspopup="true"><a [routerLink]="['/settings/payment-request']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-plus-square mr-2"></i> Payment Request</a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/settings/my-payment-requests']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-home mr-2"></i> My Payment Requests</a></li>
+                    <!-- <li *ngIf="countryShop == 'NGN' && shopInfo?.has_paga_account == true || countryShop == 'GHS' && shopInfo?.payments_enabled == true"
+                      aria-haspopup="true"><a [routerLink]="['/settings/non-cash-transactions']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-layers mr-2"></i> Non Cash Transactions</a>
+                    </li> -->
+
+                  </ul>
+                </li>
+                <li class="sidenav-menu-list-item" *ngIf="rlaCustomers?.isActive">
+
+                  <h3 class="sidenav-menu-list-title">Your Customers:</h3>
+                  <ul class="sidenav-menu-list-sub-item">
+                    <li aria-haspopup="true"><a [routerLink]="['/customers']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }">Customers</a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/customers/categories']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }">Customers Segments</a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/customers/discounts']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }">Discounts</a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/customers/campaigns']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }">Campaigns</a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/customers/automation-templates']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }">Automation Templates </a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/customers/sms-credit']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }">SMS Credit</a></li>
+                  </ul>
+                </li>
+                <li class="sidenav-menu-list-item" *ngIf="rlaAgents?.isActive">
+                  <h3 class="sidenav-menu-list-title">Your Agents: </h3>
+                  <ul class="sidenav-menu-list-sub-item">
+                    <li aria-haspopup="true"><a [routerLink]="['/agents']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-users mr-2"></i> Agents</a></li>
+                  </ul>
+                </li>
+                <li class="sidenav-menu-list-item" *ngIf="rlaExpenses?.isActive">
+                  <h3 class="sidenav-menu-list-title">Your Expenses: </h3>
+                  <ul class="sidenav-menu-list-sub-item">
+                    <li aria-haspopup="true"><a [routerLink]="['/expenses']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-credit-card mr-2"></i> Expenses</a>
+                    </li>
+                    <li aria-haspopup="true"><a [routerLink]="['/expenses/categories']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"><i class="fe fe-credit-card mr-2"></i> Expense Categories</a>
+                    </li>
+
+                  </ul>
+                </li>
+                <li class="sidenav-menu-list-item" *ngIf="rlaSettings?.isActive || rlaGeneralSettings?.isActive || rlaOnlineSettings?.isActive || rlaOnlineDeliveryOptions?.isActive || rlaOnlinePromotions?.isActive">
+                  <h3 class="sidenav-menu-list-title">Settings:</h3>
+                  <ul class="sidenav-menu-list-sub-item">
+                    <li aria-haspopup="true"><a [routerLink]="['/settings']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }">Offline Shop Settings</a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/settings/general']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }">General Shop Settings</a></li>
+                  </ul>
+                  <h3 class="sidenav-menu-list-title mt-3">Online Settings:</h3>
+                  <ul class="sidenav-menu-list-sub-item">
+                    <li aria-haspopup="true"><a [routerLink]="['/settings/online-store']" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }">Online Shop Settings</a>
+                    </li>
+                    <li aria-haspopup="true"><a [routerLink]="['/settings/online-store/delivery-options']"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Delivery Options</a>
+                    </li>
+                    <li aria-haspopup="true"><a [routerLink]="['/settings/online-store/promotions']"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Promotions</a>
+                    </li>
+                  </ul>
+                </li>
+
+
+                <li class="sidenav-menu-list-item" *ngIf="rlaOnlineSubscription?.isActive || rlaInvoiceHistory?.isActive">
+                  <h3 class="sidenav-menu-list-title">Premium Subscriptions:</h3>
+                  <ul class="sidenav-menu-list-sub-item">
+                    <!-- <li aria-haspopup="true"><a [routerLink]="['/premium-subscriptions/offline-store']"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Offline Shop</a>
+                    </li> -->
+                    <!-- <li aria-haspopup="true"><a [routerLink]="['/premium-subscriptions/online-store']"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Online Store</a></li> -->
+                    <li aria-haspopup="true"><a [routerLink]="['/premium-subscriptions/storefront-plans']"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Storefront Plans</a></li>
+                    <li aria-haspopup="true"><a [routerLink]="['/premium-subscriptions/billing']"
+                        routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Billing</a></li>
+                  </ul>
+                </li>
+                <li class="sidenav-menu-list-item" *ngIf="rlaProductReleases?.isActive || rlaKnowledgeBase?.isActive">
+                  <h3 class="sidenav-menu-list-title">Help:</h3>
+                  <ul class="sidenav-menu-list-sub-item">
+
+                    <li aria-haspopup="true"><a  href="https://help.kudigo.com/en" target="_blank" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }">Knowledge Base</a>
+                    </li>
+
+                  </ul>
+                </li>
+                <div class="free-trial" *ngIf="onFreeTrial === true">
+                  <p class="free-trial-text">Days Left <b class="text-primary"> {{this.shopInfo?.days_left}}</b></p>
+                  <button class="ml-3" [routerLink]="['/service-payment']" mat-raised-button color="primary">Upgrade Now</button>
+                </div>
+              </ul>
+            </mat-sidenav>
+            <mat-sidenav #rightDrawer class="main-sidenav d-print-none" fixedInViewport [attr.role]="'dialog'"
+              [mode]="'over'" [opened]="false" [position]="'end'">
+              <app-notifications [businessAlerts]="businessAlerts"
+                [isProcessingBusinessAlerts]="isProcessingBusinessAlerts"></app-notifications>
+            </mat-sidenav>
+
+            <mat-sidenav-content class="print-ml-0">
+              <mat-toolbar class="main-nav z-depth-2 d-flex justify-content-between d-print-none fixed-top">
+                <div>
+                  <button class="remove-outline" type="button" mat-icon-button (click)="drawer?.toggle()">
+                    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+                  </button>
+                  <button class="remove-outline" type="button" mat-icon-button [routerLink]="['/dashboard']">
+                    <mat-icon aria-label="Side nav toggle icon">home</mat-icon>
+                  </button>
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <a [routerLink]="['/dashboard']" mat-menu-item> <mat-icon>home</mat-icon><span>Dashboard</span></a>
+                    <!-- <a [routerLink]="['/facebook-shop/dashboard']" mat-menu-item> <mat-icon>facebook</mat-icon><span>Facebook Shop</span></a> -->
+                    <a [routerLink]="['/sales']" mat-menu-item> <mat-icon>shopping_basket</mat-icon><span>Sales</span></a>
+                    <a [routerLink]="['/reports']" mat-menu-item> <mat-icon>insert_chart</mat-icon><span>Reports</span></a>
+                    <a [routerLink]="['/products']" mat-menu-item> <mat-icon>inventory</mat-icon><span>Products</span></a>
+                    <a [routerLink]="['/customers']" mat-menu-item> <mat-icon>contacts</mat-icon><span>Customers</span></a>
+                    <a [routerLink]="['/agents']" mat-menu-item> <mat-icon>people</mat-icon><span>Agents</span></a>
+                    <a [routerLink]="['/expenses']" mat-menu-item> <mat-icon>credit_card</mat-icon><span>Expenses</span></a>
+                    <!-- <a [routerLink]="['/settings/online-store']" mat-menu-item> <mat-icon>storefront</mat-icon><span>Online Shop</span></a> -->
+                    <a [routerLink]="['/settings']" mat-menu-item> <mat-icon>store</mat-icon><span>Settings</span></a>
+                    <a [routerLink]="['/settings/payment-request']" mat-menu-item> <mat-icon>money</mat-icon><span>Payment Request</span></a>
+                    <a [routerLink]="['/premium-subscriptions/storefront-plans']" mat-menu-item> <mat-icon>verified</mat-icon><span>Subscriptions</span></a>
+                    <!-- <a [routerLink]="['/help']" mat-menu-item> <mat-icon>help</mat-icon><span>Help</span></a> -->
+                    <a href="https://help.kudigo.com/en" target="_blank" mat-menu-item> <mat-icon>help</mat-icon><span>Knowledge Base</span></a>
+                  </mat-menu>
+                </div>
+                <div style="display: flex;">
+                  <sales-navbar-item  *ngIf="rlaSales?.isActive"></sales-navbar-item>
+                  <app-navbar-items (showNotificationDrawer)="onShowNotifications()" [showCartIcon]="showCartIcon" (onCartClicked)="onCartClick()"></app-navbar-items>
+                </div>
+
+              </mat-toolbar>
+              <div style="display: none;" class="p-2 d-none d-sm-none navbar-sm-search d-print-none">
+                <!-- Form -->
+                <div class="navbar-search navbar-search-dark form-inline ml-lg-auto">
+                  <div class="form-group mb-0">
+                    <div class="input-group input-group-alternative">
+                      <div class="input-group-prepend hidden">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                      </div>
+                      <!-- <input class="form-control hidden" type="text" placeholder="{{searchPlaceholder}}" [formControl]="searchFormControl"> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Top navbar -->
+              <nav style="display: none;" class="navbar navbar-top  navbar-expand-md navbar-dark d-print-none"
+                id="navbar-main">
+                <div class="container">
+                  <a id="horizontal-navtoggle" class="animated-arrow"><span></span></a>
+                  <a class="navbar-brand" [routerLink]="['/dashboard']">
+                    <img src="../assets/img/logos/logo.png" alt="logo-img" class="login-page-logo"></a>
+
+                  <!-- Horizontal Navbar -->
+                  <ul class="navbar-nav align-items-center d-none d-xl-block">
+                    <li class="nav-item dropdown">
+                      <a aria-expanded="false" aria-haspopup="true" class="nav-link pr-md-0 mr-md-2 pl-1 d-lg-block"
+                        data-toggle="dropdown" role="button">
+
+                      </a>
+                    </li>
+
+                  </ul>
+
+                  <!-- Form -->
+                  <form class="navbar-search navbar-search-dark form-inline ml-3  mr-lg-auto borderless">
+                    <div class="form-group mb-0">
+                      <div class="input-group input-group-alternative">
+                        <div class="input-group-prepend">
+                          <!-- <span class="input-group-text"><i class="fas fa-search"></i></span> -->
+                        </div>
+                        <!-- <input class="form-control" placeholder="Search" type="text"> -->
+                      </div>
+                    </div>
+                  </form>
+                  <!-- User -->
+                  <ul class="navbar-nav align-items-center ">
+                    <li class="nav-item dropdown d-none d-md-flex">
+                      <circle-progress [percent]="30" [radius]="100" [outerStrokeWidth]="30"
+                        class="profile-status-progressbar" [outerStrokeColor]="'#78C000'" [innerStrokeColor]="'#C7E596'"
+                        [animation]="true" [responsive]="true" [animationDuration]="10000" [showInnerStroke]="false"
+                        [backgroundStroke]="'green'" [backgroundStrokeWidth]="30" [showSubtitle]="false">
+                      </circle-progress>
+
+                    </li>
+                    <li class="nav-item dropdown " id="tourAnchorProfileMenu">
+                      <a aria-expanded="false" aria-haspopup="true" class="nav-link pr-md-0 mr-md-2 pl-1"
+                        data-toggle="dropdown" href="#" role="button">
+                        <div class="media align-items-center">
+                          <span class="avatar avatar-sm rounded-circle">
+                            <img alt="Image placeholder"
+                              src="{{currentUser?.avatar | imageUrl: '../assets/img/icons/user_silhouette_blue_ish_tint_icon.svg'}}">
+                          </span>
+
+                        </div>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
+                        <div class=" dropdown-header noti-title text-center border-bottom pb-3">
+                          <h3 class="text-capitalize text-dark mb-1">{{currentUser?.first_name | titlecase}},
+                            {{currentUser?.last_name | titlecase}}</h3>
+                          <h6 class="text-overflow m-0">{{currentUser?.email}}</h6>
+                        </div>
+                        <a class="dropdown-item cursor-pointer" (click)="onChangePassword()"><i
+                            class="fe fe-unlock"></i>
+                          <span>Change Password</span></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item cursor-pointer" (click)="logOut()"><i class="fe fe-log-out"></i>
+                          <span>Logout</span></a>
+                      </div>
+                    </li>
+
+                    <li class="nav-item dropdown d-none d-md-flex cursor-pointer" id="tourAnchorTourMenu">
+                      <a aria-expanded="false" aria-haspopup="true" class="nav-link pr-0" role="button">
+                        <div class="media align-items-center">
+                          <i class="fe fe-help-circle f-30 "></i>
+                        </div>
+                      </a>
+                    </li>
+                    <li class="nav-item d-none d-md-flex" id="tourAnchorFullScreenMenu">
+                      <div class="dropdown d-none d-md-flex mt-2 ">
+                        <a class="nav-link full-screen-link  pr-0"><i class="fe fe-maximize-2 floating "
+                            id="fullscreen-button"></i></a>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+              <!-- Top navbar-->
+
+              <!--Horizontal-menu-->
+
+              <mat-progress-bar mode="indeterminate" class="d-print-none" *ngIf="isProcessing"></mat-progress-bar>
+
+              <div class="container">
+                <!-- <h3 class="mt-3">Overview</h3> -->
+                <ng-content #content></ng-content>
+              </div>
+              <!-- <footer class="footer"></footer> -->
+            </mat-sidenav-content>
+          </mat-sidenav-container>
+          <app-footer class="d-print-none"></app-footer>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

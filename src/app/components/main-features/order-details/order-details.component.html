@@ -1,0 +1,62 @@
+<div class="centered-background">
+  <div class="">
+    <div class="row">
+      <div class="col-sm-12 col-md-5 center-div">
+        <div class="receipt-heading p-3">
+          <div class="text-center pb-4">
+            <img src="../assets/img/logos/green.png" alt="logo-img" style="width: 150px;">
+          </div>
+          <p class="lead-heading text-center">
+            <span *ngIf="orderDetail?.customer !== null">HI <b>{{orderDetail?.customer?.name | uppercase}}, </b></span>
+            THANKS FOR YOUR PURCHASE
+          </p>
+          <p class="text-center">
+            Purchase made on <b>{{orderDetail?.date_placed | date: 'MM/dd/yyyy, HH:mm:ss' }}</b> to
+            <b>{{orderDetail?.myshop?.business_name}}</b>. <br />
+            Processed by <b>{{orderDetail?.author.first_name}} {{orderDetail?.author?.last_name}}</b> <br />
+            Payment Method used <b>{{orderDetail?.payment_method | uppercase}}</b>
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <span class="col-8">SUMMARY</span>
+              <span class="col-4 text-right">{{myItems?.length}} Item(s)</span>
+            </div>
+          </div>
+          <ul class="list-group list-group-flush" *ngIf="!isProcessing">
+            <li class="list-group-item" *ngFor="let item of myItems">
+              <p class="mb-0">{{item?.my_product?.product?.name}}</p>
+              <p class="mb-0">Quantity: {{item?.new_quantity}} @ {{item?.my_product?.currency}} {{item?.product_price}}
+              </p>
+              <p class="mb-0">Subtotal: {{item?.my_product?.currency}} {{item?.subtotal}}</p>
+            </li>
+          </ul>
+          <div class="text-center" *ngIf="isProcessing">
+            <div class="lds-spinner">
+              <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <dl class="row">
+              <dt class="col-6">Gross Total</dt>
+              <dd class="col-6 text-right">{{orderDetail?.currency}}<b> {{orderDetail?.gross_total}}</b></dd>
+              <dt class="col-6">Discount</dt>
+              <dd class="col-6 text-right">{{orderDetail?.currency}}<b> {{orderDetail?.discount}}</b></dd>
+              <dt class="col-6">VAT</dt>
+              <dd class="col-6 text-right">{{orderDetail?.currency}}<b> {{orderDetail?.vat_value | number: '1.2-2'}}</b>
+              </dd>
+              <dt class="col-6">Total</dt>
+              <dd class="col-6 text-right">{{orderDetail?.currency}}<b> {{orderDetail?.total_amount}}</b></dd>
+            </dl>
+            <p class="text-mute text-center">
+              Receipt #: <b>{{orderDetail?.frontend_order_id}}</b>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,336 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"></app-breadcrumb-actions>
+  <mat-card class="mt-4">
+    <mat-card-content style="overflow-x: hidden;">
+      <mat-tab-group mat-stretch-tabs>
+        <mat-tab active="true">
+          <ng-template mat-tab-label>
+            <mat-icon class="mr-2">perm_identity</mat-icon>
+            General Information
+          </ng-template>
+          <!-- General information -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="row mb-3">
+                <div class="col-4"><strong>First Name :</strong> </div>
+                <div class="col-8">{{agentDetail?.first_name}}</div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-4"><strong>Last Name :</strong> </div>
+                <div class="col-8">{{agentDetail?.last_name}}</div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-4"><strong>Email :</strong> </div>
+                <div class="col-8">{{agentDetail?.email}}</div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-4"><strong>Phone Number :</strong> </div>
+                <div class="col-8">{{agentDetail?.phone_number}}</div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-4"><strong>Is Shop Admin :</strong> </div>
+                <div class="col-8">
+                  <mat-checkbox class="ml-2" [checked]="agentDetail?.is_shop_admin" [disabled]="true"></mat-checkbox>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="row mb-3">
+                <div class="col-4"><strong>Is Shop Agent :</strong> </div>
+                <div class="col-8"><mat-checkbox [checked]="agentDetail?.is_shop_agent" [disabled]="true"></mat-checkbox></div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-4"><strong>Can Give Discount :</strong> </div>
+                <div class="col-8"><mat-checkbox [checked]="agentDetail?.can_give_discount" [disabled]="true"></mat-checkbox></div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-4"><strong>Is Active :</strong> </div>
+                <div class="col-8"><mat-checkbox [checked]="agentDetail?.is_active" [disabled]="true"></mat-checkbox></div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-4"><strong>Last Active :</strong> </div>
+                <div class="col-8"><span>{{agentDetail?.last_seen | date: 'medium'}}</span></div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-4"><strong>Last Active :</strong> </div>
+                <div class="col-8"> <span>{{agentDetail?.created | date: 'medium'}}</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- End of General Information -->
+        </mat-tab>
+
+        <!-- Sales Orders tab -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="mr-2">add_shopping_cart</mat-icon>
+            Sales Orders
+          </ng-template>
+          <div class="table-responsive">
+            <table class="table dataTable no-footer table-border-bottom">
+              <thead>
+                <tr>
+                  <th class="wd-15p">Order #</th>
+                  <th class="wd-15p">Customer</th>
+                  <th class="wd-15p">Amount</th>
+                  <th class="wd-15p">Payment Method</th>
+                  <th class="wd-10p">Shop</th>
+                  <th class="wd-25p">Date Placed</th>
+                  <th class="wd-25p">Actions</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="salesOrders?.length <= 0">
+                  <td colspan="10" class="text-center">
+                    <app-empty-record></app-empty-record>
+                  </td>
+                </tr>
+                <tr *ngFor="let order of salesOrders">
+                  <td>{{order?.order_code}}</td>
+                  <td>{{order?.customer?.phone_number}} <span
+                      *ngIf="order?.customer?.phone_number !== '' && order?.customer?.phone_number !== null && order?.customer?.name !== '' && order?.customer?.name !== null">/</span>
+                    {{order?.customer?.name}}</td>
+                  <td>{{order?.currency}} {{order?.total_amount | number: '1.2-2'}}</td>
+                  <td>{{order?.payment_method}}</td>
+                  <td>{{order?.myshop?.business_name | titlecase}}</td>
+                  <td>{{order?.date_placed | date: 'medium'}}</td>
+                  <td class="text-center">
+
+                    <button class="btn btn-primary btn-sm" (click)="viewOrderDetails(order)" data-toggle="modal"
+                      data-target="#modalSalesOrdersDetail">
+                      <i class="fe fe-eye"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <app-pagination [dataSet]="salesOrders" [nextPage]="nextPage" [prevPage]="prevPage" [totalPage]="totalPage"
+              [requestPayload]="requestPayload" [requestMethod]="'POST'" (pageChanged)="onPageChanged($event)"
+              [isProcessing]="isProcessing"></app-pagination>
+          </div>
+        </mat-tab>
+        <!-- End of Sales orders tab -->
+
+        <!-- Permissions tab -->
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="mr-2">lock_open</mat-icon>
+            Permissions
+          </ng-template>
+          <div class="table-responsive">
+            <p class="text-center">A set of additional functions that you can add to an agent in hour StoreFront shop in
+              order to increase their accessibility to the various features available in your shop</p>
+            <ul class="row settings-list">
+              <li class="col-md-6">
+                <div class="settings-list-item">
+                  <h4 class="settings-list-item-heading">{{ 'AGENT_PROFILE.PERMISSION.PROMOTE_TO_MANAGER.HEADING' |
+                    translate}}</h4>
+                  <div class="settings-list-item-content row">
+                    <div class="settings-list-item-content-action-desc col-10">
+                      <p>
+                        {{ 'AGENT_PROFILE.PERMISSION.PROMOTE_TO_MANAGER.DESCRIPTION' | translate}}
+                      </p>
+                    </div>
+                    <div class="settings-list-item-content-action col-2">
+                      <mat-slide-toggle color="primary" [formControl]="upgradeOrDowngrade"
+                        [checked]="agentDetail?.is_shop_admin"></mat-slide-toggle>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="col-md-6">
+                <div class="settings-list-item">
+                  <h4 class="settings-list-item-heading">{{ 'AGENT_PROFILE.PERMISSION.CONCEAL_CUSTOMER_INFO.HEADING' |
+                    translate}}</h4>
+                  <div class="settings-list-item-content row">
+                    <div class="settings-list-item-content-action-desc col-10">
+                      <p>
+                        {{ 'AGENT_PROFILE.PERMISSION.CONCEAL_CUSTOMER_INFO.DESCRIPTION' | translate}}
+                      </p>
+                    </div>
+                    <div class="settings-list-item-content-action col-2">
+                      <mat-slide-toggle color="primary" [formControl]="canViewCustomerInfo"
+                        [checked]="agentDetail?.can_see_customer_info" [disabled]="upgradeOrDowngrade?.value">
+                      </mat-slide-toggle>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+              <li class="col-md-6">
+                <div class="settings-list-item">
+                  <h4 class="settings-list-item-heading">{{ 'AGENT_PROFILE.PERMISSION.PROMOTE_TO_GIVE_DISCOUNT.HEADING'
+                    | translate}}</h4>
+                  <div class="settings-list-item-content row">
+                    <div class="settings-list-item-content-action-desc col-10">
+                      <p>
+                        {{ 'AGENT_PROFILE.PERMISSION.PROMOTE_TO_GIVE_DISCOUNT.DESCRIPTION' | translate}}
+                      </p>
+                    </div>
+                    <div class="settings-list-item-content-action col-2">
+                      <mat-slide-toggle color="primary" [formControl]="canGiveDiscount"
+                        [checked]="agentDetail?.can_give_discount" [disabled]="upgradeOrDowngrade?.value">
+                      </mat-slide-toggle>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="col-md-6">
+                <div class="settings-list-item">
+                  <h4 class="settings-list-item-heading">{{ 'AGENT_PROFILE.PERMISSION.PROMOTE_TO_MODIFY_SALES.HEADING' |
+                    translate}}</h4>
+                  <div class="settings-list-item-content row">
+                    <div class="settings-list-item-content-action-desc col-10">
+                      <p>
+                        {{ 'AGENT_PROFILE.PERMISSION.PROMOTE_TO_MODIFY_SALES.DESCRIPTION' | translate}}
+                      </p>
+                    </div>
+                    <div class="settings-list-item-content-action col-2">
+                      <mat-slide-toggle color="primary" [formControl]="canModifyPrice"
+                        [checked]="agentDetail?.can_modify_order_price" [disabled]="upgradeOrDowngrade?.value">
+                      </mat-slide-toggle>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="col-md-6">
+                <div class="settings-list-item">
+                  <h4 class="settings-list-item-heading">{{ 'AGENT_PROFILE.PERMISSION.VIEW_PROFIT_INFO.HEADING' |
+                    translate}}</h4>
+                  <div class="settings-list-item-content row">
+                    <div class="settings-list-item-content-action-desc col-10">
+                      <p>
+                        {{ 'AGENT_PROFILE.PERMISSION.VIEW_PROFIT_INFO.DESCRIPTION' | translate}}
+                      </p>
+                    </div>
+                    <div class="settings-list-item-content-action col-2">
+                      <mat-slide-toggle color="primary" [formControl]="canViewProfit"
+                        [checked]="agentDetail?.can_see_profit_info" [disabled]="upgradeOrDowngrade?.value">
+                      </mat-slide-toggle>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="col-md-6">
+                <div class="settings-list-item">
+                  <h4 class="settings-list-item-heading">{{ 'AGENT_PROFILE.PERMISSION.BACKDATE_SALES_ORDERS.HEADING' |
+                    translate}}</h4>
+                  <div class="settings-list-item-content row">
+                    <div class="settings-list-item-content-action-desc col-10">
+                      <p>
+                        {{ 'AGENT_PROFILE.PERMISSION.BACKDATE_SALES_ORDERS.DESCRIPTION' | translate}}
+                      </p>
+                    </div>
+                    <div class="settings-list-item-content-action col-2">
+                      <mat-slide-toggle color="primary" [formControl]="canBackdateOrder"
+                        [checked]="agentDetail?.can_backdate_orders" [disabled]="upgradeOrDowngrade?.value">
+                      </mat-slide-toggle>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </mat-tab>
+        <!-- End of Permissions tab -->
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+
+</app-main-nav>
+
+
+<!-- Sales Orders Details Modal -->
+<div class="modal fade" id="modalSalesOrdersDetail" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title invoice-modal-title" id="modal-title-notification">
+          Order #: {{saleOrderDetail?.order_code}}
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" id="salesOrderModalBody">
+        <div class="logo-img text-center pb-3">
+          <img src="../assets/img/logos/dark-green.png" alt="invoice-logo-img" class="invoice-logo-img">
+        </div>
+        <div class="mb-0">
+          <div class="row">
+            <div class="col-6 invoice-detail">
+              <h4 class="title"><strong>Order #: {{saleOrderDetail?.order_code}}</strong></h4>
+              <p class="mb-0 detail"><strong>{{saleOrderDetail?.myshop?.business_name | titlecase}}</strong></p>
+              <p class="mb-0 detail">{{saleOrderDetail?.myshop?.location | titlecase}}</p>
+              <p class="mb-0 detail">Date Placed: {{saleOrderDetail?.date_placed | date: 'medium'}}</p>
+              <p class="mb-0 detail">Payment Method: {{saleOrderDetail?.payment_method}}</p>
+
+            </div>
+            <div class="col-6 text-right invoice-detail">
+              <h4 class="title"><strong>Customer Info: </strong></h4>
+              <p class="mb-0 detail"><strong>{{saleOrderDetail?.customer?.name | titlecase}}</strong></p>
+              <p class="mb-0 detail">Phone: {{saleOrderDetail?.customer?.phone_number}}</p>
+              <p class="mb-0 detail">Email: {{saleOrderDetail?.customer?.email}}</p>
+
+            </div>
+
+          </div>
+          <!-- end row -->
+
+          <div class="row mt-4">
+            <div class="col-md-12">
+              <div class="table-responsive">
+                <table class="table m-t-30 text-nowrap  table-border-bottom invoice-table">
+                  <thead class="thead-primary">
+                    <tr>
+                      <th>#</th>
+                      <th>Description</th>
+                      <th>Quantity</th>
+                      <th class="text-right">Amount({{saleOrderDetail?.currency}})</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of salesOrderItems">
+                      <td>{{item?.id}}</td>
+                      <td>{{item?.my_product?.name}}</td>
+                      <td>{{item?.new_quantity}}</td>
+                      <td class="text-right">{{item?.subtotal | number: '1.2-2'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-4 col-12 offset-xl-8 invoice-footer">
+              <p class="text-right mt-3 font-weight-600">Sub-total: {{saleOrderDetail?.currency}}
+                {{saleOrderDetail?.gross_total | number: '1.2-2'}}</p>
+              <p class="text-right font-weight-600">Discout: {{saleOrderDetail?.discount}}</p>
+              <p class="text-right font-weight-600">VAT: {{saleOrderDetail?.vat_value}}</p>
+              <hr>
+              <h4 class="text-right grand-total">Grand Total : {{saleOrderDetail?.currency}}
+                {{saleOrderDetail?.total_amount | number: '1.2-2'}}</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 invoice-detail">
+              <h4 class="title"><strong>Agent</strong></h4>
+              <p class="mb-0 detail"><strong>{{saleOrderDetail?.author?.first_name | titlecase}},
+                  {{saleOrderDetail?.author?.last_name | titlecase}}</strong></p>
+              <p class="mb-0 detail">Phone: {{saleOrderDetail?.author?.phone_number}}</p>
+              <p class="mb-0 detail">Email: {{saleOrderDetail?.author?.email}}</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="exportAsPDF()"><i class="fa fa-file-pdf"></i> Download As PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Sales Orders Details Modal -->

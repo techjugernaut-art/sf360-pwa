@@ -1,0 +1,520 @@
+<app-main-nav>
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"></app-breadcrumb-actions>
+
+  <mat-card class="mt-4">
+    <mat-card-header class="card-header-full-width">
+      <mat-card-title>
+
+      </mat-card-title>
+
+    </mat-card-header>
+    <mat-card-content>
+
+        <div class="row">
+          <div class="col-md-4">
+            <div (click)="scrollTo('section1')">Section 1
+              <ng-container *ngIf="currentSection==='section1'">O</ng-container>
+            </div>
+            <div (click)="scrollTo('section2')">Section 2
+              <ng-container *ngIf="currentSection==='section2'">O</ng-container>
+            </div>
+            <div (click)="scrollTo('section3')">Section 3
+              <ng-container *ngIf="currentSection==='section3'">O</ng-container>
+            </div>
+            <div (click)="scrollTo('section4')">Section 4
+              <ng-container *ngIf="currentSection==='section4'">O</ng-container>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="container">
+              <br>
+              <h1 class="updates">StoreFront 360 Updates!</h1>
+              <p> See what's new in SF 360 and what we're gradually rolling out! </p>
+              </div>
+            <div id="parentDiv" scrollSpy [spiedTags]="['DIV']" (sectionChange)="onSectionChange($event)">
+             <div id="section1">
+              <h1 class="date">May 2020</h1>
+              <hr>
+              <h3>Release date: May 12, 2020</h3>
+              <hr>
+              <ul>
+                <li class="update-title">Mall Order Status Update<br>
+                  <ul>
+                    <li>
+                      This enables StoreFront Mall users to update the status of orders coming in from the mall. The status update
+                      is done at the package level. The following statuses are available for them to switch to (ORDER PLACED,
+                      PROCESSING, READY FOR PICKUP, IN DELIVERY AND DELIVERED)
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Delivery Pickup Location<br>
+                  <ul>
+                    <li>
+                      This is a settings tab on the Shop Settings page that allows the user to set shop geolocation using google
+                      map. The longitudes and latitudes are required since they are needed for delivery. If not provided, the shop
+                      will not be listed on the mall.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Online Store Payment Request <br>
+                  <ul>
+                    <li>
+                      This is a sub-action under SETTINGS to enable users with shops listed on the Mall, to submit their KYC
+                      documents for approval to accept payments on the mall.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Pay Subscription Enforcement<br>
+                  <ul>
+                    <li>
+                      This ensures that all features on SF360 (Mall) are paid features. Users MUST be on premium to access this
+                      portal.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Product Image Upload<br>
+                  <ul>
+                    <li>
+                      Allows users to add product images by clicking on Option Menu of the product and selecting Upload Image.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Forgot Password<br>
+                  <ul>
+                    <li>
+                      This action is available on the Enter PIN page. This enables the user to reset their password.
+                  </li>
+                </ul>
+                </li>
+                <li class="update-title">Change Password<br>
+                  <ul>
+                    <li>
+                      You can find this action under the user’s profile icon. This allows the user to change an old password to a
+                      new one.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Delete/Edit Banner<br>
+                  <ul>
+                    <li>
+                      With this action available on the My Banner tab of the My Mall settings page, a user can Edit or Delete a
+                      slider Banner.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Print Mall Order<br>
+                  <ul>
+                    <li>
+                      It's an action on the mall orders, that allows a user to print a mall order (Feedback from Amatar)
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title"> Bug fixes<br>
+                  <ul>
+                    <li>
+                      Corrected “display” to “Display” on the onboarding page of mall customization, and on the My Mall
+                      settings page
+                    </li>
+                    <li>
+                      Fixed appending of country again to existing phone number with country code on the reset password page.
+                      The happens when error happens on the server and user tries to submit the same form again
+                    </li>
+                    <li>
+                      User not upgraded after subscription has been paid (Backend fix)
+                    </li>
+                    <li>
+                      Password reset failure (Backend)
+                    </li>
+                    <li>
+                      Product not listed on mall after all checklists have been exhausted (Backend)
+                    </li>
+                  </ul>
+              </ul>
+             </div>
+
+
+            <div id="section2">
+              <h1  class="date">April 2020</h1>
+              <hr>
+              <h3>Release date: April 12, 2020</h3>
+              <hr>
+              <ul>
+                <li class="update-title">Signup / Onboarding/ Shop Creation<br>
+                  <ul>
+                    <li>
+                      New users can create KudiGo StoreFront Account on SF360. They can onboard and make payment for subscription
+                      during the onboarding.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">My Mall settings<br>
+                  <ul>
+                    <li>
+                      This is part of the new My Mall menu introduced on SF360 to enable users customize their mall. They can
+                      perform actions like (update online address of mall, banner settings)
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Mall Orders<br>
+                  <ul>
+                    <li>
+                      This menu presents a page to display all orders coming to a users’ shop from StoreFront Mall. These orders
+                      have to be updated to DELIVERED for them to appear as sales orders in the reports.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Total Rebranding of SF360 to SF-Mall
+                </li>
+              </ul>
+            </div>
+
+            <div id="section3">
+              <h1 class="date">March 2020</h1>
+              <hr>
+              <h3>Release date: March 8, 2020</h3>
+              <hr>
+              <ul>
+                <li class="update-title">Total Supplier Stock Value on Product Page<br>
+                  <ul>
+                    <li>
+                      This value represents the summation of all Supplier Price x Quantity in stock for all products and displays
+                      the Total Amount in the shop's default currency on the product page.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Total Unit Stock Value on Product Page<br>
+                  <ul>
+                    <li>
+                      This value represents the summation of all Selling Price x Quantity in stock for all products and displays
+                      the Total Amount in the shop's default currency on the product page.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Download all products on Product Page<br>
+                  <ul>
+                    <li>
+                      This is a sub-action under ACTIONS on the product page that allows a user to download all products of a
+                      selected shop.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Stock Record<br>
+                  <ul>
+                    <li>
+                      This is a new tab introduced on the Product Detail page, displaying all the actions (eg. Decreased Stock,
+                      Increased Stock, Order Placed, etc) that occured on a product. This can filter by the Stock Update Activity
+                      and Date range.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Stock History Date Filter<br>
+                  <ul>
+                    <li>
+                      This filter action is available on the Stock History tab on Product Details Page. This allows the user
+                      filter stock history within a date range.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Bug fixes<br>
+                  <ul>
+                    <li>
+                      A screenshot of the Total Stock Value and Total Unit Value on product page
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+
+            <div id="section4">
+              <h1 class="date">February 2020</h1>
+              <hr>
+              <h3>Release date: February 8, 2020</h3>
+              <hr>
+              <ul>
+                <li class="update-title">Prepopulated columns for Product Upload<br>
+                  <ul>
+                    <li>
+                      Initially the user had to map the Excel Sheet Columns to System Columns after uploading the template. This
+                      new update automatically maps the columns it can identify in the Excel Sheet and maps to the Server columns
+                      it can identify to be related.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Product Upload Event Tracking<br>
+                  <ul>
+                    <li>
+                      This update currently helps track the various events that occur when uploading products (ie. Upload
+                      Template, Validate Template).
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Expense Overview<br>
+                  <ul>
+                    <li>
+                      This overview has been added on the dashboard that presents a horizontal bar chart that displays all total
+                      expenses according to category.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Requirement Information Tab<br>
+                  <ul>
+                    <li>
+                      This tab has been added on the payment request page that highlights all the details (requirements) that are
+                      needed to successfully complete a payment request submission process.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Payment Request Tooltips<br>
+                  <ul>
+                    <li>
+                      These tooltips have been added on the various when submitting a payment request.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Preview Product Barcodes<br>
+                  <ul>
+                    <li>
+                      This feature allows the preview of Barcodes for all Products. The barcodes can be printed as per the number
+                      of Barcodes one wants to print per product.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">New Assets<br>
+                  <ul>
+                    <li>
+                      These assets include Logo and Favicon.
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+
+             <div id="section5">
+              <h1 class="date">December 2019</h1>
+              <hr>
+              <h3>Release date: December 16, 2019</h3>
+              <hr>
+              <ul>
+                <li class="update-title">KYC documents<br>
+                  <ul>
+                    <li>
+                      Added additional fields for the KYC attachment when submitting Payment Request to ensure that all clients
+                      provide the required documents according to their business types and country.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Expense Module<br>
+                  <ul>
+                    <li>
+                      This module enables the business owner to add operational expenses according to categories.
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+             </div>
+
+
+
+             <div id="section6">
+              <h1 class="date">November 2019</h1>
+              <hr>
+              <h3>Release date: November 26, 2019</h3>
+              <hr>
+              <ul>
+                <li class="update-title">Search Customer<br>
+                  <ul>
+                    <li>
+                      This feature allows a user to search for a customer.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Receiving Verification Codes via WhatsApp
+                </li>
+              </ul>
+             </div>
+
+            <div id="section7">
+
+              <h1 class="date">September 2019</h1>
+              <hr>
+              <h3>Release date: September 18, 2019</h3>
+              <hr>
+              <ul>
+                <li class="update-title">Partner Login<br>
+                  <ul>
+                    <li>
+                      This feature allows KudiGO Business Partners to login with email address and password. Storefront 360 then
+                      offers them 360-degree oversight of all the shops connected to their account using their Partner Code(s).
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Remembering logged-in user’s browser<br>
+                  <ul>
+                    <li>
+                      With this, users do not have to confirm login with OTP code after first login
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Slack chat integration<br>
+                  <ul>
+                    <li>
+                      This allows Storefront 360 users to chat our customer support from Storefront 360
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Downloading Stock History<br>
+                  <ul>
+                    <li>
+                      This is for downloading stock history for a product as an excel file. And also, collapse/expand details of
+                      the sale order to view items in the order with the product under observation highlighted.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Product Editing<br>
+                  <ul>
+                    <li>
+                      This allows a user to edit details of a product (eg. Product Name, Quantity, Selling Price, Supplier Price,
+                      Is Service)
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Google Analytics<br>
+                  <ul>
+                    <li>
+                      This helps us (KudiGO) to have an oversight of what users on Storefront 360 are doing (page views) using
+                      google analytics.
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Payment Request<br>
+                  <ul>
+                    <li>
+                      This feature allows users to submit Payment Request from Storefront 360
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Stock Editing<br>
+                  <ul>
+                    <li>
+                      Allows users to edit (increase/decrease) stock on Storefront 360
+                    </li>
+                  </ul>
+                </li>
+                <li class="update-title">Top 5 Performing Products<br>
+                  <ul>
+                <li>
+                  This has been added to the overview page to show the top 5 performing products.
+                </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+
+
+           <div id="section8">
+            <h1 class="date">June 2019</h1>
+            <hr>
+            <h3>Release date: June 6, 2019</h3>
+            <hr>
+            <ul>
+              <li class="update-title">OTP Login<br>
+                <ul>
+    <li>
+      After entering your Phone Number and PIN, you will receive an OTP code in an sms to confirm your login (We
+      are still working on how to remember your device hence not sending you OTP at all times)
+    </li>
+                </ul>
+              </li>
+              <li class="update-title">Business Overview Dashboard<br>
+                This module gives an overview for
+                <ul>
+                  <li>
+                    Sales Orders
+                  </li>
+                  <li>
+                    Sales Margin
+                  </li>
+                  <li>
+                    Customers that visited the shop
+                  </li>
+                  <li>
+                    Suppliers
+                  </li>
+                  <li>
+                    Sales Orders over a trend (Line graph)
+                  </li>
+                  <li>
+                    Payment methods over a fraction (Doughnut graph)
+                  </li>
+                  <li>
+                    These overviews are affected by a Date Range and Shop filter, which means you can also filter by All
+                    Shops, or a specific shop in your Storefront Account.
+                  </li>
+                </ul>
+              <li class="update-title">Reports Module<br>
+                This modules provides both readable and downloadable reports on
+                <ul>
+                  <li>
+                    Sales Summary (Can be filtered by Date Range, Payment Method, Order Status, and Shop)
+                  </li>
+                  <li>
+                    Sales Orders (Can be filtered by Date Range, Payment Method, Order Status, and Shop)
+                  </li>
+                  <li>
+                    Sales Margin (Can be filtered by Date Range, Payment Method, and Shop)
+                  </li>
+                </ul>
+              </li>
+              <li class="update-title">Agents Module<br>
+                <ul>
+                  <li>
+                    This module provides an overview of the performance of agents.
+                  </li>
+                </ul>
+              </li>
+              <li class="update-title">Products Module<br>
+                <ul>
+                  <li>
+                    Products module provides a list of Products available in the shop. Admin can filter by shop.
+                  </li>
+                </ul>
+              </li>
+              <li class="update-title">Product Upload<br>
+                <ul>
+                  <li>
+                    This is an action on the Product Page where an Admin can use this module to perform bulk upload of products
+                    into a specific shop.
+                  </li>
+                </ul>
+              </li>
+              <li class="update-title">Customers Module<br>
+                <ul>
+                  <li>
+                    Admin can view a list of Customers that visited his shop and the number of times they visited.<br>
+                    Whether they are owing or not; amount they owe and the next payment date<br>
+                    Can be filtered by Shop and Owing Customers.<br>
+                  </li>
+                </ul>
+              </li>
+              <li class="update-title">Suppliers Module<br>
+                <ul><li>
+                  Provides an overview into the suppliers of a shop. Can also be filtered by Shop.
+                </li></ul>
+              </li>
+              <li class="update-title">Intellisight<br>
+              </li>
+            </ul>
+
+           </div>
+
+
+            </div>
+          </div>
+        </div>
+
+
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>

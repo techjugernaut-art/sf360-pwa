@@ -1,0 +1,4 @@
+appId: com.kudigostorefront.app
+publish:
+  provider: github
+  token: 767eacb2e194bb90af1b4dda193dba18dc2354d8

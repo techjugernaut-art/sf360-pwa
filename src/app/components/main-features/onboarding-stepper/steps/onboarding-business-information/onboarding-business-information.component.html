@@ -1,0 +1,53 @@
+<mat-progress-bar class="mb-0" *ngIf="isProcessing" mode="indeterminate">
+</mat-progress-bar>
+<div class="step-content">
+
+  <div class="step-content-heading">
+    <img class="step-heading-img" src="assets/img/icons/store.svg" />
+    <p class="text-primary step-content-heading-desc">Let’s get to know your business better</p>
+  </div>
+  <div class="row">
+    <form [formGroup]="formGroup"  class="col-md-6 offset-md-3">
+      <div class="row mlr-0">
+
+        <mat-form-field class="col-md-12">
+          <mat-label>Business Name <b class="text-danger">*</b> </mat-label>
+          <mat-icon matSuffix popoverTitle="Business Name" class="cursor-pointer"
+          ngbPopover="This is the name of your business as stated on all legal documents"
+          triggers="mouseenter:mouseleave" placement="bottom">info</mat-icon>
+          <input matInput formControlName="business_name" alphaNumericOnly>
+          <mat-hint class="text-danger" *ngIf="!business_name?.valid && business_name?.touched">Please provide
+            valid Business Name</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="row mlr-0">
+        <mat-form-field class="col-md-12">
+          <mat-label>Business Location  </mat-label>
+          <mat-icon matSuffix popoverTitle="Business Location" class="cursor-pointer"
+          ngbPopover="This is the physical location of your shop. This will serve as Pickup Location for delivery"
+          triggers="mouseenter:mouseleave" placement="left">info</mat-icon>
+          <input matInput formControlName="location" #location>
+          <mat-hint class="text-danger" *ngIf="!location?.valid && location?.touched">Please
+            provide Business Location</mat-hint>
+        </mat-form-field>
+      </div>
+      <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+        <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+          (dragEnd)="markerDragEnd($event)"></agm-marker>
+      </agm-map>
+
+    </form>
+  </div>
+</div>
+
+
+<div class="stepper-bottom-action">
+  <!-- <div class="step-left-action">
+    <a [routerLink]="['/onboarding/industry']" [queryParams]="{ step: 2 , state: 'back'}" mat-raised-button >BACK</a>
+  </div> -->
+  <div class="stepper-right-action">
+  <button mat-raised-button color="primary"
+  (click)="onSubmit(formGroup?.value)"
+    [disabled]="formGroup?.invalid || isProcessing">NEXT</button>
+  </div>
+</div>

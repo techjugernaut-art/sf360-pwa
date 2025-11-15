@@ -1,0 +1,51 @@
+<h1 mat-dialog-title>Udpdate Order Status</h1>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup?.value)" >
+  <div class="table-responsive" mat-dialog-content>
+    <table class="table dataTable no-footer table-border-bottom">
+      <thead>
+        <tr>
+          <th class="wd-15p">Description</th>
+          <th class="wd-15p">Qty</th>
+          <th class="wd-25p">Selling Price</th>
+          <th class="wd-15p">Amt.</th>
+          <th class="wd-15p">Status</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="order_item_ids?.controls?.length <= 0">
+          <td colspan="10" class="text-center"><app-empty-record></app-empty-record></td>
+        </tr>
+        <tr *ngFor="let itemFormGroup of order_item_ids?.controls" [formGroup]="itemFormGroup">
+          <td>{{itemFormGroup?.get('item')?.value}}</td>
+          <td>{{itemFormGroup?.get('quantity')?.value}}</td>
+          <td>{{itemFormGroup?.get('currency')?.value}} {{itemFormGroup?.get('selling_price')?.value | number: '1.2-2'}}</td>
+          <td>{{itemFormGroup?.get('currency')?.value}} {{itemFormGroup?.get('subtotal')?.value | number: '1.2-2'}}</td>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Order Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option value="ORDER PLACED">ORDER PLACED</mat-option>
+                <mat-option value="PROCESSING">PROCESSING</mat-option>
+                <mat-option value="READY FOR PICKUP">READY FOR PICKUP</mat-option>
+                <mat-option value="CANCELLED">CANCELLED</mat-option>
+                <!-- <mat-option value="IN DELIVERY">IN DELIVERY</mat-option> -->
+              </mat-select>
+              <mat-hint class="text-danger" *ngIf="!itemFormGroup?.get('status')?.valid && itemFormGroup?.get('status')?.touched">Please provide status</mat-hint>
+            </mat-form-field>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+      <div class="row">
+
+
+      </div>
+
+      <mat-dialog-actions class="text-right">
+          <button mat-raised-button mat-dialog-close class="mr-1">CLOSE</button>
+          <button mat-raised-button color="primary" [disabled]="formGroup?.invalid || isProcessing" type="submit">UPDATE</button>
+        </mat-dialog-actions>
+</form>

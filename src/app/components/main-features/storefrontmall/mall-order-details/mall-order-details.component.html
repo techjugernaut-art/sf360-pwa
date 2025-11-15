@@ -1,0 +1,109 @@
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-10">
+            <div class="receipt bg-white p-3 rounded">
+                <div class="order-details-top">
+                    <div class="order-details-top-left">
+                        <img src="assets/img/logos/logo1.png" width="150" alt="Shop Name">
+                    </div>
+                    <div class="order-details-top-right">
+                        <a [routerLink]="['/']">
+                            <span> <img style="font-weight: 700; width: 24px; margin-right: 10px;" title="Email Receipt"
+                                    src="assets/icons/email.svg" alt=""> </span>
+                        </a>
+                        <a [routerLink]="['/']">
+                            <span><img style="font-weight: 700; width: 26px;" title="Print Receipt"
+                                    src="assets/icons/printer.svg" alt=""></span>
+                        </a>
+                    </div>
+                </div>
+                <h3 class="order-confirmed">Your order is confirmed!</h3>
+                <h4 class="order-details-username">Hello John,</h4>
+                <span class="fs-14">Your order has been confirmed and
+                    will be shipped in two days</span>
+                <hr>
+                <div class="order-details">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+                            <div class="order-details-info"><span class="order-details-head">Order date</span>
+                                <span class="order-details-body">12 March 2020</span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+                            <div class="order-details-info"><span class="order-details-head">Order number</span>
+                                <a routerLink="/"><span class="order-details-body">OD44434324</span></a>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+                            <div class="order-details-info"><span class="order-details-head">Payment method</span>
+                                <span class="order-details-body">Credit card</span>
+                                <img class="ml-1 mb-1" src="https://i.imgur.com/ZZr3Yqj.png" width="20">
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-3 col-lg-3">
+                            <div class="order-details-info"><span class="order-details-head">Shipping Address</span>
+                                <span class="order-details-body-address">Abelemkpe, Accra</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <hr>
+                <div class="order-details-product">
+                    <div class="d-flex flex-row product-name-image"><img class="rounded"
+                            src="https://i.imgur.com/GsFeDLn.jpg" width="80">
+                        <div class="d-flex flex-column justify-content-between ml-2">
+                            <div><span class="order-details-product-name">Ralco formal shirts for men</span><span
+                                    class="order-details-head">Clothes</span></div><span class="fs-13">Qty: 1pcs</span>
+                        </div>
+                    </div>
+                    <div class="product-price">
+                        <h5>GHS 70.99</h5>
+                    </div>
+                </div>
+                <div class="order-details-product">
+                    <div class="d-flex flex-row product-name-image"><img class="rounded"
+                            src="https://i.imgur.com/GsFeDLn.jpg" width="80">
+                        <div class="d-flex flex-column justify-content-between ml-2">
+                            <div><span class="order-details-product-name">Ralco formal shirts for men</span><span
+                                    class="order-details-head">Clothes</span></div><span class="fs-13">Qty: 1pcs</span>
+                        </div>
+                    </div>
+                    <div class="product-price">
+                        <h5>GHS 20.00</h5>
+                    </div>
+                </div>
+
+                <div class="mt-5 amount row">
+                    <div class="text-left col-md-6"><img src="https://i.imgur.com/AXdWCWr.gif" width="250" height="100">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="order-billing">
+                            <div class="order-billing-text-info"><span>Subtotal</span><span class="font-weight-bold">GHS
+                                    120.00</span></div>
+                            <div class="order-billing-text-info"><span>Shipping fee</span><span
+                                    class="font-weight-bold">GHS 15.00</span></div>
+                            <div class="order-billing-text-info"><span>Tax</span><span class="font-weight-bold">GHS
+                                    5.00</span></div>
+                            <div class="order-billing-text-info"><span class="text-primary">Discount</span><span
+                                    class="font-weight-bold text-primary">GHS 25.00</span></div>
+                            <hr>
+                            <div class="order-billing-text-info"><span class="font-weight-bold">Total</span><span
+                                    class="order-details-total">GHS 165.00</span></div>
+                        </div>
+                    </div>
+                </div><span class="d-block">Expected delivery date</span><span class="font-weight-bold text-primary">12
+                    March 2020</span><span class="d-block mt-3 text-black-50 fs-15">We will be sending a shipping
+                    confirmation email when the item is shipped!</span>
+                <hr>
+                <div class="d-flex justify-content-between align-items-center footer">
+                    <div class="thanks"><span class="d-block">Thanks for shopping</span><span
+                            class="font-weight-bold">KudiGo
+                            team</span></div>
+                    <div class="order-details-bottom-right"><span class="d-block font-weight-bold">Need
+                            Help?</span><span>Call - 0302021252</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

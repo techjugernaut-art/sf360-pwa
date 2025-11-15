@@ -1,0 +1,12 @@
+<mat-toolbar>
+  Business Alerts
+</mat-toolbar>
+  <mat-progress-bar mode="indeterminate" *ngIf="isProcessingBusinessAlerts"  ></mat-progress-bar>
+<h4 class="no-notifications" *ngIf="businessAlerts?.length <= 0" >Ooops! couldn't find any business alerts to display</h4>
+<div class="notification-list-item cursor-pointer" *ngFor="let alert of businessAlerts">
+  <div class="">
+    <h4 class="mb-0">{{alert?.message_title}}</h4>
+    <p class="mb-1">{{alert?.message_body }}</p>
+    <div class="small text-muted"><strong class="text-primary mr-2">{{alert?.message_title | uppercase}}</strong> {{alert?.elapsed_time}}</div>
+  </div>
+</div>

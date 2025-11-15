@@ -1,0 +1,142 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions">
+  </app-breadcrumb-actions>
+<mat-card class="mt-4">
+  <mat-tab-group mat-stretch-tabs>
+    <mat-tab label="Customer">
+      <table class="table row table-borderless w-100 m-0">
+        <tbody class="col-12 p-0">
+          <tr>
+            <td><strong>Customer Name : </strong> {{customerDetail?.name}}
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Customer Phone Number : </strong> {{customerDetail?.phone_number}}
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Customer Email : </strong> {{customerDetail?.email}}
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Number Of Visits : </strong> {{customerDetail?.num_of_visits}}
+            </td>
+          </tr>
+        </tbody>
+        <tbody class="col-12 p-0">
+          <tr>
+            <td><strong>Group : </strong> {{customerDetail?.customer_group?.name}}
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Amount Owing : </strong> {{customerDetail?.amount_owing}}
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Next Payment Date : </strong> {{customerDetail?.next_payment_date | date: 'MMM dd, yyyy'}}
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Last Purchase Date : </strong> {{customerDetail?.last_time_purchased | date: 'medium'}}
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+      </mat-tab>
+    <mat-tab label="Sales Orders">
+      <app-table-header-actions [tableHeaderOptions]="tableHeaderOption" (selectedDateChanged)="onSelectStockHistoryDateRange($event)" [selectedDate]="selectedDate">
+
+        <button mat-button mat-stroked-button color="primary" type="button" [matMenuTriggerFor]="mainActionsMenu" ><i class="fe fe-download mr-1"></i> EXPORT AS</button>
+        <mat-menu #mainActionsMenu="matMenu">
+        <button mat-menu-item (click)="exportAsExcel()">EXCEL</button>
+        <button mat-menu-item (click)="exportAllAPDF()">PDF</button>
+        </mat-menu>
+      </app-table-header-actions>
+      <div class="table-responsive">
+      <table class="table dataTable no-footer table-border-bottom">
+              <thead>
+                <tr>
+                  <th class="wd-15p">Order #</th>
+                  <th class="wd-15p">Amount</th>
+                  <th class="wd-15p">Payment Method</th>
+                  <th class="wd-10p">Shop</th>
+                  <th class="wd-25p">Date Placed</th>
+                  <th class="wd-25p">Actions</th>
+
+                </tr>
+              </thead>
+              <tbody *ngIf="salesOrders?.length <= 0">
+                <tr>
+                  <td colspan="10" class="text-center"><app-empty-record></app-empty-record></td>
+              </tr>
+              </tbody>
+              <tbody  *ngFor="let order of salesOrders" [class.bg-collapsed-table]="order?.id == orderId">
+
+                <tr>
+                  <td class="cursor-pointer text-primary" (click)="collapseOrderDetail(order)">{{order?.order_code}}</td>
+
+                  <td>{{order?.currency}} {{order?.total_amount | number: '1.2-2'}}</td>
+                  <td>{{order?.payment_method | removeUnderScore}}</td>
+                  <td>{{order?.myshop?.business_name | titlecase}}</td>
+                  <td>{{order?.date_placed | date: 'medium'}}</td>
+                  <td class="text-center">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                      <button *ngIf="order?.amount_owing > 0" mat-menu-item (click)="payCredit(order)">
+                        <span>Pay Credit</span>
+                      </button>
+                      <button mat-menu-item (click)="collapseOrderDetail(order)">
+                       <span>Order Item(s)</span>
+                     </button>
+                    </mat-menu>
+                  </td>
+                </tr>
+                <tr [@inOutAnimation]="order?.id == orderId ? 'expanded' : 'collapsed'">
+                  <td colspan="20">
+                    <table class="table no-footer table-border-bottom" >
+                        <thead>
+                            <tr>
+                              <th class="wd-15p">PRODUCT NAME</th>
+                              <th class="wd-15p">SUPPLIER PRICE</th>
+                              <th class="wd-15p">SELLING PRICE</th>
+                              <th class="wd-15p">QTY BEFORE</th>
+                              <th class="wd-15p">QTY SOLD</th>
+                              <th class="wd-15p">QTY AFTER</th>
+                              <th class="wd-15p">SUBTOTAL</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of order?.myitems" >
+                              <td>{{item?.my_product?.name}}</td>
+                              <td>{{item?.my_product?.supplier_price}}</td>
+                              <td>{{item?.product_price}}</td>
+                              <td>
+                                <span *ngIf="!item?.my_product?.is_service">{{item?.product_quantity_before}}</span>
+                                <span *ngIf="item?.my_product?.is_service">N/A</span>
+                              </td>
+                              <td>{{item?.new_quantity}}</td>
+                              <td>
+                                  <span *ngIf="!item?.my_product?.is_service">{{item?.product_quantity_after}}</span>
+                                  <span *ngIf="item?.my_product?.is_service">N/A</span>
+                                </td>
+                                <td>{{item?.subtotal}}</td>
+                            </tr>
+                          </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+    </div>
+      <app-pagination [dataSet]="salesOrders" [nextPage]="nextPage" [prevPage]="prevPage" [totalPage]="totalPage"
+        [requestPayload]="requestPayload" [requestMethod]="'POST'" (pageChanged)="onPageChanged($event)"
+        [isProcessing]="isProcessing"></app-pagination>
+    </mat-tab>
+  </mat-tab-group>
+
+</mat-card>
+</app-main-nav>

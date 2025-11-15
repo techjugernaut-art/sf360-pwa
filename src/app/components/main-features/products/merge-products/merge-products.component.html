@@ -1,0 +1,45 @@
+
+<h4 mat-dialog-title>Merge Duplicated Products</h4>
+<mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<div mat-dialog-content>
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <mat-label>Select Shop (to view duplicated products)</mat-label>
+      <mat-select (selectionChange)="getDuplicateProducts($event.value)">
+        <mat-option *ngFor="let item of myShops" [value]="item?.id" >{{item?.business_name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="message !== ''"  class="alert alert-info col-md-12">
+      {{message}}
+    </div>
+  </div>
+  <div class="table-responsive" >
+    <table class="table dataTable no-footer table-border-bottom">
+      <thead>
+        <tr role="row">
+          <th class="wd-15p">Name</th>
+          <th class="wd-15p">Number of Duplicates</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="!isProcessing && dupicatedProducts?.length <= 0">
+          <td colspan="10" class="text-center">
+            <app-empty-record></app-empty-record>
+          </td>
+        </tr>
+        <tr *ngFor="let product of dupicatedProducts">
+          <td>{{product?.name}}</td>
+          <td>
+            <span>{{product?.id__count}}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<mat-dialog-actions class="text-right">
+  <button mat-button (click)="onClose()">Close</button>
+  <button mat-raised-button color="primary" [disabled]="dupicatedProducts?.length <= 0 || isProcessing || shopId === ''" (click)="mergeDuplicatedProducts()" type="button">Merge All</button>
+</mat-dialog-actions>

@@ -1,0 +1,65 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+
+  <mat-card>
+
+    <mat-card-content class="ml-3 mr-3">
+      <div class="row mlr-0">
+        <div class="col-12">
+          <div class="table-responsive">
+            <h3>Delivery Options</h3>
+            <p class="">
+              StorefrontMall offers managed delivery services for any item purchased on your store. The delivery charge is paid by the customer. We handle the pickup from your store and delivery to the customer.
+            </p>
+            <p class="">
+              StorefrontMall also allows for you manage your own delivery; in this case when an order is placed; you will be in charge of delivering to the customer. Kindly note its important to update the order status from your sales section; this will allow for the system to confirm delivery to your customer.
+            </p>
+            <p>
+              Please select from the options below which delivery setup your prefer (only one can be used at a time)
+            </p>
+            <ul class="row settings-list">
+              <li class="col-md-12">
+                <div class="settings-list-item">
+                  <h4 class="settings-list-item-heading">StorefrontMall Managed Delivery</h4>
+                  <div class="settings-list-item-content row">
+                    <div class="settings-list-item-content-action-desc col-10">
+                      <p >
+                        KudiGo should manage my deliveries for me
+                      </p>
+                    </div>
+                    <div class="settings-list-item-content-action col-2">
+                      <label class="radion-btn" for="selfManaged">
+                        <input type="radio" name="deliveryOption" id="selfManaged" [formControl]="deliveryOptionFormControl" [value]="false" [disabled]="isProcessing" (change)="onChangeDeliveryOption(deliveryOptionFormControl?.value)">
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="col-md-12">
+                <div class="settings-list-item">
+                  <h4 class="settings-list-item-heading">Merchant Own Managed Delivery</h4>
+                  <div class="settings-list-item-content row">
+                    <div class="settings-list-item-content-action-desc col-10">
+                      <p>
+                        I will manage delivery myself
+                      </p>
+                    </div>
+                    <div class="settings-list-item-content-action col-2">
+                      <label class="radion-btn" for="kudigoManged">
+                        <input type="radio" name="deliveryOption" id="kudigoManged" [formControl]="deliveryOptionFormControl" [value]="true" [disabled]="isProcessing" (change)="onChangeDeliveryOption(deliveryOptionFormControl?.value)">
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              </ul>
+              </div>
+
+        </div>
+       </div>
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>

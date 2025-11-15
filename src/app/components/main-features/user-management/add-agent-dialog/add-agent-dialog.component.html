@@ -1,0 +1,85 @@
+
+<h1 mat-dialog-title>{{modalTitle}}</h1>
+<mat-progress-bar *ngIf="isProcessing" mode="indeterminate"></mat-progress-bar>
+<form [formGroup]="addAgentFormGroup" class="my-content-dialog" (ngSubmit)="onAddAgent(addAgentFormGroup)" >
+  <!-- <div class="row">
+    <mat-form-field class="col-md-6">
+      <input type="text" matInput placeholder="First Name" formControlName="first_name">
+      <mat-hint class="text-danger" *ngIf="!first_name?.valid && first_name?.touched">Please provide First Name
+      </mat-hint>
+    </mat-form-field>
+    <mat-form-field class="col-md-6">
+      <input type="text" matInput placeholder="Last Name" formControlName="last_name">
+      <mat-hint class="text-danger" *ngIf="!last_name?.valid && last_name?.touched">Please provide Last Name
+      </mat-hint>
+    </mat-form-field>
+  </div> -->
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <app-intl-country-codes matPrefix (countryCodeSelected)="onPhoneCodeCliked($event)"></app-intl-country-codes>
+      <input type="tel" matInput placeholder="Phone Number" formControlName="phone_number" NumbersOnly>
+      <mat-hint class="text-danger" *ngIf="!phone_number?.valid && phone_number?.touched">Please provide Phone Number
+      </mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="row">
+      <mat-form-field class="col-md-12">
+        <input type="email" matInput placeholder="Email" formControlName="email">
+        <mat-hint class="text-danger" *ngIf="!email?.valid && email?.touched">Please provide Email
+        </mat-hint>
+      </mat-form-field>
+    </div>
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <mat-label>Gender</mat-label>
+      <mat-select formControlName="gender">
+        <mat-option value="Male">Male</mat-option>
+        <mat-option value="Female">Female</mat-option>
+      </mat-select>
+      <mat-hint class="text-danger" *ngIf="!gender?.valid && gender?.touched">Please provide Gender
+      </mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <mat-label>User Type</mat-label>
+      <mat-select formControlName="user_type">
+        <mat-option value="AGENT">Agent</mat-option>
+        <mat-option value="MANAGER">Manager</mat-option>
+      </mat-select>
+      <mat-hint class="text-danger" *ngIf="!user_type?.valid && user_type?.touched">Please provide User Type
+      </mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="row">
+      <mat-form-field class="col-md-12">
+        <mat-label>Shop</mat-label>
+        <mat-select formControlName="shop_id">
+          <mat-option *ngFor="let shop of myShops" [value]="shop?.id">{{shop.business_name}}</mat-option>
+        </mat-select>
+        <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please select Shop
+        </mat-hint>
+      </mat-form-field>
+    </div>
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <input matInput placeholder="PIN" formControlName="password" type="password" maxlength="6" minlength="6"
+      numbersOnly>
+      <mat-hint class="text-danger" *ngIf="!password?.valid && password?.touched">Please provide
+        PIN</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <input matInput placeholder="Confirm PIN" formControlName="confirm_password" type="password" maxlength="6" minlength="6"
+      numbersOnly>
+      <mat-hint class="text-danger" *ngIf="!confirm_password?.valid && confirm_password?.touched">Please
+        PINs do not match</mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions>
+      <button mat-raised-button type="button" (click)="cancel()">CANCEL</button>
+      <button mat-raised-button color="primary" [disabled]="addAgentFormGroup?.invalid || isProcessing" type="submit" cdkFocusInitial class="pull-right">SAVE</button>
+    </div>
+</form>

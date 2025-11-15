@@ -1,0 +1,156 @@
+<app-main-nav [isProcessing]="isProcessing">
+    <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+      (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+
+
+  <div class="row">
+      <div class="col-md-12 col-lg-6">
+        <mat-card class="dashboard-card mb-3">
+          <mat-card-content>
+            <div class="row">
+              <div class="col-6 border-right">
+                <div class="intelisight-card">
+                  <p class="title">Total Sales</p>
+                  <h2 class="amount mb-0">{{salesOrdersReports?.total_sales}}</h2>
+                  <!-- <p class="percentage-difference mb-0 text-danger"><i class="fa fa-arrow-down mr-1"></i> 1.2%</p> -->
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="intelisight-card">
+                  <p class="title">Sales Margin</p>
+                  <h2 class="amount mb-0">{{salesOrdersReports?.total_margin}}</h2>
+                  <!-- <p class="percentage-difference mb-0 text-primary"><i class="fa fa-arrow-up mr-1"></i> 1.2%</p> -->
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-md-12 col-lg-6">
+        <mat-card class="dashboard-card mb-3">
+          <mat-card-content >
+            <div class="row">
+              <div class="col-6 border-right">
+                <div class="intelisight-card">
+                  <p class="title">Total Supplier Price</p>
+                  <h2 class="amount mb-0">{{salesOrdersReports?.total_supplier_price}}</h2>
+                  <!-- <p class="percentage-difference mb-0 text-danger"><i class="fa fa-arrow-down mr-1"></i> 1.2%</p> -->
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="intelisight-card">
+                  <p class="title">Total Discount</p>
+                  <h2 class="amount mb-0">{{salesOrdersReports?.total_discount}}</h2>
+                  <!-- <p class="percentage-difference mb-0 text-primary"><i class="fa fa-arrow-up mr-1"></i> 1.2%</p> -->
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <mat-card>
+      <mat-card-header class="card-header-full-width mb-3">
+        <mat-card-title>
+        </mat-card-title>
+
+      </mat-card-header>
+      <mat-card-content class="ml-3 mr-3">
+        <app-table-header-actions [tableHeaderOptions]="tableHeaderOption"></app-table-header-actions>
+        <!-- <button class="btn btn-primary" type="button" (click)="exportAsPDF()">Download</button> -->
+        <div class="table-responsive">
+            <table class="table dataTable no-footer table-border-bottom">
+                <thead>
+                  <tr>
+                    <th class="wd-15p">Order #</th>
+                    <th class="wd-15p">Product Name</th>
+                    <th class="wd-15p">Selling Price</th>
+                    <th class="wd-15p">Supplier Price</th>
+                    <th class="wd-10p">Quantity Sold</th>
+                    <th class="wd-10p">Subtotal</th>
+                    <th class="wd-10p">Sales Margin</th>
+                    <th class="wd-25p">Date Placed</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="elements?.length <= 0">
+                    <td colspan="10" class="text-center"><app-empty-record></app-empty-record></td>
+                  </tr>
+                  <tr *ngFor="let order of elements">
+                    <td>{{order?.order_code}}</td>
+                    <td>{{order?.item?.my_product?.name}}</td>
+                    <td>{{order?.item?.my_product?.currency}} {{order?.item?.product_price | number: '1.2-2'}}</td>
+                    <td>{{order?.item?.my_product?.currency}} {{order?.item?.my_product?.supplier_price | number: '1.2-2'}}</td>
+                    <td>{{order?.item?.new_quantity }}</td>
+                    <td>{{order?.item?.my_product?.currency}} {{order?.item?.subtotal | number: '1.2-2'}}</td>
+                    <td>{{order?.item?.my_product?.currency}} {{order?.item?.margin | number: '1.2-2'}}</td>
+                    <td>{{order?.date_placed | date: 'medium'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+        <app-pagination [dataSet]="elements" [nextPage]="nextPage" [prevPage]="prevPage" [totalPage]="totalPage"
+          [requestPayload]="requestPayload" [requestMethod]="'POST'" (pageChanged)="onPageChanged($event)"
+          [isProcessing]="isProcessing"></app-pagination>
+      </mat-card-content>
+
+    </mat-card>
+
+
+
+
+  </app-main-nav>
+
+
+
+
+
+
+
+
+  <!-- Sales Orders Details Modal -->
+  <div class="modal fade" id="modalSalesOrdersDetail" tabindex="-1" role="dialog"
+    aria-labelledby="modal-notification" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title invoice-modal-title" id="modal-title-notification">
+            {{saleOrderDetail?.product_name}}
+          </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body" id="salesOrderModalBody">
+          <div class="mb-0">
+            <div class="row">
+              <p class="col-6 mb-0 fw-600"><b>Quantity in Stock</b></p>
+              <p class="col-6 mb-0 text-right">{{saleOrderDetail?.quantity_left}}</p>
+              <p class="col-6 mb-0 fw-600"><b>Supplier Prie</b></p>
+              <p class="col-6 mb-0 text-right">{{saleOrderDetail?.supplier_price | number: '1.2-2'}}</p>
+              <p class="col-6 mb-0 fw-600"><b>Selling Prie</b></p>
+              <p class="col-6 mb-0 text-right">{{saleOrderDetail?.selling_price | number: '1.2-2'}}</p>
+              <p class="col-6 mb-0 fw-600"><b>Quantity Sold</b></p>
+              <p class="col-6 mb-0 text-right">{{saleOrderDetail?.quantity_sold}}</p>
+              <p class="col-6 mb-0 fw-600"><b>Amount</b></p>
+              <p class="col-6 mb-0 text-right">{{saleOrderDetail?.amount_sold | number: '1.2-2'}}</p>
+              <p class="col-6 mb-0 fw-600"><b>Sales Margin</b></p>
+              <p class="col-6 mb-0 text-right">{{saleOrderDetail?.sales_margin | number: '1.2-2'}}</p>
+              <p class="col-6 mb-0 fw-600"><b>Is Service</b></p>
+              <p class="col-6 mb-0 text-right">
+                  <i *ngIf="saleOrderDetail?.is_service !== 'False'" class="fe fe-check text-primary"></i>
+                  <i *ngIf="saleOrderDetail?.is_service === 'False'" class="fe fe-x text-danger"></i>
+                </p>
+            </div>
+            <!-- end row -->
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- End of Sales Orders Details Modal -->

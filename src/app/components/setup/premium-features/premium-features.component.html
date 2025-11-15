@@ -1,0 +1,48 @@
+<div class="premium-features-wrapper">
+  <div class="feature-content">
+    <img class="premium-feature-logo" src="assets/img/logos/logo1.png" />
+    <div class="feature-content-container pt-2" >
+      <!-- <router-outlet ></router-outlet> -->
+      <p class="text-primary text-bold ml-2 mr-2"></p>
+      <owl-carousel-o [options]="customOptions" class="prem-carousel-wrapper">
+        <ng-container>
+          <ng-template carouselSlide class="item-wrapper">
+            <img  class="feature-icon" src="assets/img/premium/split-price.jpg" alt="Analytics">
+            <!-- <h3 class="mb-0 mt-3">Attract More Customers</h3>
+            <p>Take Your Business Online By Creating Your Own Online Store In 5 minutes</p> -->
+          </ng-template>
+          <ng-template carouselSlide class="item-wrapper">
+            <img class="feature-icon" src="../../../../assets/img/premium/products-grouping.jpg" alt="Analytics">
+          </ng-template>
+          <ng-template carouselSlide class="item-wrapper">
+            <img class="feature-icon" src="../../../../assets/img/premium/manage-product-barcode.jpg" alt="Analytics">
+          </ng-template>
+          <ng-template carouselSlide class="item-wrapper">
+            <img class="feature-icon" src="../../../../assets/img/premium/manage-selling-unit.jpg" alt="Analytics">
+          </ng-template>
+          <ng-template carouselSlide class="item-wrapper">
+            <img class="feature-icon" src="../../../../assets/img/premium/double-checkout.jpg" alt="Analytics">
+          </ng-template>
+          <ng-template carouselSlide class="item-wrapper">
+            <img class="feature-icon" src="../../../../assets/img/premium/manage-multi-shop.jpg" alt="Analytics">
+          </ng-template>
+          <ng-template carouselSlide class="item-wrapper">
+            <img class="feature-icon" src="../../../../assets/img/premium/manage-multi-agents.jpg" alt="Analytics">
+          </ng-template>
+          <ng-template carouselSlide class="item-wrapper">
+            <img class="feature-icon" src="../../../../assets/img/premium/double-checkout.jpg" alt="Analytics">
+          </ng-template>
+          <ng-template carouselSlide class="item-wrapper">
+            <img class="feature-icon" src="../../../../assets/img/premium/accounting-system.jpg" alt="Analytics">
+          </ng-template>
+          <ng-template carouselSlide class="item-wrapper">
+            <img class="feature-icon" src="../../../../assets/img/premium/campaigna-promo.jpg" alt="Analytics">
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+      <div class="text-center"><a [routerLink]="['/service-payment']" mat-raised-button class="mt-3" color="primary">UPGRADE NOW</a></div>
+      <!-- <div class="text-center mt-3"><a (click)="onFreeTrial()" mat-raised-button class="mt-2" color="">30Days Free Trial</a></div> -->
+    </div>
+  </div>
+
+</div>

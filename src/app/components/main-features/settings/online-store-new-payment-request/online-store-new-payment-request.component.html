@@ -1,0 +1,358 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)">
+  </app-breadcrumb-actions>
+  <mat-card  class="mt-4">
+    <mat-card-content>
+      <div class="table-responsive">
+        <mat-horizontal-stepper [linear]="false" #stepper color="primary">
+          <mat-step >
+              <ng-template matStepLabel>Requirement Information</ng-template>
+              <p class="text-mute">KudiGo will take a maximum of 1 business day to approve your request to start accepting payments on the Storefront Mall. This will happen after the KYC documents uploaded are verified to be compliant.
+                However, this process might take longer than the expected approval period should the KYC documents be found to be non-compliant. We advise that care be taken in the provision of all the neccessary documents, required to minimize delays. </p>
+                <p class="text-mute">
+                  Below are the required KYC documents.
+                </p>
+                <p class="text-mute">
+                  <b>NB: </b>The primary forms of individual identity verification include:
+                </p>
+                <ul class="">
+                  <li>Valid international passport</li>
+                  <li>Valid driver’s license</li>
+                  <li>National I.D. Card</li>
+                  <li>Permanent Voter’s Card</li>
+                </ul>
+                <h4 class="text-primary">KYC Documents</h4>
+                <p class="text-mute">
+                  Registered Business Names, and Documents
+                </p>
+                <ol type="i">
+                  <li>Certificate of Registration of the business</li>
+                  <li>Certificate of Incorporation of the company</li>
+                </ol>
+
+                <div class="text-right">
+                  <button mat-raised-button matStepperNext type="button" color="primary">Proceed</button>
+                </div>
+          </mat-step>
+          <mat-step [stepControl]="businessInformationFormGroup">
+            <form [formGroup]="businessInformationFormGroup">
+              <ng-template matStepLabel>Business Information</ng-template>
+              <div class="row mb-2">
+                <mat-radio-group color="primary" class="col-md-4" formControlName="country">
+                  <mat-radio-button value="GH" class="mr-3">Ghana</mat-radio-button>
+                  <mat-radio-button value="NG">Nigeria</mat-radio-button>
+                </mat-radio-group>
+
+              </div>
+              <div class="row">
+                <mat-form-field class="col-md-4">
+
+                  <mat-label >Select Shop <b class="text-danger">*</b> </mat-label>
+                  <mat-select formControlName="shop_id" >
+                    <mat-option *ngFor="let item of myShops" [value]="item?.id">{{item?.business_name}}</mat-option>
+                  </mat-select>
+                  <mat-icon matSuffix popoverTitle="Shop" class="cursor-pointer"
+                  ngbPopover="This is the name of the shop registered on StoreFront"
+                  triggers="mouseenter:mouseleave" placement="bottom">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please select Shop
+                  </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-label >Business Name <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="business_name">
+                  <mat-icon matSuffix popoverTitle="Business Name" class="cursor-pointer"
+                  ngbPopover="This is the name of your business as stated on all legal documents"
+                  triggers="mouseenter:mouseleave" placement="bottom">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!business_name?.valid && business_name?.touched">Please provide
+                    Business Name</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix  popoverTitle="Registered Business Address"
+                  ngbPopover="Place of residence under which the business is registered"
+                  triggers="mouseenter:mouseleave" placement="left" class="cursor-pointer">help</mat-icon>
+                  <mat-label>Registered Business Address  <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="business_address">
+                  <mat-hint class="text-danger" *ngIf="!business_address?.valid && business_address?.touched">Please
+                    provide Registered Address</mat-hint>
+                </mat-form-field>
+
+              </div>
+              <div class="row">
+
+
+
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix  popoverTitle="Business State of Residence"
+                  ngbPopover="This is the place where you operate your business from"
+                  triggers="mouseenter:mouseleave" placement="left" class="cursor-pointer">help</mat-icon>
+                  <mat-label >Business State of Residence <b class="text-danger">*</b> </mat-label>
+                  <input matInput
+                    formControlName="business_state_of_residence">
+                  <mat-hint class="text-danger"
+                    *ngIf="!business_state_of_residence?.valid && business_state_of_residence?.touched">Please
+                    provide Business State of Residence</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix  popoverTitle="Nature of Business"
+                  ngbPopover="This is the description and nature of business"
+                  triggers="mouseenter:mouseleave" placement="left" class="cursor-pointer">help</mat-icon>
+                  <mat-label >Nature of Business <b class="text-danger">*</b> </mat-label>
+                  <input matInput
+                    formControlName="description_and_nature_of_business">
+                  <mat-hint class="text-danger"
+                    *ngIf="!description_and_nature_of_business?.valid && description_and_nature_of_business?.touched">Please
+                    provide Nature of Business</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-label >TIN <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="tin">
+                  <mat-icon matSuffix popoverTitle="TIN" class="cursor-pointer"
+                  ngbPopover="This is your business Tax Identification Number"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!tin?.valid && tin?.touched">Please provide
+                    TIN</mat-hint>
+                </mat-form-field>
+              </div>
+
+
+              <div class="text-right">
+                <button mat-raised-button matStepperNext
+                  [disabled]="businessInformationFormGroup?.invalid">Next</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="primaryContactInformationFormGroup">
+            <form [formGroup]="primaryContactInformationFormGroup">
+              <ng-template matStepLabel>Contact Information</ng-template>
+
+
+              <h3 class="text-dark">Primary Information</h3>
+              <div class="row">
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix  popoverTitle="Full Name"
+                  ngbPopover="This is the name of the person (admin) who set up the shop on StoreFront"
+                  triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon>
+                  <mat-label >Full Name <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="primary_contact_name">
+                  <mat-hint class="text-danger" *ngIf="!primary_contact_name?.valid && primary_contact_name?.touched">
+                    Please provide Full Name</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4">
+
+                  <!-- <span (click)="onPhoneCodeCliked()" style="cursor: pointer;" class="pr-1" matPrefix>{{primaryContactPhoneCode}}</span> -->
+                  <app-intl-country-codes matPrefix (countryCodeSelected)="onPhoneCodeCliked($event)">
+                  </app-intl-country-codes>
+                  <mat-label >Primary Contact Phone <b class="text-danger">*</b> </mat-label>
+                  <input type="tel" matInput formControlName="primary_contact_phone"
+                    >
+                    <mat-icon matSuffix  popoverTitle="Primary Contact Phone"
+                    ngbPopover="This is the personal phone number of the shop owner"
+                    triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon>
+
+                  <mat-hint class="text-danger" *ngIf="!primary_contact_phone?.valid && primary_contact_phone?.touched">
+                    Please provide Contact
+                    Phone</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-icon matSuffix  popoverTitle="Date Of Birth"
+                  ngbPopover="This is the personal date of birth of the shop owner"
+                  triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon>
+                  <mat-label >Date of Birth <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="date_of_birth" [matDatepicker]="dobDatepicker" [max]="maxDate" (click)="dobDatepicker?.open()" autocomplete="off">
+                  <mat-hint class="text-danger" *ngIf="!date_of_birth?.valid && date_of_birth?.touched">
+                    Please provide Valid Date of Birth
+                  </mat-hint>
+                  <mat-datepicker #dobDatepicker></mat-datepicker>
+                </mat-form-field>
+
+              </div>
+
+
+
+              <div class="text-right">
+                <button mat-raised-button class="mr-3" matStepperPrevious>Back</button>
+                <button mat-raised-button matStepperNext
+                  [disabled]="primaryContactInformationFormGroup?.invalid">Next</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="buinessRegInformationFormGroup">
+            <form [formGroup]="buinessRegInformationFormGroup">
+              <ng-template matStepLabel>Business Reg Information</ng-template>
+
+              <div class="row">
+                <div class="col-md-6" *ngIf="country?.value === 'GH'">
+                  <label>Certificate of Incorporation
+                    <mat-icon  popoverTitle="Certificate of Incorporation"
+                     ngbPopover="This is a copy of your legal document given to you as a limited liability company"
+                     triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #filecertificateOfIncorporation
+                  (change)="uploadDocs($event.target, certificate_of_incorporation, 'previewCertificateOfIncorporation')">
+                  <img class="img-responsive" [class.img-bg-spinner]="certificate_of_incorporation?.value === state"
+                    id="previewCertificateOfIncorporation" (click)="filecertificateOfIncorporation?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!certificate_of_incorporation?.valid">Please upload Certificate
+                    of Incorporation</mat-hint>
+                  <input type="hidden" formControlName="certificate_of_incorporation">
+                </div>
+                <div class="col-md-6" *ngIf="country?.value === 'GH'">
+                  <label>Certificate of Commencement
+                    <mat-icon  popoverTitle="Certificate of Commencement"
+                     ngbPopover="This is the legal document of when your business started operations"
+                     triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #filecertificateOfCommencement
+                  (change)="uploadDocs($event.target, certificate_of_commencement, 'previewCertificateOfCommencement')">
+                  <img class="img-responsive" [class.img-bg-spinner]="certificate_of_commencement?.value === state"
+                    id="previewCertificateOfCommencement" (click)="filecertificateOfCommencement?.click()" />
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!certificate_of_commencement?.valid">Please upload Certificate of
+                    Commencement</mat-hint>
+                  <input type="hidden" formControlName="certificate_of_commencement">
+                </div>
+
+              </div>
+              <div class="row mlr-0 mt-3">
+                <div class="col-md-6 pl-0">
+                  <label>Picture of National ID <b class="text-danger">*</b>
+                    <mat-icon  popoverTitle="Picture of National ID"
+                     ngbPopover="This could be a copy of your passport, voter’s ID or any other national identification card"
+                     triggers="mouseenter:mouseleave" placement="bottom" class="cursor-pointer">help</mat-icon></label><br>
+                  <input type="file" class="inputfile" #fileNationalIdPicture
+                  (change)="uploadDocs($event.target, national_id_picture, 'previewNationalIdPicture')">
+                  <img class="img-responsive" [class.img-bg-spinner]="national_id_picture?.value === state"
+                    id="previewNationalIdPicture" (click)="fileNationalIdPicture?.click()"/>
+                  <br>
+                  <mat-hint class="text-danger" *ngIf="!national_id_picture?.valid">Please upload National ID</mat-hint>
+                  <input type="hidden" formControlName="national_id_picture">
+                </div>
+
+              </div>
+
+
+
+              <div class="text-right">
+                <button mat-raised-button class="mr-3" matStepperPrevious>Back</button>
+                <button mat-raised-button matStepperNext
+                  [disabled]="buinessRegInformationFormGroup?.invalid">Next</button>
+              </div>
+            </form>
+          </mat-step>
+
+          <mat-step [stepControl]="bankInformationFormGroup">
+            <form [formGroup]="bankInformationFormGroup" (ngSubmit)="onSubmitPaymetRequest()">
+              <ng-template matStepLabel>Payment Method Information</ng-template>
+              <div class="row mb-2" *ngIf="country?.value == 'GH'">
+                <mat-radio-group color="primary" class="col-md-4" formControlName="prefered_payment_method">
+                  <mat-radio-button [value]="preferedPaymentMethods?.MOMO" class="mr-3">MOMO Settlement</mat-radio-button>
+                  <mat-radio-button [value]="preferedPaymentMethods?.BANK">Bank Settlement</mat-radio-button>
+                </mat-radio-group>
+
+              </div>
+              <h3 class="text-dark" *ngIf="country?.value == 'NG' || prefered_payment_method?.value === preferedPaymentMethods?.BANK" >Bank Information</h3>
+
+              <div class="row" *ngIf="country?.value == 'NG' || prefered_payment_method?.value === preferedPaymentMethods?.BANK">
+                <mat-form-field class="col-md-4">
+
+                  <mat-label >Bank Name <b class="text-danger">*</b> </mat-label>
+                  <mat-select formControlName="bank_name">
+                    <mat-option *ngFor="let item of banks" [value]="item?.name">{{item?.name}}</mat-option>
+                  </mat-select>
+                  <mat-icon matSuffix matSuffix popoverTitle="Bank Name" class="cursor-pointer"
+                  ngbPopover="This is the name of the bank that receives payment from your business"
+                  triggers="mouseenter:mouseleave" placement="right">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!bank_name?.valid && bank_name?.touched">Please provide
+                    Bank Name</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-label >Bank Branch <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="bank_branch">
+                  <mat-icon matSuffix popoverTitle="Bank Branch" class="cursor-pointer"
+                  ngbPopover="This should be the branch where you opened your bank account"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!bank_branch?.valid && bank_branch?.touched">Please provide
+                    Bank Branch</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-label>Select Account Type <b class="text-danger">*</b> </mat-label>
+                  <mat-select formControlName="account_type">
+                    <mat-option *ngFor="let item of accountTypes" [value]="item?.id">{{item?.name}}</mat-option>
+                  </mat-select>
+                  <mat-icon matSuffix popoverTitle="Account Type" class="cursor-pointer"
+                  ngbPopover="This is where you indicate if your account is savings or current"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!account_type?.valid && account_type?.touched">Please provide
+                    Account Type</mat-hint>
+                </mat-form-field>
+
+              </div>
+              <div class="row" *ngIf="country?.value == 'NG' || prefered_payment_method?.value === preferedPaymentMethods?.BANK">
+                <mat-form-field class="col-md-4">
+                  <mat-label >Bank Account Name <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="bank_account_name">
+                  <mat-icon matSuffix popoverTitle="Bank Account Name" class="cursor-pointer"
+                  ngbPopover="This is the correct name that represents your account"
+                  triggers="mouseenter:mouseleave" placement="right">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!bank_account_name?.valid && bank_account_name?.touched">
+                    Please provide Bank Account Name</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-label >Bank Account Number <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="bank_account_number">
+                  <mat-icon matSuffix popoverTitle="Bank Account Number" class="cursor-pointer"
+                  ngbPopover="This is the correct number that represents your account"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!bank_account_number?.valid && bank_account_number?.touched">
+                    Please provide Bank Account Number</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4" *ngIf="country?.value === 'NG'">
+                  <mat-label >BVN <b class="text-danger">*</b> </mat-label>
+                  <input matInput formControlName="bvn">
+                  <mat-icon matSuffix popoverTitle="BVN" class="cursor-pointer"
+                  ngbPopover="This should be your unique 11 digit Bank Verification Number"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!bvn?.valid && bvn?.touched">Please provide BVN</mat-hint>
+                </mat-form-field>
+              </div>
+
+              <h3 class="text-dark" *ngIf="country?.value == 'GH' && prefered_payment_method?.value === preferedPaymentMethods?.MOMO">Mobile Money Information</h3>
+              <div class="row" *ngIf="country?.value == 'GH' && prefered_payment_method?.value === preferedPaymentMethods?.MOMO">
+                <mat-form-field class="col-md-4">
+                  <mat-label>Mobile Money Number <b class="text-danger">*</b> </mat-label>
+                  <input matInput placeholder="Mobile Money Number" formControlName="mobile_money_number"
+                    >
+                    <mat-icon matSuffix popoverTitle="Mobile Money Number" class="cursor-pointer"
+                    ngbPopover="This is the correct number with which you receive payments"
+                    triggers="mouseenter:mouseleave" placement="right">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!mobile_money_number?.valid && mobile_money_number?.touched">
+                    Please provide
+                    Mobile Money Number</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                  <mat-label>Select Mobile Network <b class="text-danger">*</b></mat-label>
+                  <mat-select formControlName="mobile_money_network">
+                    <mat-option *ngFor="let item of mobileMoneyNetworks" [value]="item?.id">{{item?.name}}</mat-option>
+                  </mat-select>
+                  <mat-icon matSuffix popoverTitle="Mobile Network" class="cursor-pointer"
+                  ngbPopover="This where you indicate your mobile network provider"
+                  triggers="mouseenter:mouseleave" placement="left">help</mat-icon>
+                  <mat-hint class="text-danger" *ngIf="!mobile_money_network?.valid && mobile_money_network?.touched">
+                    Please provide Mobile Money Network</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="text-right">
+                <button mat-raised-button class="mr-3" matStepperPrevious>Back</button>
+                <button mat-raised-button color="primary" [disabled]="isProcessing"
+                  type="submit">Submit Request</button>
+              </div>
+            </form>
+          </mat-step>
+
+        </mat-horizontal-stepper>
+      </div>
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>

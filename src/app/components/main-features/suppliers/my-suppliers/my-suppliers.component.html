@@ -1,0 +1,73 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)">
+    <div mainAction>
+      <button mat-raised-button *ngIf="!isPartner" color="accent" (click)="addOrUpdateSupplier()">
+        ADD
+      </button>
+    </div>
+  </app-breadcrumb-actions>
+  <mat-card>
+    <mat-card-content class="ml-3 mr-3">
+
+      <app-table-header-actions [tableHeaderOptions]="tableHeaderOption" (searchTextChanged)="searchMySuppliers($event)">
+
+      </app-table-header-actions>
+      <div class="table-responsive">
+      <table class="table dataTable no-footer table-border-bottom">
+        <thead>
+          <tr role="row">
+            <th class="wd-15p">Name</th>
+            <th class="wd-15p">Phone Number</th>
+            <th class="wd-15p">Physical Address</th>
+            <th class="wd-25p">Category</th>
+            <th class="wd-10p">Date Created</th>
+            <th class="wd-25p text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="!isProcessing && suppliers?.length <= 0">
+            <td colspan="10" class="text-center">
+                <app-empty-record></app-empty-record>
+            </td>
+          </tr>
+          <tr *ngFor="let supplier of suppliers">
+            <td>{{supplier?.name}}</td>
+            <td>
+              {{supplier?.phone_number}}
+            </td>
+            <td>{{supplier?.physical_address}}</td>
+            <td>{{supplier?.category?.name}}</td>
+            <td>{{supplier?.date_created | date: 'medium'}}</td>
+            <td class="text-center">
+
+              <button mat-icon-button [matMenuTriggerFor]="menu" >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+
+                <button mat-menu-item (click)="addOrUpdateSupplier(true, supplier)"
+                 *ngIf="!isPartner">
+                  <span>Edit</span>
+                </button>
+
+              </mat-menu>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <app-pagination [dataSet]="suppliers"
+      [nextPage]="nextPage"
+      [prevPage]="prevPage"
+      [totalPage]="totalPage"
+        [requestPayload]="requestPayload"
+        [requestMethod]="'POST'"
+        (pageChanged)="onPageChanged($event)"
+        [isProcessing]="isProcessing"></app-pagination>
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>
+

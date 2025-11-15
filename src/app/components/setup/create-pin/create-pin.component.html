@@ -1,0 +1,39 @@
+<div class="d-flex bd-highlight login-page">
+  <div class="p-2 flex-fill bd-highlight login-controls">
+<div class="mr-5 ml-5 full-width">
+  <img class="login-logo mb-4" src="assets/img/logos/logo1.png" />
+    <h3 class="login-title">Create a business PIN</h3>
+    <div class="login-form-controls">
+      <form [formGroup]="loginFormGroup">
+
+
+        <mat-form-field class="full-width mt-2">
+          <mat-label>Enter your business PIN</mat-label>
+          <input matInput placeholder="Enter your business PIN" [type]="hide ? 'password' : 'text'" maxlength="6" numbersOnly formControlName="new_password"/>
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+          <mat-hint *ngIf="new_password?.invalid && new_password?.touched" class="text-danger">Enter New 6 Digit PIN</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="full-width ">
+            <mat-label>Confirm your business PIN</mat-label>
+            <input matInput placeholder="Confirm your business PIN" [type]="hideConfirmPIN ? 'password' : 'text'" maxlength="6" numbersOnly formControlName="confirm_password"/>
+            <button mat-icon-button matSuffix (click)="hideConfirmPIN = !hideConfirmPIN" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPIN">
+                <mat-icon>{{hideConfirmPIN ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            <mat-hint *ngIf="confirm_password?.invalid && confirm_password?.touched" class="text-danger">Confirm 6 Digit PIN</mat-hint>
+          </mat-form-field>
+        <button mat-raised-button color="primary" class="full-width mt-4" >CREATE PIN</button>
+      </form>
+
+    </div>
+</div>
+  </div>
+  <div class="flex-fill bd-highlight image-cover hidden-md-down">
+
+    <div class="bottom-text">
+      <h4 class="bottom-text-title">Smarter way of doing business</h4>
+      <p class="bottom-text-description">We help you run your business The New Smart way</p>
+    </div>
+  </div>
+</div>

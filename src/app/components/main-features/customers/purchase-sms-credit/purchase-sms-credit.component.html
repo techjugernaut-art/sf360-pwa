@@ -1,0 +1,56 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+
+  <mat-card class="mt-4">
+
+    <mat-card-content class="ml-3 mr-3">
+      <h3>Current SMS Credit Remaining: {{shopInfo?.purchased_sms_remaining}}</h3>
+    </mat-card-content>
+
+  </mat-card>
+
+  <!-- <div class="pricing-bg-gradient">
+    <div class="row m-auto text-center">
+      <div class="col-xl-4 col-lg-6 col-md-6 col-12" *ngFor="let item of premiumPlans">
+        <div class="princing-item green">
+          <div class="pricing-divider ">
+            <h3 class="text-white font-weight-600">{{item?.number_of_smses}} SMS Packages</h3>
+            <h4 class="my-0 display-4 text-white font-weight-normal mb-3">
+              <span class="h3 font-weight-600 fs-20">{{item?.currency}} {{item?.amount}} </span>
+              <span class="h5"> {{item?.name}} </span>
+            </h4>
+            <img class='pricing-divider-img' src="assets/img/icons/sms-pricing.svg" alt="">
+          </div>
+          <div class="bg-white mt-0 pb-4 shadow">
+            <ul class="list-unstyled mb-4 position-relative">
+              <li><b>{{item?.number_of_smses}}</b> SMS Credits</li>
+              <li><b>Free</b> Email support</li>
+              <li>Help center access</li>
+            </ul>
+            <button mat-raised-button color="primary" class="w-120" (click)="payPremiumNow(item)">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+    <div class="pricing-container">
+      <div class="row pricing-wrapper">
+        <div class="col-sm-12 col-md-4 col-lg-4" *ngFor="let item of premiumPlans">
+          <div class="pricing-item" style="height: calc(100% - 90px);">
+            <!-- <h5 class="pricing__title">Pay Per Month</h5> -->
+            <h3 class="mb-3">{{item?.number_of_smses}} SMS Packages</h3>
+            <div class="pricing__price">
+              <span class="pricing__currency">{{item?.currency}} </span><span>{{item?.amount}}</span><span class="pricing__time"></span>
+            </div>
+            <button class="full-width btn__secondary py-3"  (click)="payPremiumNow(item)">Buy Now</button>
+            <ul class="pricing__list list-items list-items-layout2 list-unstyled" style="padding: 0.5rem">
+              <!-- <li class="pb-3">{{item?.description}}</li> -->
+              <!-- <li><b>{{item?.number_of_smses}}</b> SMS Credits</li> -->
+
+            </ul>
+          </div>
+        </div>
+      </div> 
+    </div>
+</app-main-nav>

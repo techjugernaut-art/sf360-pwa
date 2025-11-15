@@ -1,0 +1,139 @@
+<div class="premium-features-wrapper">
+  <div class="feature-content">
+    <img class="premium-feature-logo" src="assets/img/logos/logo1.png" />
+    <mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+    <div class="feature-content-container">
+
+      <div class="feature-content-heading">
+        <img class="feature-heading-img" src="assets/img/icons/payment-method.svg" />
+        <!-- <p class="text-primary feature-content-heading-desc">Subscription payment to list your shop on StoreFront Mall
+        </p> -->
+      </div>
+      <!-- <router-outlet ></router-outlet> -->
+      <form [formGroup]="formGroup" (ngSubmit)="showPaymentPrompt(formGroup?.value)">
+      <div class="mr-5 ml-5 pr-3 pl-3">
+        <div class="d-flex justify-content-center d-none">
+          <mat-button-toggle-group color="primary" class="mat-toggle-buttons-adjustment"
+          formControlName="platform">
+            <mat-button-toggle color="primary" [value]="platformEnum?.ONLINE_STORE">ONLINE STORE</mat-button-toggle>
+            <mat-button-toggle color="primary" [value]="platformEnum?.PHYSICAL_STORE">PHYSICAL STORE</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+        <div class="row mlr-0">
+          <mat-form-field class="col-md-12 pl-0">
+
+            <mat-label>Select Shop <b class="text-danger">*</b> </mat-label>
+            <mat-select formControlName="shop_id">
+              <mat-option *ngFor="let item of myShops" [value]="item?.id">{{item?.business_name}}</mat-option>
+            </mat-select>
+            <!-- <mat-icon matSuffix popoverTitle="Shop" class="cursor-pointer"
+              ngbPopover="This is the name of the shop registered on StoreFront" triggers="mouseenter:mouseleave"
+              placement="bottom">help</mat-icon> -->
+            <mat-hint class="text-danger" *ngIf="!shop_id?.valid && shop_id?.touched">Please select Shop
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field class="col-md-12 pl-0" >
+
+            <mat-label>Select Premium Plan <b class="text-danger">*</b> </mat-label>
+            <mat-select formControlName="premium_plan_id">
+              <mat-option *ngFor="let plan of premiumPlans" [value]="plan?.id">{{plan?.name}} @ {{plan?.currency}}
+                {{plan?.amount_to_show_on_app}} for {{plan?.number_of_months}} month(s)</mat-option>
+            </mat-select>
+            <!-- <mat-icon matSuffix popoverTitle="Shop" class="cursor-pointer"
+              ngbPopover="This is the name of the shop registered on StoreFront" triggers="mouseenter:mouseleave"
+              placement="bottom">help</mat-icon> -->
+            <mat-hint class="text-danger" *ngIf="!premium_plan_id?.valid && premium_plan_id?.touched">Please select Premium Plan
+            </mat-hint>
+          </mat-form-field>
+        </div>
+        <div class="row mlr-0">
+          <mat-form-field class="col-md-6 pl-0">
+            <mat-label>I have a Discount Code </mat-label>
+            <input matInput formControlName="discount_code">
+            <i matSuffix class="fa fa-spinner fa-spin text-primary" *ngIf="isProcessingDiscountCheck"></i>
+          </mat-form-field>
+        </div>
+
+        <p class="mb-1 text-left"><b class="mr-1 subscription-payment-desc">SUBSCRIPTION FEE:</b> <span>{{dispayCurrency}} {{premiumPlanAmount}}</span></p>
+        <p class="mb-1 text-left"><b class="mr-1  subscription-payment-desc">DISCOUNT:</b> <span>{{dispayCurrency}} {{discountPercentage * premiumPlanAmount}}</span></p>
+        <p class="text-left"><b class="mr-1  subscription-payment-desc">GRAND TOTAL:</b> <span>{{dispayCurrency}} {{premiumPlanAmount - (discountPercentage * premiumPlanAmount)}}</span></p>
+
+        <div *ngIf="premiumPlanAmount - (discountPercentage * premiumPlanAmount) >0 ">
+          <p class="text-primary subscription-payment-method-heading">Payment Method</p>
+          <div class="row subscription-payment-method-icons">
+            <div class="col-md-2 payment-method-item-wrapper" *ngIf="currency === currencies.GHS">
+
+              <input type="radio" id="momo" [value]="'MOMO'" name="momo">
+              <label class="payment-method-grid-list-item" for="momo"
+              (click)="selectPaymentMethod('MOMO', 'MTN', 'MTN MOMO')">
+
+                <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+                <img src="./assets/img/icons/ic_mtn_money.png" alt="" class="payment-method-grid-list-item-media">
+                <p class="mb-0 payment-method-grid-list-item-description"></p>
+              </label>
+            </div>
+            <div class="col-md-2 payment-method-item-wrapper" *ngIf="currency === currencies.GHS">
+              <input type="radio" id="voda" [value]="'MOMO'" name="momo">
+              <label class="payment-method-grid-list-item" for="voda"
+              (click)="selectPaymentMethod('MOMO', 'VOD', 'VODAFONE CASH')">
+
+                <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+                <img src="./assets/img/icons/voda.png" alt="" class="payment-method-grid-list-item-media">
+                <p class="mb-0 payment-method-grid-list-item-description"></p>
+              </label>
+            </div>
+            <div class="col-md-2 payment-method-item-wrapper" *ngIf="currency === currencies.GHS">
+              <input type="radio" id="atigo" [value]="'MOMO'" name="momo">
+              <label class="payment-method-grid-list-item" for="atigo"
+              (click)="selectPaymentMethod('MOMO', 'AIR', 'AIRTELTIGO CASH')">
+
+                <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+                <img src="./assets/img/icons/atigo.png" alt="" class="payment-method-grid-list-item-media">
+                <p class="mb-0 payment-method-grid-list-item-description"></p>
+              </label>
+            </div>
+            <div class="col-md-2 payment-method-item-wrapper" *ngIf="currency !== ''">
+              <input type="radio" id="card" [value]="'CARD'" name="momo" >
+              <label class="payment-method-grid-list-item" for="card"
+              (click)="selectPaymentMethod('CARD', '', '')">
+
+                <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+                <img src="./assets/img/icons/card_payment.png" alt="" class="payment-method-grid-list-item-media">
+                <p class="mb-0 payment-method-grid-list-item-description"></p>
+              </label>
+            </div>
+
+
+            <div class="col-md-2 payment-method-item-wrapper" *ngIf="currency !== ''">
+
+              <input type="radio" id="DIRECT_TRANSFER" [value]="'DIRECT_TRANSFER'" name="momo">
+              <label class="payment-method-grid-list-item" for="DIRECT_TRANSFER"
+                (click)="selectPaymentMethod('DIRECT_TRANSFER', '', '')">
+
+                <img src="./assets/img/icons/check.svg" class="payment-method-selected-icon" />
+                <img src="./assets/img/icons/bank_transfer.png" alt="" class="payment-method-grid-list-item-media">
+                <p class="mb-0 payment-method-grid-list-item-description"></p>
+              </label>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="text-center" *ngIf="premiumPlanAmount - (discountPercentage * premiumPlanAmount) >0 ">
+        <button [disabled]="paymentMethod === '' || formGroup?.invalid" color="primary"
+           mat-raised-button class="mt-3">PAY NOW</button>
+      </div>
+
+      <div class="text-center" *ngIf="isValidDiscount && premiumPlanAmount - (discountPercentage * premiumPlanAmount) <= 0" >
+        <button (click)="goToDashboard(formGroup?.value)" color="primary" mat-raised-button class="mt-3">GO TO DASHBOARD</button>
+      </div>
+        </form>
+    </div>
+  </div>
+
+</div>
+
+<app-iframe-dialog [src]="redirectUrl" *ngIf="redirectUrl !== ''"></app-iframe-dialog>

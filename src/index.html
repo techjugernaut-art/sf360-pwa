@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>KudiGo Storefront 360</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="KudiGo Inc.">
+  <meta name="description" content="KudiGo Storefront">
+  <meta name="keywords"
+    content="KudiGo Storefront, Storefront 360, KudiGo Storefront 360, KudiGo, kudigo, Storefront, Retail, Africa">
+  <meta name="description"
+    content="KudiGo Storefront 360 is a retail engine designed for the Retail Industries in Africa to help manage and have oversight of their business">
+  <!-- <script id="cookieyes" type="text/javascript"
+    src="https://cdn-cookieyes.com/client_data/7927b156f7490e116111b59c.js"></script> -->
+
+  <link rel="icon" type="image/x-icon" href="favicon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#026e08">
+</head>
+
+<body class="app sidebar-mini rtl">
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous"
+    src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v11.0&appId=174301441341430&autoLogAppEvents=1"
+    nonce="LS9GCjLf"></script>
+  <app-root></app-root>
+  <noscript>Please enable JavaScript to continue using this application.</noscript>
+</body>
+
+<script>
+  window.fbAsyncInit = function () {
+    FB.init({
+      appId: '174301441341430',
+      cookie: true,
+      xfbml: true,
+      version: 'v11.0'
+    });
+
+    FB.AppEvents.logPageView();
+
+  };
+
+  (function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) { return; }
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+<script>
+  (function (h, o, t, j, a, r) {
+    h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
+    h._hjSettings = { hjid: 1814204, hjsv: 6 };
+    a = o.getElementsByTagName('head')[0];
+    r = o.createElement('script'); r.async = 1;
+    r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+</script>
+<script>
+  (function () {
+    var options = {
+        whatsapp: "+15128437031",
+        call_to_action: "Chat With Us",
+        position: "right",
+        pre_filled_message: "hello",
+    };
+    if (!window.location.href.includes('/orders?')) {
+      var proto = document.location.protocol, host = "getbutton.io", url = proto + "//static." + host;
+      var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = url + '/widget-send-button/js/init.js';
+      s.onload = function () { WhWidgetSendButton.init(host, proto, options); };
+      var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x);
+    }
+
+})();
+</script>
+<script>
+  ! function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+      n.callMethod ?
+        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s)
+  }(window, document, 'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '2829895483794577');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=2829895483794577&ev=PageView&noscript=1" /></noscript>
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-N97BGPZ');</script>
+<!-- End Google Tag Manager -->
+
+</html>

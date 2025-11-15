@@ -1,0 +1,35 @@
+<div class="send-verification-code-dialog">
+  <img class="send-verification-code-dialog-img" src="assets/img/verifcation-code.svg" />
+  <div class="text-center text-primary send-verification-code-dialog-text">Hello there! Since you are new here, we need
+    to ensure your phone number is right.
+    <br> How would you like to receive your verification code ?
+  </div>
+  <div class="row">
+    <mat-button-toggle-group [formControl]="send_code_via_whatsapp" class="my-4" style="border: none !important; box-shadow: none;">
+      <div class="col-md-6 text-center">
+        <div class="mat-button-toggle-center mb-1">
+          <mat-button-toggle color="ascent" class="square-toggle-button" [value]="true">
+            <span>
+              <img style="width:70px; height: 80px; margin-top: 10px; margin-bottom: 10px;" src="assets/icons/setup/whatsapp.svg" alt="">
+            </span>
+          </mat-button-toggle>
+        </div>
+        <h4>WhatsApp</h4>
+      </div>
+      <div class="col-md-6 text-center">
+        <div class="mat-button-toggle-center mb-1">
+          <mat-button-toggle color="primary" class="square-toggle-button" [value]="false">
+            <span>
+              <img style="width:70px; height: 80px; margin-top: 10px; margin-bottom: 10px;" src="assets/icons/setup/smartphone.svg" alt="">
+            </span>
+          </mat-button-toggle>
+        </div>
+        <h4>SMS</h4>
+      </div>
+    </mat-button-toggle-group>
+  </div>
+  <mat-progress-bar class="mb-0" *ngIf="isProcessing" mode="indeterminate">
+  </mat-progress-bar>
+  <button mat-raised-button color="primary" class="px-40" type="button" [disabled]="isProcessing"
+    (click)="onContinue()" color="primary">CONTINUE</button>
+</div>

@@ -1,0 +1,85 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)">
+    <div mainAction>
+      <button mat-raised-button [matMenuTriggerFor]="mainActionsMenu" color="accent" *ngIf="!isPartner">
+        ADD
+      </button>
+      <mat-menu #mainActionsMenu="matMenu">
+        <button mat-menu-item *ngIf="!isPartner" (click)="addExpense()">New Expense</button>
+        <button mat-menu-item *ngIf="!isPartner" (click)="addExpenseCategory()">New Expense Category</button>
+      </mat-menu>
+    </div>
+  </app-breadcrumb-actions>
+
+  <mat-card>
+    <mat-card-header class="card-header-full-width mb-3">
+      <mat-card-title>
+        <b>Total Expenses: {{totalAmount}}</b>
+      </mat-card-title>
+
+    </mat-card-header>
+    <mat-card-content class="ml-3 mr-3">
+      <app-table-header-actions [tableHeaderOptions]="tableHeaderOption" (searchTextChanged)="onSearchOrder($event)">
+        <button mat-button mat-stroked-button color="primary" type="button" [matMenuTriggerFor]="exportMenu" ><i class="fe fe-download mr-1"></i> EXPORT AS</button>
+        <mat-menu #exportMenu="matMenu">
+        <button mat-menu-item (click)="exportAsExcel()">EXCEL</button>
+        <button mat-menu-item (click)="exportAllAPDF()">PDF</button>
+        </mat-menu>
+      </app-table-header-actions>
+      <div class="table-responsive">
+        <table class="table dataTable no-footer table-border-bottom">
+          <thead>
+            <tr>
+              <th class="wd-15p">Shop</th>
+              <th class="wd-15p">Category</th>
+              <th class="wd-15p">Amount</th>
+              <th class="wd-15p">Note</th>
+              <!-- <th class="wd-10p text-center">Is Recurring</th> -->
+              <th class="wd-10p">Recurring Interval</th>
+              <th class="wd-10p">Transaction date</th>
+              <th class="wd-25p">Date created</th>
+              <th class="wd-25p">Actions</th>
+
+            </tr>
+          </thead>
+          <tbody *ngIf="allExpenses?.length <= 0">
+            <tr>
+              <td colspan="10" class="text-center">
+                <app-empty-record></app-empty-record>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngFor="let expense of allExpenses">
+
+            <tr>
+              <td>{{expense?.myshop?.business_name}}</td>
+              <td>{{expense?.category?.name}}</td>
+              <td>{{expense?.currency}} {{expense?.amount | number: '1.2-2'}}</td>
+              <td>{{expense?.note}}</td>
+              <!-- <td class="text-center">
+                <img *ngIf="expense?.is_recurring" src="../assets/img/icons/check.svg" alt="" class="icon-image">
+                <img *ngIf="!expense?.is_recurring" src="../assets/img/icons/remove.svg" alt="" class="icon-image">
+              </td> -->
+              <td>{{expense?.recurring_interval}}</td>
+              <td>{{expense?.transaction_date | date: 'MM/dd/yyyy'}}</td>
+              <td>{{expense?.time_created | date: 'MM/dd/yyyy, HH:mm:ss'}}</td>
+              <td class="text-center">
+
+                <button class="btn btn-primary btn-sm" (click)="addExpense(true, expense)">
+                  <i class="fe fe-edit"></i>
+                </button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <app-pagination [dataSet]="allExpenses" [nextPage]="nextPage" [prevPage]="prevPage" [totalPage]="totalPage"
+        [requestPayload]="requestPayload" [requestMethod]="'POST'" (pageChanged)="onPageChanged($event)"
+        [isProcessing]="isProcessing"></app-pagination>
+
+    </mat-card-content>
+  </mat-card>
+
+</app-main-nav>

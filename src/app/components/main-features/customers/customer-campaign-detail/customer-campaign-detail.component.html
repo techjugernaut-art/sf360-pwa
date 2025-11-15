@@ -1,0 +1,49 @@
+<div mat-dialog-content>
+  <div class="col-md-12">
+    <div class="">
+      <div class="my-3">
+        <h3 class="campaign-title">{{campaign?.title}}</h3>
+        <p class="campaign-content">{{campaign?.content}}</p>
+      </div>
+      <div class="campaign-image">
+        <img *ngIf="campaign?.campaign_type === campaignTypes?.EMAIL || campaign?.campaign_type === campaignTypes?.ALL"
+          [src]="campaign?.image" class="img-campaign-detail">
+
+      </div>
+      <div class="d-flex flex-wrap justify-content-between mt-4">
+        <div class="campaign-tags">
+          CAMPAIGN TYPE: {{campaign?.campaign_type | removeUnderScore}}
+        </div>
+        <div class="campaign-tags">
+          TARGET TYPE: {{campaign?.target_type | removeUnderScore}}
+        </div>
+        <div class="campaign-tags d-flex align-items-center justify-content-center">
+          RECEIVED/SENT: {{campaign?.num_of_received_recipients}} / {{campaign?.num_of_total_recipients}}
+        </div>
+      </div>
+      <div class="d-flex flex-wrap mt-3">
+
+        <div class="campaign-tags" *ngIf="campaign?.is_scheduled">
+          SCHEDULED FOR: {{campaign?.scheduled_time | date : 'medium'}}
+        </div>
+        <div class="campaign-tags" *ngIf="campaign?.target_type === targetType?.CUSTOMER_DATE_RANGE_VISITS">
+          CUST. VISIT DATE RANGE: {{campaign?.visit_start_date | date : 'MMM dd, yyyy'}} -
+          {{campaign?.visit_end_date | date : 'MMM dd, yyyy'}}
+        </div>
+        <div class="campaign-tags" *ngIf="campaign?.target_type === targetType?.CUSTOMER_NUMBER_OF_VISITS">
+          CUST. NO. of VISIT: {{campaign?.customer_number_of_visits_at_least }} -
+          {{campaign?.customer_number_of_visits_at_most}}
+        </div>
+        <div class="campaign-tags" *ngIf="campaign?.target_type === targetType?.CUSTOMER_GROUP">
+          CUST. GROUP: {{campaign?.customer_group_name }}
+        </div>
+      </div>
+      <div class="justify-content-between d-flex">
+        <div class="text-muted">{{campaign?.date_created | date: 'medium'}}</div>
+        <mat-dialog-actions class="text-right">
+          <button mat-raised-button mat-dialog-close>Close</button>
+        </mat-dialog-actions>
+      </div>
+    </div>
+  </div>
+</div>

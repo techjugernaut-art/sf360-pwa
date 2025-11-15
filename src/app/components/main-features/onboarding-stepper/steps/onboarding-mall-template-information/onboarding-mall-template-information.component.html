@@ -1,0 +1,51 @@
+<mat-progress-bar class="mb-0" *ngIf="isProcessing" mode="indeterminate">
+</mat-progress-bar>
+<div class="step-content">
+
+  <div class="step-content-heading">
+    <img class="step-heading-img" src="assets/img/icons/template.svg" />
+    <p class="text-primary step-content-heading-desc">Let’s customize your Storefront Mall</p>
+  </div>
+  <div class="row mlr-0">
+    <form [formGroup]="formGroup" class="col-md-10 offset-md-1">
+      <div class="alert alert-info mb-3 ml-3">
+        This address should not contain any special character or whitespace.</div>
+    <div class="row mlr-0 mb-3">
+
+      <mat-form-field class="col-6">
+        <mat-label>Online Store Address </mat-label>
+        <mat-icon matSuffix popoverTitle="StoreFront Mall Name" class="cursor-pointer"
+        ngbPopover="This Online Store Address shouldn't contain any special character or whitespace"
+        triggers="mouseenter:mouseleave" placement="bottom">info</mat-icon>
+        <input matInput formControlName="storefrontmall_name" alphaNumericOnly>
+        <mat-hint class="text-danger" *ngIf="!storefrontmall_name?.valid && storefrontmall_name?.touched">Please provide
+          valid Online Store Address</mat-hint>
+          <mat-hint class="text-danger" *ngIf="onlineAddressStatus === 'EXISTS' && storefrontmall_name?.touched">This storefront online address already exists. Kindly try another name.</mat-hint>
+      </mat-form-field>
+      <div class="col-6 storefrontmall-name ">
+        <b>.{{storefrontMallDomain}}</b>
+      </div>
+
+    </div>
+
+
+    <!-- <mat-radio-group aria-label="Select delivery option" class="ml-2" formControlName="self_managed_delivery" color="primary">
+      <mat-radio-button class="d-block ml-2" [value]="true">I will do deliveries myself</mat-radio-button>
+      <mat-radio-button class="d-block ml-2" [value]="false">KudiGo should handle deliveries for me</mat-radio-button>
+    </mat-radio-group> -->
+    </form>
+  </div>
+</div>
+
+
+<div class="stepper-bottom-action">
+  <div class="step-left-action">
+    <!-- <a [routerLink]="['/onboarding/products']" [queryParams]="{ step: 4, state: 'back' }" mat-raised-button>BACK</a> -->
+  </div>
+  <div class="stepper-right-action">
+    <button (click)="onSkip()"  class="mr-3" mat-button color="primary">SKIP</button>
+  <button mat-raised-button color="primary"
+  (click)="onSubmit(formGroup?.value)"
+    [disabled]="isProcessing || formGroup?.invalid">NEXT</button>
+  </div>
+</div>

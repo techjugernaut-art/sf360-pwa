@@ -1,0 +1,36 @@
+<form [formGroup]="formGroup" (ngSubmit)="addSliders(formGroup?.value)">
+  <h1 mat-dialog-title>{{bannerModalTitle }}</h1>
+  <mat-progress-bar mode="indeterminate" *ngIf="isProcessing"></mat-progress-bar>
+<div mat-dialog-content>
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <input type="text" matInput placeholder="Main Heading" formControlName="main_heading">
+      <mat-hint class="text-danger" *ngIf="!main_heading?.valid && main_heading?.touched">Please enter Main Heading</mat-hint>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field class="col-md-12">
+      <input type="text" matInput placeholder="Sub Heading" formControlName="sub_heading">
+      <mat-hint class="text-danger" *ngIf="!sub_heading?.valid && sub_heading?.touched">Please enter Sub Heading</mat-hint>
+    </mat-form-field>
+  </div>
+
+
+  <input type="file" class="inputfile" id="file" (change)="fileChangeEvent($event)" accept="image/*">
+  <label  for="file">Choose image to upload</label><br>
+
+
+<image-cropper [imageChangedEvent]="imageChangedEvent"  class="product-img" [aspectRatio]="26 / 9"  [maintainAspectRatio]="true"
+[resizeToWidth]="1920" [resizeToHeight]="735" [containWithinAspectRatio]="true"
+  format="png" (imageCropped)="imageCropped($event)" [cropperMinWidth]="1920" [cropperMinHeight]="735"></image-cropper>
+
+  <p><b>Preview (1920x735px)</b></p>
+  <img [src]="croppedImage | imageUrl: imageUrl" style="width: 1920px; height: 735px;" />
+
+</div>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary">Save</button>
+</mat-dialog-actions>
+
+</form>

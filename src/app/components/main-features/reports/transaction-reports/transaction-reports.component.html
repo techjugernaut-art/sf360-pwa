@@ -1,0 +1,204 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)"></app-breadcrumb-actions>
+
+  <mat-card>
+    <mat-card-header class="card-header-full-width mb-3">
+      <mat-card-title>
+        <b>Total Transactions: {{totalAmount}}</b>
+      </mat-card-title>
+
+    </mat-card-header>
+    <mat-card-content class="ml-3 mr-3">
+      <app-table-header-actions [tableHeaderOptions]="tableHeaderOption" (searchTextChanged)="onSearchTransactionEvent($event)">
+        <button mat-button mat-stroked-button color="primary" type="button" [matMenuTriggerFor]="mainActionsMenu" ><i class="fe fe-download mr-1"></i> EXPORT AS</button>
+        <mat-menu #mainActionsMenu="matMenu">
+        <button mat-menu-item (click)="exportAsExcel()">EXCEL</button>
+        <button mat-menu-item (click)="exportAsPDF()">PDF</button>
+        </mat-menu>
+      </app-table-header-actions>
+      <div class="table-responsive">
+        <table class="table dataTable no-footer table-border-bottom">
+          <thead>
+            <tr>
+              <th class="wd-15p">Transaction ID</th>
+              <th class="wd-15p">Customer</th>
+              <th class="wd-25p">Shop</th>
+              <th class="wd-15p">Amt.</th>
+              <th class="wd-15p">Payment Met</th>
+              <th class="wd-15p">Status</th>
+              <th class="wd-10p">Date Created</th>
+              <th class="wd-25p">Actions</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="elements?.length <= 0">
+              <td colspan="10" class="text-center">
+                <app-empty-record></app-empty-record>
+              </td>
+            </tr>
+            <tr *ngFor="let transaction of elements">
+              <td>{{transaction?.transaction_id}}</td>
+              <td>
+                {{transaction?.customer?.name}}
+              </td>
+              <td>{{transaction?.myshop?.business_name}}</td>
+              <td>{{transaction?.myshop?.currency}} {{transaction?.credit_amt | number: '1.2-2'}}
+              </td>
+              <td>{{transaction?.payment_method}}</td>
+              <td><span class="ml-2 badge"
+                  [ngClass]="{'badge-pending': toLowerCase(transaction?.transaction_status) === 'pending', 'badge-approved': toLowerCase(transaction?.transaction_status) === 'success', 'badge-blocked': toLowerCase(transaction?.transaction_status) === 'failed', 'badge-cancelled': toLowerCase(transaction?.transaction_status) === 'cancelled', 'badge-retry': toLowerCase(transaction?.transaction_status) === 'retry'}">{{transaction?.transaction_status
+                  | uppercase}}</span>
+              </td>
+              <td>{{transaction?.time_created | date: 'medium'}}</td>
+              <td class="text-center">
+                <button class="btn btn-primary btn-sm" (click)="showTransactionDetails(transaction)" data-toggle="modal"
+                  data-target="#modalTransactionDetail"><i class="fe fe-eye"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-pagination [dataSet]="elements" [nextPage]="nextPage" [prevPage]="prevPage" [totalPage]="totalPage"
+        [requestPayload]="requestPayload" [requestMethod]="'POST'" (pageChanged)="onPageChanged($event)"
+        [isProcessing]="isProcessing"></app-pagination>
+
+    </mat-card-content>
+  </mat-card>
+
+</app-main-nav>
+
+<!-- Transaction Details Modal -->
+<div class="modal fade" id="modalTransactionDetail" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title-notification">Transaction ID: {{transactionDetail?.transaction_id}}</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <mat-tab-group mat-stretch-tabs class="remove-mat-tab-body-overflow">
+          <!-- General information -->
+          <mat-tab active="true">
+            <ng-template mat-tab-label>
+              General Information
+            </ng-template>
+
+            <div>
+              <dl class="row mb-0">
+                <dt class="col-6">Transaction ID</dt>
+                <dd class="col-6  text-right">{{transactionDetail?.transaction_id}}</dd>
+
+                <dt class="col-6">Transaction Type</dt>
+                <dd class="col-6 text-right">
+                  {{appUtil?.getTransactionTypeFullName(transactionDetail?.transaction_type) | uppercase}}</dd>
+
+                <dt class="col-6">Amount ({{transactionDetail?.myshop?.currency}})</dt>
+                <dd class="col-6  text-right">{{transactionDetail?.credit_amt}}</dd>
+
+                <dt class="col-6">Payment Method</dt>
+                <dd class="col-6  text-right">
+                  {{appUtil?.getNetworkFullName(transactionDetail?.payment_method)}}</dd>
+
+                <dt class="col-6"
+                  *ngIf="transactionDetail?.payment_method !=='CARD' && transactionDetail?.payment_method !=='CASH'">
+                  Sender Wallet Number</dt>
+                <dd class="col-6  text-right"
+                  *ngIf="transactionDetail?.payment_method !=='CARD' && transactionDetail?.payment_method !=='CASH'">
+                  {{transactionDetail?.sender_wallet_number}}</dd>
+
+                <dt class="col-6"
+                  *ngIf="transactionDetail?.payment_method !=='CARD' && transactionDetail?.payment_method !=='CASH'">
+                  Recipient Wallet Network</dt>
+                <dd class="col-6  text-right"
+                  *ngIf="transactionDetail?.payment_method !=='CARD' && transactionDetail?.payment_method !=='CASH'">
+                  {{appUtil?.getNetworkFullName(transactionDetail?.destination)}}</dd>
+
+                <dt class="col-6" *ngIf="transactionDetail?.payment_method ==='CARD'">Card Type</dt>
+                <dd class="col-6  text-right" *ngIf="transactionDetail?.payment_method =='CARD'">
+                  {{transactionDetail?.payment_card_type}}</dd>
+
+                <dt class="col-6"
+                  *ngIf="transactionDetail?.payment_method !=='CARD' && transactionDetail?.payment_method !=='CASH'">
+                  Recipient Wallet Number</dt>
+                <dd class="col-6  text-right"
+                  *ngIf="transactionDetail?.payment_method !=='CARD' && transactionDetail?.payment_method !=='CASH'">
+                  {{transactionDetail?.recipient_wallet_number}}</dd>
+
+                <dt class="col-6" *ngIf="transactionDetail?.payment_method ==='CARD'">Payment Status</dt>
+                <dd class="col-6  text-right" *ngIf="transactionDetail?.payment_method ==='CARD'"><span
+                    class="ml-2 badge"
+                    [ngClass]="{'badge-pending': toLowerCase(transactionDetail?.payment_status) === 'pending', 'badge-approved': toLowerCase(transactionDetail?.payment_status) === 'success', 'badge-blocked': toLowerCase(transactionDetail?.payment_status) === 'failed'}">{{transactionDetail?.payment_status
+                    | uppercase}}</span>
+                </dd>
+
+                <dt class="col-6">Transaction Status</dt>
+                <dd class="col-6  text-right"><span class="ml-2 badge"
+                    [ngClass]="{'badge-pending': toLowerCase(transactionDetail?.transaction_status) === 'pending', 'badge-approved': toLowerCase(transactionDetail?.transaction_status) === 'success', 'badge-blocked': toLowerCase(transactionDetail?.transaction_status) === 'failed'}">{{transactionDetail?.transaction_status
+                    | uppercase}}</span>
+                </dd>
+
+                <dt class="col-6">Date Created</dt>
+                <dd class="col-6  text-right">{{transactionDetail?.time_created | date: 'medium'}}</dd>
+              </dl>
+            </div>
+          </mat-tab>
+          <!-- End of General Information -->
+          <!-- Customer Information tab -->
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Customer Information
+            </ng-template>
+            <dl class="row">
+              <dt class="col-6">Name</dt>
+              <dd class="col-6  text-right">{{transactionDetail?.customer?.name}}</dd>
+
+              <dt class="col-6">Phone Number</dt>
+              <dd class="col-6  text-right">{{transactionDetail?.customer?.phone_number}}</dd>
+
+            </dl>
+          </mat-tab>
+          <!-- End of Customer Information tab -->
+          <!-- Shop Information tab -->
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Shop Information
+            </ng-template>
+            <dl class="row">
+              <dt class="col-6">Business Name</dt>
+              <dd class="col-6  text-right">{{transactionDetail?.myshop?.business_name | titlecase}}</dd>
+
+              <dt class="col-6">Administrator</dt>
+              <dd class="col-6  text-right">{{transactionDetail?.myshop?.administration_name | titlecase}}</dd>
+
+              <dt class="col-6">Business Reg #</dt>
+              <dd class="col-6  text-right">{{transactionDetail?.myshop?.business_registration_number | uppercase}}
+              </dd>
+
+              <dt class="col-6">Business Type</dt>
+              <dd class="col-6  text-right">{{transactionDetail?.myshop?.business_type}}</dd>
+
+              <dt class="col-6">Location</dt>
+              <dd class="col-6  text-right">{{transactionDetail?.myshop?.location}}</dd>
+
+              <dt class="col-6">VAT Number</dt>
+              <dd class="col-6  text-right">{{transactionDetail?.myshop?.vat_number}}</dd>
+
+              <dt class="col-6">Tax Number</dt>
+              <dd class="col-6  text-right">{{transactionDetail?.myshop?.tax_number}}</dd>
+            </dl>
+          </mat-tab>
+          <!-- End of Shop Information tab -->
+        </mat-tab-group>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Transaction Details Modal -->

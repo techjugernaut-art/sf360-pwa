@@ -1,0 +1,86 @@
+<mat-progress-bar class="mb-0" *ngIf="isProcessing" mode="indeterminate">
+</mat-progress-bar>
+<div class="step-content">
+
+  <div class="step-content-heading">
+    <img class="step-heading-img" src="assets/img/personal-data.svg" />
+    <p class="text-primary step-content-heading-desc">Personalize Your Store With Your Personal Details</p>
+  </div>
+  <div class="row">
+    <form [formGroup]="personalInformationFormGroup" class="col-md-6 offset-md-3">
+      <div class="row">
+
+        <mat-form-field class="col-md-12">
+          <mat-label>First Name <b class="text-danger">*</b> </mat-label>
+          <input matInput formControlName="first_name" alphabetsOnly>
+          <mat-hint class="text-danger" *ngIf="!first_name?.valid && first_name?.touched">Please provide
+            valid First Name</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="col-md-12">
+          <mat-label>Last Name <b class="text-danger">*</b> </mat-label>
+          <input matInput formControlName="last_name" alphabetsOnly>
+          <mat-hint class="text-danger" *ngIf="!last_name?.valid && last_name?.touched">Please
+            provide Last Name</mat-hint>
+        </mat-form-field>
+
+      </div>
+      <div class="row">
+
+        <div class="col-md-12">
+          <mat-label class="mt-4 mr-2">Gender: <b class="text-danger">*</b> </mat-label><br>
+          <mat-radio-group aria-label="Select an Gender" formControlName="gender" color="primary">
+            <mat-radio-button value="M" class="mr-2">Male</mat-radio-button>
+            <mat-radio-button value="F">Female</mat-radio-button>
+          </mat-radio-group>
+
+          <mat-hint class="text-danger" *ngIf="!gender?.valid && gender?.touched">Please select Gender</mat-hint>
+        </div>
+        <mat-form-field class="col-md-12">
+          <mat-label>Email <b class="text-danger">*</b> </mat-label>
+          <input matInput formControlName="email">
+          <mat-hint class="text-danger" *ngIf="!email?.valid && email?.touched">Please
+            provide valid email</mat-hint>
+        </mat-form-field>
+
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-12">
+          <mat-label>Enter A Six Digit PIN</mat-label>
+          <input matInput placeholder="Enter A Six Digit PIN" [type]="hide ? 'password' : 'text'" maxlength="6"
+          numbersOnly formControlName="password" />
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-hint *ngIf="password?.invalid && password?.touched" class="text-danger">Enter your new 6 digit PIN (must not be sequential such as 111111, 123456, 654321)</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="col-md-12">
+          <mat-label>Repeat Your Six Digit PIN</mat-label>
+          <input matInput placeholder="Repeat Your Six Digit PIN" [type]="hideConfirmPIN ? 'password' : 'text'"
+            maxlength="6" numbersOnly formControlName="confirm_password" />
+          <button mat-icon-button matSuffix (click)="hideConfirmPIN = !hideConfirmPIN"
+            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPIN">
+            <mat-icon>{{hideConfirmPIN ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-hint *ngIf="confirm_password?.invalid && confirm_password?.touched" class="text-danger">PIN does not match</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div>Clicking <b>NEXT</b> means you have accepted the <a class="text-primary" href="https://www.kudigo.com/privacy/" target="_blank">Terms & Conditions and Privacy Policies</a> of using
+            KudiGo StoreFront</div>
+          </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="stepper-bottom-action">
+  <div class="step-left-action">
+  </div>
+  <div class="stepper-right-action">
+    <button mat-raised-button color="primary"
+    (click)="onSubmit(personalInformationFormGroup?.value)"
+      [disabled]="personalInformationFormGroup?.invalid">NEXT</button>
+  </div>
+</div>

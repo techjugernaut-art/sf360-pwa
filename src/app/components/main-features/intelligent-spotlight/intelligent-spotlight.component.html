@@ -1,0 +1,39 @@
+<app-main-nav [isProcessing]="isProcessing">
+  <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions"
+    (dataRefreshed)="onDataRefreshed($event)">
+  </app-breadcrumb-actions>
+  <mat-card>
+    <mat-card-content>
+      <app-table-header-actions [tableHeaderOptions]="tableHeaderOption"></app-table-header-actions>
+      <div class="table-responsive">
+      <table class="table dataTable no-footer table-border-bottom">
+        <thead>
+          <tr role="row">
+            <th class="wd-15p">Content</th>
+            <th class="wd-15p">Date Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="!isProcessing && intellisights?.length <= 0">
+            <td colspan="10" class="text-center"><app-empty-record></app-empty-record></td>
+          </tr>
+          <tr *ngFor="let insight of intellisights">
+            <td>{{insight?.content}}</td>
+            <td>{{insight?.date_created | date: 'medium'}}</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <app-pagination [dataSet]="intellisights"
+      [nextPage]="nextPage"
+      [prevPage]="prevPage"
+      [totalPage]="totalPage"
+        [requestPayload]="requestPayload"
+        [requestMethod]="'POST'"
+        (pageChanged)="onPageChanged($event)"
+        [isProcessing]="isProcessing"></app-pagination>
+    </mat-card-content>
+
+  </mat-card>
+
+</app-main-nav>

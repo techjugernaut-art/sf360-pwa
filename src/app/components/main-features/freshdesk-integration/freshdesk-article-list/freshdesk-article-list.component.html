@@ -1,0 +1,67 @@
+<app-main-nav [isProcessing]="isProcessing">
+    <app-breadcrumb-actions class="full-width" [pageHeaderOptions]="pageHeaderOptions">
+
+    </app-breadcrumb-actions>
+    <mat-card class="card-margins">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <span (click)="goBack()">
+                    <mat-icon class="cursor-pointer">arrow_back</mat-icon>
+                </span>
+                <!-- <span class="freshdesk-page-title article-detail-title">{{folderName}}</span> -->
+            </div>
+        </div>
+        <div class="spinner-wrapper" *ngIf="isProcessing && articles?.length <=0">
+            <mat-spinner></mat-spinner>
+        </div>
+        <div class="row" *ngIf="articles?.length <= 0 && !isProcessing">
+            <div class="col-12">
+                <app-empty-record></app-empty-record>
+            </div>
+        </div>
+        <article *ngFor="let item of articles">
+            <div class="row article-container">
+                <div class="col-xs-12 col-md-2 col-lg-2">
+                    <div class="article-img-wrapper">
+                        <div class="article-img">
+                            <a (click)="viewArticleDetail(item?.id)">
+                                <img src="assets/icons/article.svg" class="img-responsive" [alt]="item?.title">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-10 col-lg-10">
+                    <div class="article-description-body">
+                        <div class="article-description-header">
+                            <div class="mb-2">
+                                <a (click)="viewArticleDetail(item?.id)"
+                                    class="cursor-pointer font-weight-600 text-primary">{{item?.title}}</a>
+                            </div>
+                        </div>
+                        <p class="pb-10px">
+                            <span [innerHTML]="item?.description_text.substr(0, 150)"></span><span> ...</span> <br>
+                            <button class="mt-2" mat-raised-button (click)="viewArticleDetail(item?.id, item?.title)"><span
+                                    class="text-primary">read more</span></button>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- <div class="col-md-6 mb-2">
+                    <button mat-raised-button (click)="viewArticleDetail(item?.id)"><span class="text-primary">read
+                            more</span></button>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <span class="pull-right" *ngIf="item?.tags !== null && item?.tags !== ''">
+                        <mat-icon mat-icon>tag</mat-icon> <span class="mx-1 font-weight-600">
+                            {{item?.tags}}
+                        </span>
+                    </span>
+                </div> -->
+            </div>
+            <div class="article-description-footer">
+
+            </div>
+        </article>
+
+    </mat-card>
+</app-main-nav>
